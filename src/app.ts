@@ -1,4 +1,5 @@
 import { verifyAST } from 'esverify/index';
+import VerificationCondition, { Result } from 'esverify/src/vc';
 import { parse } from 'esprima';
 
 function error(pane, msg: string) {
@@ -10,31 +11,37 @@ function color(status: string) {
   switch (status) {
     case "unverified": return "black";
     case "inprogress": return "gray";
-    case "sat": return "green";
-    case "unsat": return "red";
-    case "failed": return "blue";
-    case "notest": return "yellow";
+    case "verified": return "green";
+    case "incorrect": return "red";
+    case "error": return "blue";
+    case "tested": return "yellow";
   }
 }
 
-function show(res, desc: string, result) {
-  res.html('')
+function show(out, vc: VerificationCondition) {
+  const result = vc.result(),
+        desc = vc.description;
+  out.html('')
      .append($(`<strong style="color:${color(result.status)}">${desc}</strong>`))
      .append($(`<br />`))
      .append($(`<pre style="margin-top:0;margin-bottom:0">${JSON.stringify(result, null, 2)}</pre>`));
-  if (result.status != "")
-     .append($(`<pre style="margin-top:0;margin-bottom:0">${JSON.stringify(result, null, 2)}</pre>`));
+  if (result.status == "incorrect" || result.status == "tested") {
+    const btn = $(`<button>Run Test</button>`);
+    btn.click(() => vc.runTest());
+    out.append(btn);
+  }
 }
 
 function verify(js: string, pane) {
   var p = Promise.resolve();
   var vcs = verifyAST(parse(js));
   pane.html('');
+  if (!vcs) error(pane, "Cannot find VCs");
   vcs.forEach(vc => {
     var r = $("<div>").appendTo(pane);
-    show(r, vc.description, vc.result());
+    show(r, vc);
     p = p.then(() => vc.solve())
-         .then(() => { show(r, vc.description, vc.result()); });
+         .then(() => { show(r, vc); });
   });
   p.catch(e => error(pane, 'Error: ' + e));
 }
