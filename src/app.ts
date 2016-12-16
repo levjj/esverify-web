@@ -1,9 +1,9 @@
 import { verifyAST } from 'esverify/index';
 import { parse } from 'esprima';
 
-function error(msg: string) {
+function error(pane, msg: string) {
   console.error(msg);
-  $("#results").html(`<p style="color:red">#{msg}</p>`);
+  pane.html(`<p style="color:red">${msg}</p>`);
 }
 
 function color(status: string) {
@@ -17,31 +17,26 @@ function color(status: string) {
   }
 }
 
-function show(desc: string, result) {
-  var res = $("<div>");
-  $(`<h2>${desc}</h2>`).appendTo(res);
-  $(`<p style="color:${color(result.status)}">${result.status}</p>`).appendTo(res);
-  $(`<pre>${JSON.stringify(result)}</pre>`).appendTo(res);
-  return res.appendTo('#results');
+function show(res, desc: string, result) {
+  res.html('')
+     .append($(`<strong style="color:${color(result.status)}">${desc}</strong>`))
+     .append($(`<br />`))
+     .append($(`<pre style="margin-top:0;margin-bottom:0">${JSON.stringify(result, null, 2)}</pre>`));
+  if (result.status != "")
+     .append($(`<pre style="margin-top:0;margin-bottom:0">${JSON.stringify(result, null, 2)}</pre>`));
 }
 
-function run(js: string) {
+function verify(js: string, pane) {
   var p = Promise.resolve();
   var vcs = verifyAST(parse(js));
-  $("#results").html('');
+  pane.html('');
   vcs.forEach(vc => {
-    var r = show(vc.description, vc.result());
+    var r = $("<div>").appendTo(pane);
+    show(r, vc.description, vc.result());
     p = p.then(() => vc.solve())
-         .then(() => { r.remove(); show(vc.description, vc.result()); });
+         .then(() => { show(r, vc.description, vc.result()); });
   });
-  p.catch(e => error('Error: ' + e));
+  p.catch(e => error(pane, 'Error: ' + e));
 }
 
-$(() => {
-  const editor = ace.edit('editor');
-  editor.getSession().setMode('ace/mode/javascript');
-  editor.setTheme('ace/theme/chrome');
-  $("#veriBtn").click(() => {
-    run(editor.getValue());
-  });
-});
+(<any>window)["verify"] = verify;

@@ -22,8 +22,16 @@
     <div id="results">
     </div>
   </div>
-  <script src="/jquery.min.js"></script>
-  <script src="/ace/ace.js" type="text/javascript" charset="utf-8"></script>
-  <script src="/app.js"></script>
+  <script src="jquery.min.js"></script>
+  <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
+  <script src="app.js"></script>
+  <script type="text/javascript">
+$(() => {
+  const editor = ace.edit('editor');
+  editor.getSession().setMode('ace/mode/javascript');
+  editor.setTheme('ace/theme/chrome');
+  $("#veriBtn").click(() => verify(editor.getValue(), $("#results")));
+});
+  </script>
 </body>
 </html>
