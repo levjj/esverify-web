@@ -1,7 +1,7 @@
 {
   "name": "esverify-editor",
   "version": "0.0.2",
-  "description": "Browser-based editor for esverify",
+  "description": "Ace-based editor for esverify",
   "author": "Christopher Schuster <cs@livoris.net>",
   "license": "MIT",
   "scripts": {
