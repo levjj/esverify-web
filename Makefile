@@ -1,4 +1,4 @@
-default: site.tar.gz
+default: clean site.tar.gz
 
 clean:
 	rm -rf src/index.html node_modules build site.tar.gz
