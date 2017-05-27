@@ -1,12 +1,15 @@
-esverify-editor
-===============
+esverify-web
+============
 
-Web-based editor for [esverify](https://github.com/levjj/esverify) built with
-[ace](http://ace.c9.io/).
+Website with online editor for [esverify](https://github.com/levjj/esverify)
+based on [ace](http://ace.c9.io/).
+
+See [http://esverify.org/try](http://esverify.org/try).
 
 Install with:
 
     npm install
+    npm run build
 
 Run with:
 
