@@ -8,7 +8,8 @@ node_modules:
 
 src/index.html:
 	git clone https://github.com/levjj/esverify.git
-	pandoc ./esverify/README.md -o src/index.html
+	tail -n +4 esverify/README.md > esverify/index.md
+	pandoc ./esverify/index.md -o src/index.html
 	rm -rf esverify
 
 build: src/index.html node_modules
