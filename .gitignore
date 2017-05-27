@@ -1,4 +1,4 @@
-build
 node_modules
-.vscode
-npm-debug.log
+build
+src/index.html
+src/jspm_packages
