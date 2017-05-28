@@ -1,10 +1,11 @@
 default: clean site.tar.gz
 
 clean:
-	rm -rf src/index.html node_modules build site.tar.gz
+	rm -rf src/index.html node_modules build site.tar.gz src/jspm_packages
 
 node_modules:
 	npm install
+	node_modules/.bin/jspm install
 
 src/index.html:
 	git clone https://github.com/levjj/esverify.git
