@@ -1,7 +1,7 @@
 default: clean site.tar.gz
 
 clean:
-	rm -rf src/index.html node_modules build site.tar.gz src/jspm_packages
+	rm -rf src/index.html build site.tar.gz
 
 node_modules:
 	npm install
