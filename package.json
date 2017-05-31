@@ -5,7 +5,7 @@
   "author": "Christopher Schuster <cs@livoris.net>",
   "license": "MIT",
   "scripts": {
-    "build": "lessc src/style.less build/style.css && jspm bundle-sfx app.js - child_process build/app.js --globals \"{child_process:'{}'}\" --format global --skip-source-maps && cat src/header.html src/index.html src/footer.html > build/index.html && cat src/header.html src/try.html src/footer.html > build/try.html && cp src/logo.png build",
+    "build": "lessc src/style.less build/style.css && jspm bundle-sfx app.js - child_process build/app.js --globals \"{child_process:'{}'}\" --format global --skip-source-maps && cat src/header.html src/index.html src/footer.html > build/index.html && cat src/header.html src/try.html src/footer.html > build/try.html && cp static/* build",
     "serve": "node serve.js"
   },
   "repository": {
