@@ -7,7 +7,6 @@ app.use('/try', (req, res, next) => {
   req.url = req.url + '.html';
   next('route')
 });
-
 app.use(express.static('build'));
 app.post('/z3', (req, res) => {
   const p = spawn('z3', ['-smt2', '-in'], {stdio: ['pipe', 'pipe', 'ignore']});
@@ -16,6 +15,13 @@ app.post('/z3', (req, res) => {
 });
 app.get('/z3', (req, res) => {
   res.end("z3 server is running!");
+});
+app.use((req, res, next) => {
+  res.status(404).sendFile("404.html", {root: __dirname + '/build'});
+});
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).sendFile("500.html", {root: __dirname + '/build'});
 });
 app.listen(3000, function () {
   console.log('esverify-web listening on http://localhost:3000/');
