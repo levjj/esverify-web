@@ -6,10 +6,9 @@ clean:
 	rm -rf src/index.html build site.tar.gz
 
 src/index.html:
-	git clone https://github.com/levjj/esverify.git
-	tail -n +4 esverify/README.md > esverify/index.md
-	pandoc ./esverify/index.md -o src/index.html
-	rm -rf esverify
+	curl https://raw.githubusercontent.com/levjj/esverify/master/README.md | tail -n +4 > index.md
+	pandoc index.md -o src/index.html
+	rm index.md
 
 node_modules:
 	npm install
@@ -41,4 +40,4 @@ image: default
 	sudo docker build --rm --tag livoris/esverify-web .
 
 run:
-	sudo docker run --rm -it --name esverify-web -p 3000:3000 livoris/esverify-web
+	sudo docker run --rm -it --name esverify-web -p 8000:80 livoris/esverify-web

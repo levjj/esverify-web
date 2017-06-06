@@ -1,0 +1,30 @@
+esverify:
+  autoredeploy: true
+  image: 'levjj/esverify-web:latest'
+  ports:
+    - '80:80'
+    - '443:443'
+  restart: always
+  tags:
+    - esverify
+  volumes:
+    - acme:/var/letsencrypt/www
+    - certs:/etc/letsencrypt
+letsencrypt:
+  image: gordonchan/auto-letsencrypt
+  links:
+  - esverify
+  restart: always
+  tags:
+    - esverify
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - acme:/var/letsencrypt/www
+    - certs:/etc/letsencrypt
+    - /var/lib/letsencrypt
+  environment:
+    - EMAIL=esverify@livoris.net
+    - SERVER_CONTAINER=esverify
+    - WEBROOT_PATH=/var/letsencrypt/www
+    - DOMAINS=esverify.org
+    - CHECK_FREQ=7
