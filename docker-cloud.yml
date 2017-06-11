@@ -8,23 +8,24 @@ esverify:
   tags:
     - esverify
   volumes:
-    - acme:/var/letsencrypt/www
-    - certs:/etc/letsencrypt
+    - /var/letsencrypt/www
+    - /etc/letsencrypt
 letsencrypt:
-  image: gordonchan/auto-letsencrypt
+  environment:
+    - CHECK_FREQ=7
+    - DOCKER_API_VERSION=1.23
+    - DOMAINS=esverify.org
+    - EMAIL=esverify@livoris.net
+    - SERVER_CONTAINER=esverify-1.esverify.aac8dbae
+    - WEBROOT_PATH=/var/letsencrypt/www
+  image: 'gordonchan/auto-letsencrypt:latest'
   links:
-  - esverify
+    - esverify
   restart: always
   tags:
     - esverify
   volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
-    - acme:/var/letsencrypt/www
-    - certs:/etc/letsencrypt
+    - '/var/run/docker.sock:/var/run/docker.sock'
     - /var/lib/letsencrypt
-  environment:
-    - EMAIL=esverify@livoris.net
-    - SERVER_CONTAINER=esverify
-    - WEBROOT_PATH=/var/letsencrypt/www
-    - DOMAINS=esverify.org
-    - CHECK_FREQ=7
+  volumes_from:
+    - esverify
