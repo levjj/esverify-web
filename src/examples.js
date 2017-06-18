@@ -2,12 +2,12 @@ export const examples = {
   max: `function max(a, b) {
   requires(typeof(a) === 'number');
   requires(typeof(b) === 'number');
-  ensures(max(a, b) >= a);
+  ensures(res => res >= a); // post-condition does not hold
 
-  if (a >= b) {
-    return a;
-  } else {
+  if (a >= b) {             // due to bug in implementation
     return b;
+  } else {
+    return a;
   }
 }`,
   counter: `let counter = 0;
@@ -15,7 +15,7 @@ invariant(typeof counter === 'number');
 invariant(counter >= 0);
 
 function increment() {
-  ensures(counter > old(counter));
+  ensures(counter > old(counter)); // special syntax to refer to "old" value
 
   counter++;
 }
@@ -28,13 +28,13 @@ function decrement() {
   sumTo: `function sumTo(n) {
   requires(typeof n === 'number');
   requires(n >= 0);
-  ensures(sumTo(n) === (n + 1) * n / 2);
+  ensures(res => res === (n + 1) * n / 2);
 
   let i = 0;
   let s = 0;
   while (i < n) {
-    invariant(i <= n);
-    invariant(s === (i + 1) * i / 2);
+    invariant(i <= n);                 // loop invariants need to be
+    invariant(s === (i + 1) * i / 2);  // manually specified
     i++;
     s = s + i;
   }
@@ -45,7 +45,7 @@ function decrement() {
 }
 
 let i = 3;
-let j = inc(i);
+let j = inc(i);      // call automatically inlines function body
 assert(j === 4);`,
   cons: `function cons(x) {
   function f () { return x; }
@@ -59,13 +59,13 @@ const h1 = h();
 assert(h1 === 2);`,
   f: `let x = 0;
 
-function f() { ensures(pure()); x++; }
+function f() { ensures(pure()); x++; }       // not actually pure
 function g() { ensures(pure()); return x + 1; }
 function h1() { /*empty*/ }
 function h2a() { h1(); }
-function h2b() { ensures(pure()); h1(); }
-function h3a() { ensures(pure()); h2a(); }
-function h3b() { ensures(pure()); h2b(); }`,
+function h2b() { ensures(pure()); h1(); }    // inlining h1 shows purity
+function h3a() { ensures(pure()); h2a(); }   // not verified because inlining restricted to one level
+function h3b() { ensures(pure()); h2b(); }   // verified because h2b marked as pure`,
   fib: `function fib(n) {
   ensures(pure());
 
@@ -87,15 +87,15 @@ function fibInc(n) {
 }`,
   twice: `function inc(n) {
   requires(typeof(n) === 'number');
-  ensures(inc(n) > n);
+  ensures(res => res > n);
 
   return n + 1;
 }
 
 function twice(f, n) {
-  requires(spec(f, x => typeof(x) === 'number', x => f(x) > x));
+  requires(spec(f, x => typeof(x) === 'number', (x,y) => y > x));
   requires(typeof(n) === 'number');
-  ensures(twice(f, n) > n + 1);
+  ensures(res => res > n + 1);
 
   return f(f(n));
 }
@@ -106,7 +106,7 @@ assert(y >= 5);`,
   fMono: `function fib(n) {
   requires(n >= 0);
   ensures(pure());
-  ensures(typeof(fib(n)) === 'number');
+  ensures(res => typeof(res) === 'number');
 
   if (n <= 1) {
     return 1;
@@ -169,7 +169,7 @@ function map(lst, f) {
   requires(lst === null || lst instanceof List);
   requires(spec(f, x => true, x => pure()));
   ensures(pure());
-  ensures(map(lst, f) === null || map(lst, f) instanceof List);
+  ensures(res => res === null || res instanceof List);
 
   if (lst === null) return null;
   return new List(f(lst.head), map(lst.tail, f));
@@ -178,7 +178,7 @@ function map(lst, f) {
 function len(lst) {
   requires(lst === null || lst instanceof List);
   ensures(pure());
-  ensures(len(lst) >= 0);
+  ensures(res => res >= 0);
 
   return lst === null ? 0 : len(lst.tail) + 1;
 }
