@@ -9,8 +9,11 @@ RUN yum -y erase vim-minimal && \
 
 RUN yum -y install --setopt=tsflags=nodocs nginx supervisor tar wget unzip libgomp && \
     yum clean all && \
-    cd / && wget https://github.com/Z3Prover/z3/releases/download/z3-4.6.0/z3-4.6.0-x64-ubuntu-14.04.zip -O /z3.zip && \
-    unzip -d / /z3.zip && rm /z3.zip && \
+    wget https://github.com/Z3Prover/z3/releases/download/z3-4.6.0/z3-4.6.0-x64-ubuntu-14.04.zip -O /z3.zip && \
+    unzip -d / /z3.zip && \
+    rm /z3.zip && \
+    mv /z3-4.6.0-x64-ubuntu-14.04/bin/z3 /bin/z3 && \
+    rm -rf /z3-4.6.0-x64-ubuntu-14.04 && \
     cd /etc/nginx && openssl dhparam -out dhparams.pem 2048
 
 ENV PATH "/bin:/sbin:/usr/bin:/usr/sbin:/z3-4.5.0-x64-ubuntu-14.04/bin"
