@@ -14,11 +14,11 @@
     "url": "git+https://github.com/levjj/esverify-web.git"
   },
   "dependencies": {
-    "express": "^4.15.3"
+    "express": "^4.16.3"
   },
   "devDependencies": {
     "jspm": "^0.16.53",
-    "less": "^2.7.2"
+    "less": "^2.7.3"
   },
   "jspm": {
     "directories": {
@@ -26,7 +26,7 @@
     },
     "dependencies": {
       "brace": "npm:brace@^0.10.0",
-      "esverify": "npm:esverify@0.4.0",
+      "esverify": "npm:esverify@^0.15.1",
       "jquery": "npm:jquery@^3.2.1",
       "spectre.css": "npm:spectre.css@^0.2.15"
     },

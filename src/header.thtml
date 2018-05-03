@@ -3,8 +3,9 @@
 <head>
   <meta charSet="utf-8"/>
   <title>esverify - Online Editor</title>
-  <link href="https://fonts.googleapis.com/css?family=Roboto%7CInconsolata&subset=latin,greek" rel=stylesheet type=text/css>
-  <link href="/style.css" media="screen" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto&subset=latin,greek" rel="stylesheet" type="text/css">
+  <link href="https://cdn.rawgit.com/tonsky/FiraCode/1.205/distr/fira_code.css" rel="stylesheet" type="text/css">
+  <link href="/style.css" rel="stylesheet" type="text/css">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">

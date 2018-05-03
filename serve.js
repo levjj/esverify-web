@@ -9,7 +9,7 @@ app.use('/try', (req, res, next) => {
 });
 app.use(express.static('build'));
 app.post('/z3', (req, res) => {
-  const p = spawn('z3', ['-smt2', '-in'], {stdio: ['pipe', 'pipe', 'ignore']});
+  const p = spawn('z3', ['-T:5', '-smt2', '-in'], {stdio: ['pipe', 'pipe', 'ignore']});
   req.pipe(p.stdin);
   p.stdout.pipe(res);
 });
@@ -25,4 +25,4 @@ app.use((err, req, res, next) => {
 });
 app.listen(3000, 'localhost', () => {
   console.log('esverify-web listening on http://localhost:3000/');
-})
+});

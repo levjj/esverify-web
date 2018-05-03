@@ -6,7 +6,7 @@ clean:
 	rm -rf src/index.html build site.tar.gz
 
 src/index.html:
-	curl https://raw.githubusercontent.com/levjj/esverify/master/README.md | tail -n +4 > index.md
+	curl https://raw.githubusercontent.com/levjj/esverify/master/README.md | tail -n +3 > index.md
 	pandoc index.md -o src/index.html
 	rm index.md
 
@@ -26,6 +26,9 @@ build/style.css: src/style.less node_modules
 
 build/app.js: src/app.js src/config.js src/examples.js node_modules
 	npm run build
+
+serve: node_modules build build/index.html $(pages) build/style.css build/app.js
+	npm run serve
 
 site.tar.gz: node_modules build build/index.html $(pages) build/style.css build/app.js
 	mv node_modules node_modules-bak
