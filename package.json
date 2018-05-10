@@ -5,8 +5,11 @@
   "author": "Christopher Schuster <cs@livoris.net>",
   "license": "MIT",
   "scripts": {
+    "index": "curl https://raw.githubusercontent.com/levjj/esverify/master/README.md | tail -n +3 | pandoc -f markdown -o src/index.html",
+    "jspm": "jspm install",
     "less": "lessc src/style.less build/style.css",
-    "build": "jspm bundle-sfx app.js - child_process build/app.js --globals \"{child_process:'{}'}\" --format global --skip-source-maps",
+    "app": "jspm bundle-sfx app.js - child_process build/app.js --globals \"{child_process:'{}'}\" --format global --skip-source-maps",
+    "build": "npm run index && npm run jspm && npm run less && npm run app",
     "serve": "node serve.js"
   },
   "repository": {

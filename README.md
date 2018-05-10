@@ -8,10 +8,9 @@ See [http://esverify.org/try](http://esverify.org/try).
 
 Install with:
 
-    npm install
-    npm run less
-    npm run build
+    make
 
 Run with:
 
     npm run serve
+
