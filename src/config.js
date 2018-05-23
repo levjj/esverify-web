@@ -20,7 +20,7 @@ System.config({
     "child_process": "github:jspm/nodelibs-child_process@0.1.0",
     "core-js": "npm:core-js@1.2.7",
     "esprima": "npm:esprima@3.1.3",
-    "esverify": "npm:esverify@0.15.1",
+    "esverify": "npm:esverify@0.15.2",
     "furtive": "npm:furtive@2.3.0",
     "jquery": "npm:jquery@3.3.1",
     "spectre.css": "npm:spectre.css@0.2.15",
@@ -77,7 +77,7 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:esverify@0.15.1": {
+    "npm:esverify@0.15.2": {
       "@types/esprima": "npm:@types/esprima@4.0.2",
       "@types/estree": "npm:@types/estree@0.0.38",
       "esprima": "npm:esprima@4.0.0",
