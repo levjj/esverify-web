@@ -1,31 +1,34 @@
-pages := $(patsubst src/%.html,build/%.html,$(wildcard src/*.html))
+pages := $(patsubst public/%.html,build/%.html,$(wildcard public/*.html))
 
 default: clean site
 
 clean:
-	rm -rf src/index.html build site.tar.gz
+	rm -rf node_modules public/index.html build esverify site.tar.gz
 
-src/index.html:
-	curl https://raw.githubusercontent.com/levjj/esverify/master/README.md | tail -n +3 | pandoc -f markdown -o src/index.html
+esverify:
+	git clone https://github.com/levjj/esverify.git
+
+public/index.html: esverify
+	cat esverify/README.md | tail -n +3 | pandoc -f markdown -o $@
 
 node_modules:
 	npm install
-
-src/jspm_packages: node_modules
-	node_modules/.bin/jspm install
 
 build:
 	mkdir build
 	cp static/* build
 
-build/%.html: src/%.html build
-	cat src/header.thtml $< src/footer.thtml > $@
+build/%.html: public/%.html build
+	cat templates/header.html $< templates/footer.html > $@
 
-build/style.css: node_modules src/jspm_packages
-	npm run less
+build/style.css: node_modules
+	node_modules/.bin/lessc src/style.less build/style.css
 
-build/app.js: node_modules src/jspm_packages
-	npm run build
+build/app.js: node_modules esverify
+	npm run prod
 
-site: node_modules build build/index.html $(pages) build/style.css build/app.js
+dev: node_modules esverify $(pages) build/style.css
+	npm run dev
+	npm run serve
 
+prod: build/index.html $(pages) build/style.css build/app.js

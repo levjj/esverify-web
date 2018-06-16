@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "outDir": "./build/",
+    "sourceMap": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noFallthroughCasesInSwitch": true,
+    "traceResolution": false,
+    "listEmittedFiles": false,
+    "listFiles": false,
+    "removeComments": true,
+    "module": "commonjs",
+    "target": "es6",
+    "jsx": "react"
+  },
+  "include": [
+    "./src/**/*"
+  ]
+}

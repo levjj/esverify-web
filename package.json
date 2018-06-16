@@ -1,15 +1,13 @@
 {
   "name": "esverify-web",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "esverify web editor",
   "author": "Christopher Schuster <cs@livoris.net>",
   "license": "MIT",
   "scripts": {
-    "index": "curl https://raw.githubusercontent.com/levjj/esverify/master/README.md | tail -n +3 | pandoc -f markdown -o src/index.html",
-    "jspm": "jspm install",
-    "less": "lessc src/style.less build/style.css",
-    "app": "jspm bundle-sfx app.js - child_process build/app.js --globals \"{child_process:'{}'}\" --format global --skip-source-maps",
-    "build": "npm run index && npm run jspm && npm run less && npm run app",
+    "lint": "tsc --noEmit && tslint --project .",
+    "dev": "webpack -d --devtool source-map",
+    "prod": "webpack -p",
     "serve": "node serve.js"
   },
   "repository": {
@@ -20,23 +18,23 @@
     "express": "^4.16.3"
   },
   "devDependencies": {
-    "jspm": "^0.16.53",
-    "less": "^2.7.3"
-  },
-  "jspm": {
-    "directories": {
-      "baseURL": "src"
-    },
-    "dependencies": {
-      "brace": "npm:brace@^0.10.0",
-      "esverify": "npm:esverify@^0.15.2",
-      "jquery": "npm:jquery@^3.2.1",
-      "spectre.css": "npm:spectre.css@^0.2.15"
-    },
-    "devDependencies": {
-      "babel": "npm:babel-core@^5.8.24",
-      "babel-runtime": "npm:babel-runtime@^5.8.24",
-      "core-js": "npm:core-js@^1.1.4"
-    }
+    "@types/react": "^16.3.18",
+    "@types/react-dom": "^16.0.6",
+    "brace": "^0.11.1",
+    "dir-loader": "^0.3.0",
+    "esverify": "^0.19.0",
+    "less": "^2.7.3",
+    "raw-loader": "^0.5.1",
+    "react": "^16.4.1",
+    "react-ace": "^6.1.1",
+    "react-dom": "^16.4.1",
+    "source-map-loader": "^0.2.3",
+    "spectre.css": "^0.2.15",
+    "ts-loader": "^4.4.1",
+    "tslint": "^5.10.0",
+    "tslint-config-standard": "^7.0.0",
+    "typescript": "^2.9.2",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.7"
   }
 }

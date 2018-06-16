@@ -1,5 +1,5 @@
 node_modules
 build
-src/index.html
-src/jspm_packages
+public/index.html
 .vscode
+esverify
