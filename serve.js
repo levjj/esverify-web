@@ -3,18 +3,24 @@ const express = require('express');
 
 const app = express();
 
-app.use('/try', (req, res, next) => {
-  req.url = req.url + '.html';
-  next('route')
+const pages = ['try', 'ide'];
+
+pages.forEach(page => {
+  app.use(`/${page}`, (req, res, next) => {
+    req.url = req.url + '.html';
+    next('route')
+  });
 });
 app.use(express.static('build'));
+app.get('/z3', (req, res) => {
+  const p = spawn('z3', ['-version'], {stdio: ['pipe', 'pipe', 'ignore']});
+  p.stdin.end();
+  p.stdout.pipe(res);
+});
 app.post('/z3', (req, res) => {
   const p = spawn('z3', ['-T:5', '-smt2', '-in'], {stdio: ['pipe', 'pipe', 'ignore']});
   req.pipe(p.stdin);
   p.stdout.pipe(res);
-});
-app.get('/z3', (req, res) => {
-  res.end("z3 server is running!");
 });
 app.use((req, res, next) => {
   res.status(404).sendFile("404.html", {root: __dirname + '/build'});

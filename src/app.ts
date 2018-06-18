@@ -2,6 +2,14 @@ import { Message, verify as startVerification } from 'esverify';
 
 import { ExampleName, getExample, getExampleNames } from './examples';
 
+export interface AsynchrousAction {
+  type: 'ASYNCHRONOUS';
+  start: BaseAction;
+  end: Promise<Action>;
+}
+
+// --- actions ---
+
 export interface SelectExample {
   type: 'SELECT_EXAMPLE';
   selected: ExampleName;
@@ -26,14 +34,15 @@ export interface VerificationError {
   type: 'VERIFICATION_ERROR';
 }
 
-export interface AsynchrousAction {
-  type: 'ASYNCHRONOUS';
-  start: BaseAction;
-  end: Promise<Action>;
+export interface SelectLine {
+  type: 'SELECT_LINE';
+  line: number | undefined;
 }
 
-export type BaseAction = SelectExample | ChangeSource | Verify | VerificationDone | VerificationError;
+export type BaseAction = SelectExample | ChangeSource | Verify | VerificationDone | VerificationError | SelectLine;
 export type Action = BaseAction | AsynchrousAction;
+
+// --- internal API ---
 
 export function selectExample (example: ExampleName): AsynchrousAction {
   return {
@@ -55,8 +64,11 @@ export function verify (sourceCode: string): AsynchrousAction {
   };
 }
 
+// --- state ---
+
 export interface AppState {
   selected: ExampleName;
+  selectedLine: number | undefined;
   sourceCode: string;
   verificationProcess: 'done' | 'inprogress' | 'error';
   messages: Array<Message>;
@@ -69,6 +81,7 @@ export function initialState (): AppState {
   }
   return {
     selected: initialExample,
+    selectedLine: undefined,
     sourceCode: getExample(initialExample).source,
     verificationProcess: 'done',
     messages: []
@@ -79,7 +92,14 @@ export function reduce (state: AppState, action: BaseAction): AppState {
   switch (action.type) {
     case 'SELECT_EXAMPLE':
       const { selected } = action;
-      return { ...state, selected, sourceCode: getExample(selected).source, messages: [], verificationProcess: 'done' };
+      return {
+        ...state,
+        selected,
+        selectedLine: undefined,
+        sourceCode: getExample(selected).source,
+        messages: [],
+        verificationProcess: 'done'
+      };
     case 'CHANGE_SOURCE':
       const { newSource } = action;
       return { ...state, sourceCode: newSource, messages: [], verificationProcess: 'done' };
@@ -91,5 +111,8 @@ export function reduce (state: AppState, action: BaseAction): AppState {
       return { ...state, verificationProcess: 'done', messages: result };
     case 'VERIFICATION_ERROR':
       return { ...state, verificationProcess: 'error', messages: [] };
+    case 'SELECT_LINE':
+      const { line } = action;
+      return { ...state, selectedLine: line };
   }
 }

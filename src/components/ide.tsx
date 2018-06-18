@@ -1,11 +1,10 @@
 import React = require('react');
-import AceEditor, { Annotation } from 'react-ace';
-import 'brace';
-import 'brace/mode/javascript';
-import 'brace/theme/chrome';
-import { Message } from 'esverify';
 import { AppState, Action, verify } from '../app';
 import ExampleDropDown from './example_dropdown';
+import Editor from './editor';
+import { Message } from 'esverify';
+import { Annotation } from 'react-ace';
+import SplitPane from 'react-split-pane';
 
 export interface Props {
   state: AppState;
@@ -46,10 +45,9 @@ function messageAsAnnotation (msg: Message): Annotation {
 
 export default function component ({ state, dispatch }: Props) {
   return (
-    <div className='panel'>
-      <div className='panel-header'>
-        <div className='panel-title'>
-          <span className='h4'>Live Demo and Examples</span>
+    <SplitPane split='vertical' defaultSize='75%' className='container grid-xl' style={{ height: '80vh' }}>
+      <div>
+        <div className='p-2'>
           <div className='float-right'>
             <ExampleDropDown selected={state.selected} dispatch={dispatch} />
             {' '}
@@ -57,23 +55,18 @@ export default function component ({ state, dispatch }: Props) {
               className={(state.verificationProcess === 'inprogress' ? 'loading ' : '') + 'btn btn-primary'}
               onClick={() => dispatch(verify(state.sourceCode))}>verify</button>
           </div>
+          <h4>Interactive Verification Environment</h4>
         </div>
-      </div>
-      <div className='panel-body'>
-        <AceEditor
-          style={{ width: '100%', height: '65vh' }}
-          mode='javascript'
-          theme='chrome'
-          showPrintMargin={false}
-          setOptions={{
-            fontFamily: 'Fira Code',
-            fontSize: '12pt'
-          }}
+        <div className='divider'></div>
+        <Editor
           annotations={state.messages.map(messageAsAnnotation)}
-          onChange={newSource => dispatch({ type: 'CHANGE_SOURCE', newSource })}
-          value={state.sourceCode}
-        />
+          selectedLine={state.selectedLine}
+          sourceCode={state.sourceCode}
+          dispatch={dispatch} />
       </div>
-    </div>
+      <div>
+        Side Panel
+      </div>
+    </SplitPane>
   );
 }
