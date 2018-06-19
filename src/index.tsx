@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 import Try from './components/try';
 import IDE from './components/ide';
-import { AppState, Action, reduce, initialState } from './app';
+import { AppState, Action, reduce, initialState, init } from './app';
 
 let state: AppState = initialState();
 let renderRequested: boolean = false;
@@ -36,4 +36,5 @@ function render () {
   renderRequested = false;
 }
 
+init();
 render();

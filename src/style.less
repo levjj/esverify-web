@@ -121,3 +121,98 @@ code > span.in { color: #008000; } /* Information */
 .Resizer.disabled:hover {
   border-color: transparent;
 }
+
+.sourceAnnotation {
+  position: absolute;
+
+  .sourceAnnotation-container {
+    display: block;
+    transform: translate(-50%, 0);
+    top: -40px;
+    padding: .4rem;
+    position: absolute;
+    z-index: 300;
+    white-space: normal;
+    box-shadow: 0 .2rem (.25rem) * 2 rgba(69, 77, 93, .3);
+    border-radius: 0.4rem;
+    border: 0;
+    background-color: white;
+  }
+
+  .arrow {
+    position: absolute;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid rgb(69, 77, 93);
+    top: -3px;
+    left: -8px;
+  }
+}
+
+.vc-panel {
+  .panel-title h6 {
+    font-family: 'Fira Code', Inconsolata, monospace;
+  }
+  .panel-title .menu a {
+    font-family: 'Fira Code', Inconsolata, monospace;
+  }
+  .codeinput {
+    font-family: 'Fira Code', Inconsolata, monospace;
+  }
+}
+
+.plist {
+  list-style: none;
+  margin: 0;
+  padding: .4rem 0;
+
+  .divider {
+    margin-bottom: 1.2rem;
+  }
+
+  .plist-item {
+    margin-top: 0;
+    padding: 0 .4rem;
+    text-decoration: none;
+    user-select: none;
+    clear: both;
+
+    & > a {
+      font-family: 'Fira Code', Inconsolata, monospace;
+      color: inherit;
+      display: block;
+      margin: -.4rem;
+      padding: .2rem .4rem;
+      text-decoration: none;
+      &:focus,
+      &:hover,
+      &:active,
+      &.active {
+        background: lighten(#5755d9, 37.5%);
+        color: #5755d9;
+      }
+    }
+
+    & > div.plist-elem {
+      font-family: 'Fira Code', Inconsolata, monospace;
+      color: inherit;
+      display: block;
+      margin: -.4rem;
+      padding: .2rem .4rem;
+      text-decoration: none;
+    }
+
+    & + .plist-item {
+      margin-top: .2rem;
+    }
+  }
+
+  .plist-badge {
+    float: right;
+    padding: .2rem 0;
+
+    .btn {
+      margin-top: -.1rem;
+    }
+  }
+}

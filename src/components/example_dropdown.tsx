@@ -15,8 +15,10 @@ export default function component ({ selected, dispatch }: Props) {
         {getExampleNames().map(exampleName => {
           const { name, description } = getExample(exampleName);
           return (
-            <li className={name === selected ? 'menu-item active' : 'menu-item'} key={name}>
-              <a href={`#${name}`} onClick={() => dispatch(selectExample(name))}>
+            <li className='menu-item' key={name}>
+              <a className={name === selected ? 'active' : ''}
+                 href={`#${name}`}
+                 onClick={() => dispatch(selectExample(name))}>
                 {description}
               </a>
             </li>

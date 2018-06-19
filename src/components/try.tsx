@@ -3,8 +3,8 @@ import AceEditor, { Annotation } from 'react-ace';
 import 'brace';
 import 'brace/mode/javascript';
 import 'brace/theme/chrome';
-import { Message } from 'esverify';
-import { AppState, Action, verify } from '../app';
+import { Message, formatMessage } from 'esverify';
+import { AppState, Action, verify, verificationInProgress, InteractiveVC } from '../app';
 import ExampleDropDown from './example_dropdown';
 
 export interface Props {
@@ -21,30 +21,35 @@ function messageType (msg: Message): 'info' | 'warning' | 'error' {
   return 'error';
 }
 
-function messageText (msg: Message): string {
-  switch (msg.status) {
-    case 'verified':
-      return `verified: ${msg.description}`;
-    case 'unverified':
-    case 'unknown':
-      return `${msg.status}: ${msg.description}`;
-    case 'error':
-      return `error: ${msg.type} ${msg.description}`;
-    case 'timeout':
-      return `timeout: ${msg.description}`;
-  }
-}
-
 function messageAsAnnotation (msg: Message): Annotation {
   return {
     row: Math.max(0, msg.loc.start.line - 1),
     column: msg.loc.start.column,
-    text: messageText(msg),
+    // @ts-ignore use 'html' annotation instead of 'text'
+    html: formatMessage(msg, false),
     type: messageType(msg)
   };
 }
 
+function vcAsAnnotation (vc: InteractiveVC): Annotation {
+  const res = vc.vc.getResult();
+  if (res === null) {
+    return {
+      row: Math.max(0, vc.vc.getLocation().start.line - 1),
+      column: vc.vc.getLocation().start.column,
+      // @ts-ignore use 'html' annotation instead of 'text'
+      html: '<b>loading...</b>',
+      type: 'warning'
+    };
+  } else {
+    return messageAsAnnotation(res);
+  }
+}
+
 export default function component ({ state, dispatch }: Props) {
+  const annotations: Array<Annotation> = state.message !== undefined
+    ? [messageAsAnnotation(state.message)]
+    : state.vcs.map(vcAsAnnotation);
   return (
     <div className='panel'>
       <div className='panel-header'>
@@ -54,7 +59,7 @@ export default function component ({ state, dispatch }: Props) {
             <ExampleDropDown selected={state.selected} dispatch={dispatch} />
             {' '}
             <button
-              className={(state.verificationProcess === 'inprogress' ? 'loading ' : '') + 'btn btn-primary'}
+              className={(verificationInProgress(state) ? 'loading ' : '') + 'btn btn-primary'}
               onClick={() => dispatch(verify(state.sourceCode))}>verify</button>
           </div>
         </div>
@@ -69,7 +74,7 @@ export default function component ({ state, dispatch }: Props) {
             fontFamily: 'Fira Code',
             fontSize: '12pt'
           }}
-          annotations={state.messages.map(messageAsAnnotation)}
+          annotations={annotations}
           onChange={newSource => dispatch({ type: 'CHANGE_SOURCE', newSource })}
           value={state.sourceCode}
         />
