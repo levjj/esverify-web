@@ -1,18 +1,21 @@
 import { Message, setOptions, verificationConditions, VerificationCondition } from 'esverify';
 
 import { ExampleName, getExample, getExampleNames } from './examples';
+import { arraySplice } from './util';
 
 // --- state ---
 
 export type InteractiveVC = Readonly<{
   vc: VerificationCondition;
   interpreted: boolean;
-  otherAssertions: Array<VerificationCondition>;
+  otherAssertions: ReadonlyArray<VerificationCondition>;
   selectedAssertion: number | undefined;
   inputAssertion: string;
   inputAssertionError: string | undefined;
   inputAssumption: string;
   inputAssumptionError: string | undefined;
+  inputWatch: string;
+  selectedFrame: number | undefined;
 }>;
 
 export type AppState = Readonly<{
@@ -20,8 +23,8 @@ export type AppState = Readonly<{
   selectedLine: number | undefined;
   sourceCode: string;
   message: Message | undefined;
-  vcs: Array<InteractiveVC>;
-  selectedVC: InteractiveVC | undefined;
+  vcs: ReadonlyArray<InteractiveVC>;
+  selectedVC: number | undefined;
   showSourceAnnotations: boolean;
 }>;
 
@@ -29,7 +32,14 @@ export function verificationInProgress (state: AppState): boolean {
   return state.vcs.some(vc => vc.vc.getResult() === null);
 }
 
-export function currentVC (state: AppState | InteractiveVC): VerificationCondition {
+export function currentIVC (state: AppState): InteractiveVC | undefined {
+  if (state.selectedVC === undefined) {
+    return undefined;
+  }
+  return state.vcs[state.selectedVC];
+}
+
+export function currentVC (state: AppState | InteractiveVC): VerificationCondition | undefined {
   if ('vc' in state) {
     if (state.selectedAssertion === undefined) {
       return state.vc;
@@ -37,10 +47,11 @@ export function currentVC (state: AppState | InteractiveVC): VerificationConditi
       return state.otherAssertions[state.selectedAssertion];
     }
   } else {
-    if (state.selectedVC === undefined) {
-      throw new Error('no current VC');
+    const ivc = currentIVC(state);
+    if (ivc === undefined) {
+      return undefined;
     }
-    return currentVC(state.selectedVC);
+    return currentVC(ivc);
   }
 }
 
@@ -65,19 +76,29 @@ export function initialState (): AppState {
   };
 }
 
-function interpret (vc: InteractiveVC | undefined): InteractiveVC | undefined {
-  if (vc === undefined) {
-    return undefined;
-  } else {
-    if (!vc.interpreted && vc.vc.hasModel()) {
-      vc.vc.runWithInterpreter();
-      return {
-        ...vc,
-        interpreted: true
-      };
-    }
-    return vc;
+function interpret (vc: InteractiveVC): InteractiveVC {
+  if (!vc.interpreted && vc.vc.hasModel()) {
+    vc.vc.runWithInterpreter();
+    return {
+      ...vc,
+      interpreted: true,
+      inputAssertion: '',
+      inputAssertionError: undefined,
+      inputAssumption: '',
+      inputAssumptionError: undefined,
+      inputWatch: '',
+      selectedFrame: vc.vc.callstack().length - 1
+    };
   }
+  return {
+    ...vc,
+    inputAssertion: '',
+    inputAssertionError: undefined,
+    inputAssumption: '',
+    inputAssumptionError: undefined,
+    inputWatch: '',
+    selectedFrame: undefined
+  };
 }
 
 // --- actions ---
@@ -132,16 +153,6 @@ export interface SelectVerificationCondition {
   selected: VerificationCondition;
 }
 
-export interface SelectAssertion {
-  type: 'SELECT_ASSERTION';
-  selected: number | undefined;
-}
-
-export interface RemoveAssertion {
-  type: 'REMOVE_ASSERTION';
-  index: number;
-}
-
 export interface InputAssertion {
   type: 'INPUT_ASSERTION';
   source: string;
@@ -150,6 +161,16 @@ export interface InputAssertion {
 export interface AddAssertion {
   type: 'ADD_ASSERTION';
   vc: VerificationCondition | string;
+}
+
+export interface SelectAssertion {
+  type: 'SELECT_ASSERTION';
+  selected: number | undefined;
+}
+
+export interface RemoveAssertion {
+  type: 'REMOVE_ASSERTION';
+  index: number;
 }
 
 export interface InputAssumption {
@@ -162,6 +183,41 @@ export interface UpdateAssumptions {
   error: string | undefined;
 }
 
+export interface InputWatch {
+  type: 'INPUT_WATCH';
+  source: string;
+}
+
+export interface AddWatch {
+  type: 'ADD_WATCH';
+}
+
+export interface RemoveWatch {
+  type: 'REMOVE_WATCH';
+  index: number;
+}
+
+export interface SelectFrame {
+  type: 'SELECT_FRAME';
+  index: number;
+}
+
+export interface RestartInterpreter {
+  type: 'RESTART_INTERPRETER';
+}
+
+export interface StepInto {
+  type: 'STEP_INTO';
+}
+
+export interface StepOver {
+  type: 'STEP_OVER';
+}
+
+export interface StepOut {
+  type: 'STEP_OUT';
+}
+
 export type BaseAction = SelectExample
                        | ChangeSource
                        | Verify
@@ -170,12 +226,20 @@ export type BaseAction = SelectExample
                        | SelectLine
                        | SelectVerificationCondition
                        | SetSourceAnnotations
-                       | SelectAssertion
-                       | RemoveAssertion
                        | InputAssertion
                        | AddAssertion
+                       | SelectAssertion
+                       | RemoveAssertion
                        | InputAssumption
-                       | UpdateAssumptions;
+                       | UpdateAssumptions
+                       | InputWatch
+                       | AddWatch
+                       | RemoveWatch
+                       | SelectFrame
+                       | RestartInterpreter
+                       | StepInto
+                       | StepOver
+                       | StepOut;
 export type Action = BaseAction | AsynchrousAction;
 
 // --- internal API ---
@@ -237,7 +301,7 @@ export function addAssertion (ivc: InteractiveVC): Action {
         try {
           if (vc.hasModel()) vc.runWithInterpreter();
         } catch (e) { /* handle errors in panel */ }
-        return { type: 'VERIFICATION_DONE' };
+        return { type: 'UPDATE_ASSUMPTIONS', error: undefined };
       })
     };
   } catch (e) {
@@ -250,14 +314,14 @@ export function addAssertion (ivc: InteractiveVC): Action {
 
 async function verifyAndInterpretAll (vcs: Array<VerificationCondition>): Promise<Action> {
   if (vcs.length === 0) {
-    return { type: 'VERIFICATION_DONE' };
+    return { type: 'UPDATE_ASSUMPTIONS', error: undefined };
   }
   const [vc, ...rest] = vcs;
   await vc.verify();
   if (vc.hasModel()) vc.runWithInterpreter();
-  return rest.length === 0 ? { type: 'VERIFICATION_DONE' } : {
+  return rest.length === 0 ? { type: 'UPDATE_ASSUMPTIONS', error: undefined } : {
     type: 'ASYNCHRONOUS',
-    start: { type: 'VERIFICATION_DONE' },
+    start: { type: 'UPDATE_ASSUMPTIONS', error: undefined },
     end: verifyAll(rest)
   };
 }
@@ -325,7 +389,9 @@ export function reduce (state: AppState, action: BaseAction): AppState {
           inputAssertion: '',
           inputAssertionError: undefined,
           inputAssumption: '',
-          inputAssumptionError: undefined
+          inputAssumptionError: undefined,
+          inputWatch: '',
+          selectedFrame: undefined
         })),
         message: undefined,
         selectedVC: undefined
@@ -340,68 +406,43 @@ export function reduce (state: AppState, action: BaseAction): AppState {
     }
     case 'SELECT_LINE': {
       const { line } = action;
-      const vc = state.vcs.find(vc => vc.vc.getLocation().start.line === line);
-      const selectedVC = interpret(vc);
+      const selectedVC = state.vcs.findIndex(vc => vc.vc.getLocation().start.line === line);
+      if (selectedVC < 0) {
+        return { ...state, selectedLine: line, selectedVC: undefined };
+      }
       return {
         ...state,
         selectedLine: line,
-        selectedVC: selectedVC && {
-          ...selectedVC,
-          inputAssertion: '',
-          inputAssertionError: undefined
-        }
+        vcs: arraySplice(state.vcs, selectedVC, interpret(state.vcs[selectedVC])),
+        selectedVC
       };
     }
     case 'SELECT_VC': {
       const { selected } = action;
-      const vc = state.vcs.find(vc => vc.vc === selected);
-      const selectedVC = interpret(vc);
+      const selectedVC = state.vcs.findIndex(vc => vc.vc === selected);
+      if (selectedVC < 0) {
+        return { ...state, selectedVC: undefined };
+      }
       return {
         ...state,
-        selectedVC: selectedVC && {
-          ...selectedVC,
-          inputAssertion: '',
-          inputAssertionError: undefined
-        }
+        vcs: arraySplice(state.vcs, selectedVC, interpret(state.vcs[selectedVC])),
+        selectedVC
       };
     }
     case 'SET_SOURCE_ANNOTATIONS': {
       const { enabled } = action;
       return { ...state, showSourceAnnotations: enabled };
     }
-    case 'SELECT_ASSERTION': {
-      const { selected } = action;
-      if (state.selectedVC === undefined) return state;
-      return { ...state, selectedVC: { ...state.selectedVC, selectedAssertion: selected } };
-    }
-    case 'REMOVE_ASSERTION': {
-      const { index } = action;
-      const vc = state.selectedVC;
-      if (vc === undefined) return state;
-      const prevSelected: VerificationCondition | undefined =
-        vc.selectedAssertion === undefined ? undefined : vc.otherAssertions[vc.selectedAssertion];
-      const otherAssertions: Array<VerificationCondition> =
-        vc.otherAssertions.filter((_, idx) => idx !== index);
-      const nextSelected: number = otherAssertions.findIndex(vc => vc === prevSelected);
-      return {
-        ...state,
-        selectedVC: {
-          ...vc,
-          otherAssertions,
-          selectedAssertion: nextSelected >= 0 ? nextSelected : undefined
-        }
-      };
-    }
     case 'INPUT_ASSERTION': {
       const { source } = action;
       if (state.selectedVC === undefined) return state;
       return {
         ...state,
-        selectedVC: {
-          ...state.selectedVC,
+        vcs: arraySplice(state.vcs, state.selectedVC, {
+          ...state.vcs[state.selectedVC],
           inputAssertion: source,
           inputAssertionError: undefined
-        }
+        })
       };
     }
     case 'ADD_ASSERTION': {
@@ -410,59 +451,191 @@ export function reduce (state: AppState, action: BaseAction): AppState {
       if (typeof vc === 'string') {
         return {
           ...state,
-          selectedVC: {
-            ...state.selectedVC,
+          vcs: arraySplice(state.vcs, state.selectedVC, {
+            ...state.vcs[state.selectedVC],
             inputAssertion: '',
             inputAssertionError: vc
-          }
+          })
         };
       } else {
         return {
           ...state,
-          selectedVC: {
-            ...state.selectedVC,
-            otherAssertions: [...state.selectedVC.otherAssertions, vc],
-            selectedAssertion: state.selectedVC.otherAssertions.length,
+          vcs: arraySplice(state.vcs, state.selectedVC, {
+            ...state.vcs[state.selectedVC],
+            otherAssertions: [...state.vcs[state.selectedVC].otherAssertions, vc],
+            selectedAssertion: state.vcs[state.selectedVC].otherAssertions.length,
             inputAssertion: '',
-            inputAssertionError: undefined
-          }
+            inputAssertionError: undefined,
+            selectedFrame: vc.hasModel() ? vc.callstack().length - 1 : undefined
+          })
         };
       }
+    }
+    case 'SELECT_ASSERTION': {
+      const { selected } = action;
+      if (state.selectedVC === undefined) return state;
+      const vc = selected === undefined
+        ? state.vcs[state.selectedVC].vc
+        : state.vcs[state.selectedVC].otherAssertions[selected];
+      return {
+        ...state,
+        vcs: arraySplice(state.vcs, state.selectedVC, {
+          ...state.vcs[state.selectedVC],
+          selectedAssertion: selected,
+          selectedFrame: vc.hasModel() ? vc.callstack().length - 1 : undefined
+        })
+      };
+    }
+    case 'REMOVE_ASSERTION': {
+      const { index } = action;
+      if (state.selectedVC === undefined) return state;
+      const vc = state.vcs[state.selectedVC];
+      const prevSelected: VerificationCondition | undefined =
+        vc.selectedAssertion === undefined ? undefined : vc.otherAssertions[vc.selectedAssertion];
+      const otherAssertions: Array<VerificationCondition> =
+        vc.otherAssertions.filter((_, idx) => idx !== index);
+      const nextSelected: number = otherAssertions.findIndex(vc => vc === prevSelected);
+      const nvc = nextSelected >= 0
+        ? state.vcs[state.selectedVC].otherAssertions[nextSelected]
+        : state.vcs[state.selectedVC].vc;
+      return {
+        ...state,
+        vcs: arraySplice(state.vcs, state.selectedVC, {
+          ...state.vcs[state.selectedVC],
+          otherAssertions,
+          selectedAssertion: nextSelected >= 0 ? nextSelected : undefined,
+          selectedFrame: nvc.hasModel() ? nvc.callstack().length - 1 : undefined
+        })
+      };
     }
     case 'INPUT_ASSUMPTION': {
       const { source } = action;
       if (state.selectedVC === undefined) return state;
       return {
         ...state,
-        selectedVC: {
-          ...state.selectedVC,
+        vcs: arraySplice(state.vcs, state.selectedVC, {
+          ...state.vcs[state.selectedVC],
           inputAssumption: source,
           inputAssumptionError: undefined
-        }
+        })
       };
     }
     case 'UPDATE_ASSUMPTIONS': {
       if (state.selectedVC === undefined) return state;
       const { error } = action;
       if (error === undefined) {
+        const vc = currentVC(state);
         return {
           ...state,
-          selectedVC: {
-            ...state.selectedVC,
+          vcs: arraySplice(state.vcs, state.selectedVC, {
+            ...state.vcs[state.selectedVC],
             inputAssumption: '',
-            inputAssumptionError: undefined
-          }
+            inputAssumptionError: undefined,
+            selectedFrame: vc !== undefined && vc.hasModel() ? vc.callstack().length - 1 : undefined
+          })
         };
       } else {
         return {
           ...state,
-          selectedVC: {
-            ...state.selectedVC,
+          vcs: arraySplice(state.vcs, state.selectedVC, {
+            ...state.vcs[state.selectedVC],
             inputAssumption: '',
             inputAssumptionError: error
-          }
+          })
         };
       }
+    }
+    case 'INPUT_WATCH': {
+      const { source } = action;
+      if (state.selectedVC === undefined) return state;
+      return {
+        ...state,
+        vcs: arraySplice(state.vcs, state.selectedVC, {
+          ...state.vcs[state.selectedVC],
+          inputWatch: source
+        })
+      };
+    }
+    case 'ADD_WATCH': {
+      const ivc = currentIVC(state);
+      if (ivc === undefined || state.selectedVC === undefined) return state;
+      const vcs = [ivc.vc, ...ivc.otherAssertions];
+      vcs.forEach(vc => vc.addWatch(ivc.inputWatch));
+      return {
+        ...state,
+        vcs: arraySplice(state.vcs, state.selectedVC, {
+          ...state.vcs[state.selectedVC],
+          inputWatch: ''
+        })
+      };
+    }
+    case 'REMOVE_WATCH': {
+      const { index } = action;
+      const ivc = currentIVC(state);
+      if (ivc === undefined) return state;
+      const vcs = [ivc.vc, ...ivc.otherAssertions];
+      vcs.forEach(vc => vc.removeWatch(index));
+      return state;
+    }
+    case 'SELECT_FRAME': {
+      const { index } = action;
+      const vc = currentVC(state);
+      if (vc === undefined || state.selectedVC === undefined) return state;
+      return {
+        ...state,
+        vcs: arraySplice(state.vcs, state.selectedVC, {
+          ...state.vcs[state.selectedVC],
+          selectedFrame: index
+        })
+      };
+    }
+    case 'RESTART_INTERPRETER': {
+      const vc = currentVC(state);
+      if (vc === undefined || state.selectedVC === undefined) return state;
+      vc.restart();
+      return {
+        ...state,
+        vcs: arraySplice(state.vcs, state.selectedVC, {
+          ...state.vcs[state.selectedVC],
+          selectedFrame: vc !== undefined && vc.hasModel() ? vc.callstack().length - 1 : undefined
+        })
+      };
+    }
+    case 'STEP_INTO': {
+      const vc = currentVC(state);
+      if (vc === undefined || state.selectedVC === undefined) return state;
+      vc.stepInto();
+      return {
+        ...state,
+        vcs: arraySplice(state.vcs, state.selectedVC, {
+          ...state.vcs[state.selectedVC],
+          selectedFrame: vc !== undefined && vc.hasModel() ? vc.callstack().length - 1 : undefined
+        })
+      };
+    }
+    case 'STEP_OVER': {
+      const vc = currentVC(state);
+      if (vc === undefined || state.selectedVC === undefined) return state;
+      vc.stepOver();
+      return {
+        ...state,
+        vcs: arraySplice(state.vcs, state.selectedVC, {
+          ...state.vcs[state.selectedVC],
+          selectedFrame: vc !== undefined && vc.hasModel() ? vc.callstack().length - 1 : undefined
+        })
+      };
+    }
+    case 'STEP_OUT': {
+      const vc = currentVC(state);
+      if (vc === undefined || state.selectedVC === undefined) return state;
+      vc.stepOut();
+      return {
+        ...state,
+        vcs: arraySplice(state.vcs, state.selectedVC, {
+          ...state.vcs[state.selectedVC],
+          selectedFrame: vc !== undefined && vc.hasModel() ? vc.callstack().length - 1 : undefined
+        })
+      };
     }
   }
 }

@@ -1,6 +1,6 @@
 import React = require('react');
 import { AppState, Action, verify, verificationInProgress, availableVerificationConditions,
-         InteractiveVC } from '../app';
+         InteractiveVC, currentVC, currentIVC} from '../app';
 import ExampleDropDown from './example_dropdown';
 import VCPanel from './vc_panel';
 import Editor from './editor';
@@ -51,14 +51,15 @@ export default function component ({ state, dispatch }: Props) {
   const annotations: Array<Annotation> = state.message !== undefined
     ? [messageAsAnnotation(state.message)]
     : state.vcs.map(vcAsAnnotation);
+  const vc = currentVC(state);
   const sourceAnnotations: Array<[SourceLocation, Array<any>, any]> =
-    state.showSourceAnnotations && state.selectedVC !== undefined && state.selectedVC.vc.hasModel()
-    ? state.selectedVC.vc.getAnnotations()
-    : [];
-  const otherVCs = availableVerificationConditions(state).filter(vc =>
-    state.selectedVC === undefined || vc.vc !== state.selectedVC.vc);
+    state.showSourceAnnotations && vc !== undefined && vc.hasModel() ? vc.getAnnotations() : [];
+  const ivc = currentIVC(state);
+  const otherVCs = availableVerificationConditions(state).filter(vc => vc !== ivc);
+  const pc = vc !== undefined && ivc !== undefined && vc.hasModel() && ivc.selectedFrame !== undefined
+    ? vc.callstack()[ivc.selectedFrame][1] : undefined;
   return (
-    <SplitPane split='vertical' defaultSize='66%' className='container grid-xl' style={{ height: '80vh' }}>
+    <SplitPane split='vertical' defaultSize='66%' className='container grid-xl' style={{ height: '90vh' }}>
       <div>
         <div className='p-2'>
           <div className='float-right'>
@@ -73,6 +74,7 @@ export default function component ({ state, dispatch }: Props) {
         <Editor
           annotations={annotations}
           selectedLine={state.selectedLine}
+          pc={pc}
           sourceAnnotations={sourceAnnotations}
           sourceCode={state.sourceCode}
           dispatch={dispatch} />
@@ -101,7 +103,7 @@ export default function component ({ state, dispatch }: Props) {
                       return (
                         <li className='menu-item' key={idx}>
                           <a
-                            className={vc === state.selectedVC ? 'active' : ''}
+                            className={vc === ivc ? 'active' : ''}
                             href='#'
                             onClick={e => { e.preventDefault(); dispatch({ type: 'SELECT_VC', selected: vc.vc }); }}>
                             {vc.vc.getDescription()}
@@ -111,14 +113,14 @@ export default function component ({ state, dispatch }: Props) {
                     })}
                   </ul>
                 ) : ''}
-                {state.selectedVC === undefined
+                {ivc === undefined
                   ? 'Select a Verification Condition ▼'
-                  : <h6>{state.selectedVC.vc.getDescription()}</h6>}
+                  : <h6>{ivc.vc.getDescription()}</h6>}
               </div>
             </div>
           </div>
-          {state.selectedVC === undefined ? '' :
-            <VCPanel verificationCondition={state.selectedVC} dispatch={dispatch} />
+          {ivc === undefined ? '' :
+            <VCPanel verificationCondition={ivc} dispatch={dispatch} />
           }
         </div>
       }

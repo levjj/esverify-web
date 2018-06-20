@@ -3,33 +3,42 @@ import AceEditor, { Annotation, Marker } from 'react-ace';
 import { Editor, Range } from 'brace';
 import 'brace/mode/javascript';
 import 'brace/theme/chrome';
-import { SourceLocation } from 'esverify';
+import { SourceLocation, JSVal, valueToString } from 'esverify';
 import { Action } from '../app';
 
 export interface Props {
   sourceCode: string;
   annotations: Array<Annotation>;
   selectedLine: number | undefined;
-  sourceAnnotations: Array<[SourceLocation, Array<any>, any]>;
+  pc: SourceLocation | undefined;
+  sourceAnnotations: Array<[SourceLocation, Array<JSVal | undefined>, JSVal | undefined]>;
   dispatch: (action: Action) => void;
 }
 
-function valueToLabel (val: any): string {
-  const s = String(val);
+function valueToLabel (val: JSVal): string {
+  const s = valueToString(val);
   return s.length > 32 ? s.substr(0, 29) + '..' : s;
 }
 
-export default function component ({ sourceCode, annotations, selectedLine, sourceAnnotations, dispatch }: Props) {
-  // @ts-ignore testing dynamic markers
-  const markers: Array<Marker> = selectedLine === undefined ? [] : [{
-    startRow: selectedLine - 1,
-    startCol: 0,
-    endRow: selectedLine,
-    endCol: 0,
-    className: 'selectedVC',
-    type: 'line'
+export default function component ({ sourceCode, annotations, selectedLine, pc, sourceAnnotations, dispatch }: Props) {
+  const markers: Array<Marker> = pc === undefined ? [] : [{
+    startRow: pc.start.line - 1,
+    startCol: pc.start.column,
+    endRow: pc.end.line - 1,
+    endCol: pc.end.column,
+    className: 'pc',
+    type: 'text'
   }];
-  // @ts-ignore testing dynamic markers
+  if (selectedLine !== undefined) {
+    markers.push({
+      startRow: selectedLine - 1,
+      startCol: 0,
+      endRow: selectedLine,
+      endCol: 0,
+      className: 'selectedVC',
+      type: 'line'
+    });
+  }
   markers.push(...sourceAnnotations.map(([location, dynamicValues, staticValue]): Marker => ({
     startRow: location.start.line - 1,
     startCol: location.start.column,
@@ -45,10 +54,12 @@ export default function component ({ sourceCode, annotations, selectedLine, sour
       stringBuilder.push(
         `<div class="sourceAnnotation" style="height:${height}px;top:${top}px;left:${left + Math.floor(width / 2)}px">`,
           `<div class="sourceAnnotation-container">`,
-           dynamicValues.map(val =>
-              `<span class="label label-rounded">${valueToLabel(val)}</span>`
+           dynamicValues.filter(val => val !== undefined).map(val =>
+              `<span class="label label-rounded">${valueToLabel(val as JSVal)}</span>`
            ).join(''),
-           dynamicValues.length === 1 && valueToLabel(dynamicValues) === valueToLabel(staticValue) ? '' :
+           staticValue === undefined ||
+           (dynamicValues.length === 1 && dynamicValues[0] !== undefined && staticValue !== undefined &&
+            valueToLabel(dynamicValues[0] as JSVal) === valueToLabel(staticValue)) ? '' :
               `<span class="label label-secondary label-rounded">${valueToLabel(staticValue)}</span>`,
           `</div>`,
           `<div class="arrow"></div>`,
@@ -59,13 +70,14 @@ export default function component ({ sourceCode, annotations, selectedLine, sour
   markers.reverse();
   return (
     <AceEditor
-      style={{ width: '100%', height: '65vh' }}
+      style={{ width: '100%', height: '80vh' }}
       mode='javascript'
       theme='chrome'
       showPrintMargin={false}
       setOptions={{
         fontFamily: 'Fira Code',
-        fontSize: '11pt'
+        fontSize: '11pt',
+        tabSize: 2
       }}
       annotations={annotations}
       highlightActiveLine={false}

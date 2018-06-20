@@ -37,6 +37,10 @@ pre code {
   position: absolute;
   background-color: lighten(#ffb700, 40%);
 }
+.pc {
+  position: absolute;
+  background-color: lighten(#c03434, 40%);
+}
 
 /* haddock style for kate highlighting */
 div.sourceCode { overflow-x: auto; }
@@ -159,6 +163,10 @@ code > span.in { color: #008000; } /* Information */
   .codeinput {
     font-family: 'Fira Code', Inconsolata, monospace;
   }
+  .panel-header {
+    padding-bottom: 0;
+  }
+  border: none;
 }
 
 .plist {
@@ -215,4 +223,18 @@ code > span.in { color: #008000; } /* Information */
       margin-top: -.1rem;
     }
   }
+}
+
+.plist.scopes {
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.plist.callstack {
+  max-height: 240px;
+  overflow-y: auto;
+}
+.label.label-secondary {
+  background: #f8f9fa;
+  color: #ba8900;
 }

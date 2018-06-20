@@ -1,6 +1,7 @@
 import React = require('react');
 import { Action, InteractiveVC, addAssertion, removeAssumption, addAssumption } from '../app';
 import { VerificationCondition, formatMessage } from 'esverify';
+import Inspector from './inspector';
 
 export interface Props {
   verificationCondition: InteractiveVC;
@@ -16,18 +17,31 @@ function panelTitle (verificationCondition: VerificationCondition) {
   }
 }
 
+const knownGlobals =
+  ['Object', 'Function', 'Array', 'String', 'console', 'parseInt', 'Math', 'Number', 'assert', 'spec'];
+function filterScopeEntries (varname: string, global: boolean): boolean {
+  if (varname.startsWith('_') || varname.startsWith('old_')) return false;
+  if (global && knownGlobals.indexOf(varname) >= 0) return false;
+  return true;
+}
+
 export default function component ({ verificationCondition, dispatch }: Props) {
+  const vc = verificationCondition.selectedAssertion === undefined
+    ? verificationCondition.vc
+    : verificationCondition.otherAssertions[verificationCondition.selectedAssertion];
+  const scopes = vc.hasModel() && verificationCondition.selectedFrame !== undefined
+    ? vc.getScopes(verificationCondition.selectedFrame) : undefined;
   return (
     <div className='panel-body'>
       <ul className='plist'>
         <li className='divider' data-content='ASSUMPTIONS'></li>
-        {verificationCondition.vc.getAssumptions().map((assumption, index) => (
+        {verificationCondition.vc.getAssumptions().map(([assumption, canBeDeleted], index) => (
           <li className='plist-item' key={index}>
-            <div className='plist-badge'>
+            { canBeDeleted ? (<div className='plist-badge'>
               <button className='btn btn-clear'
                       onClick={() => dispatch(removeAssumption(verificationCondition, index))}>
               </button>
-            </div>
+            </div>) : ''}
             <div className='plist-elem'>
               {assumption}
             </div>
@@ -86,6 +100,82 @@ export default function component ({ verificationCondition, dispatch }: Props) {
           </div>
         </div>
       </form>
+      {!vc.hasModel() ? '' :
+        <ul className='plist'>
+          <li className='divider' data-content='WATCH EXPRESSIONS'></li>
+          {vc.getWatches().map(([expression, dynamicValue, staticValue], index) => (
+            <li className='plist-item clearfix' key={index}>
+              <div className='plist-badge'>
+                <button className='btn btn-clear' onClick={() => dispatch({ type: 'REMOVE_WATCH', index })} />
+              </div>
+              <div className='plist-elem'>
+                <div className='float-left'>{expression}</div>
+                <Inspector dynamicValue={dynamicValue} staticValue={staticValue} />
+              </div>
+            </li>
+          ))}
+        </ul>}
+      {!vc.hasModel() ? '' :
+        <form className='form-horizontal'
+              onSubmit={e => { e.preventDefault(); dispatch({ type: 'ADD_WATCH' }); }}>
+          <div className='form-group'>
+            <div className='col-2 col-sm-12'>
+              <label className='form-label' htmlFor='addWatch'>Watch:</label>
+            </div>
+            <div className='col-10 col-sm-12'>
+              <input className='form-input codeinput' type='text' id='addWatch' placeholder='x + y'
+                    onChange={e => dispatch({ type: 'INPUT_WATCH', source: e.target.value })} />
+            </div>
+          </div>
+        </form>}
+      {scopes === undefined ? '' :
+        <ul className='plist scopes'>
+          <li className='divider' data-content='SCOPES' />
+          {scopes.map((scope, scopeIndex) =>
+            scope
+            .filter(([varname]) => filterScopeEntries(varname, scopeIndex === scopes.length - 1))
+            .map(([varname, dynamicValue, staticValue], index) => (
+              <li className='plist-item clearfix' key={scopeIndex + 'scope' + index}>
+                <div className='plist-elem'>
+                  <div className='float-left'>{varname}</div>
+                  <Inspector dynamicValue={dynamicValue} staticValue={staticValue} />
+                </div>
+              </li>
+            ))
+          )
+          .reduce((prev, curr, scopeIndex): Array<JSX.Element> =>
+            [...prev, <li className='divider' key={'div' + scopeIndex} />, ...curr])}
+        </ul>
+      }
+      {!vc.hasModel() ? '' :
+        <ul className='plist callstack'>
+          <li className='divider' data-content='CALL STACK'></li>
+          {vc.callstack().map(([description], index) => (
+            <li className='plist-item' key={index}>
+              <a href='#'
+                className={verificationCondition.selectedFrame === index ? 'active' : ''}
+                onClick={e => { e.preventDefault(); dispatch({ type: 'SELECT_FRAME', index }); }}>
+                {description}
+              </a>
+            </li>
+          )).reverse()}
+        </ul>}
+      {!vc.hasModel() ? '' :
+        <div>
+          <br />
+          <button className='btn btn-primary' onClick={() => dispatch({ type: 'RESTART_INTERPRETER' })}>
+            Restart
+          </button>{' '}
+          <button className='btn btn-primary' onClick={() => dispatch({ type: 'STEP_INTO' })}>
+            Step Into
+          </button>{' '}
+          <button className='btn btn-primary' onClick={() => dispatch({ type: 'STEP_OVER' })}>
+            Step Over
+          </button>{' '}
+          <button className='btn btn-primary' onClick={() => dispatch({ type: 'STEP_OUT' })}>
+            Step Out
+          </button>
+      </div>}
     </div>
   );
 }
