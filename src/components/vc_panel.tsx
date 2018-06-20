@@ -47,23 +47,21 @@ export default function component ({ verificationCondition, dispatch }: Props) {
             </div>
           </li>
         ))}
-      </ul>
-      <form className='form-horizontal'
-            onSubmit={e => { e.preventDefault(); dispatch(addAssumption(verificationCondition)); }}>
-        <div
-          className={verificationCondition.inputAssumptionError === undefined ? 'form-group' : 'form-group has-error'}>
-          <div className='col-2 col-sm-12'>
-            <label className='form-label' htmlFor='addAssumption'>Assume:</label>
+        <form className='form-horizontal'
+              onSubmit={e => { e.preventDefault(); dispatch(addAssumption(verificationCondition)); }}>
+          <div
+           className={verificationCondition.inputAssumptionError === undefined ? 'form-group' : 'form-group has-error'}>
+            <div className='col-2 col-sm-12'>
+              <label className='form-label' htmlFor='addAssumption'>Assume:</label>
+            </div>
+            <div className='col-10 col-sm-12'>
+              <input className='form-input codeinput' type='text' id='addAssumption' placeholder='x > 1'
+                    onChange={e => dispatch({ type: 'INPUT_ASSUMPTION', source: e.target.value })} />
+              {verificationCondition.inputAssumptionError === undefined ? '' :
+                (<p className='form-input-hint'>{verificationCondition.inputAssumptionError}</p>) }
+            </div>
           </div>
-          <div className='col-10 col-sm-12'>
-            <input className='form-input codeinput' type='text' id='addAssumption' placeholder='x > 1'
-                   onChange={e => dispatch({ type: 'INPUT_ASSUMPTION', source: e.target.value })} />
-            {verificationCondition.inputAssumptionError === undefined ? '' :
-              (<p className='form-input-hint'>{verificationCondition.inputAssumptionError}</p>) }
-          </div>
-        </div>
-      </form>
-      <ul className='plist'>
+        </form>
         <li className='divider' data-content='ASSERTIONS'></li>
         <li className='plist-item'>
           <a href='#'
@@ -84,26 +82,25 @@ export default function component ({ verificationCondition, dispatch }: Props) {
             </a>
           </li>
         ))}
-      </ul>
-      <form className='form-horizontal'
-            onSubmit={e => { e.preventDefault(); dispatch(addAssertion(verificationCondition)); }}>
-        <div
-          className={verificationCondition.inputAssertionError === undefined ? 'form-group' : 'form-group has-error'}>
-          <div className='col-2 col-sm-12'>
-            <label className='form-label' htmlFor='addAssertion'>Assert:</label>
+        <form className='form-horizontal'
+              onSubmit={e => { e.preventDefault(); dispatch(addAssertion(verificationCondition)); }}>
+          <div
+            className={verificationCondition.inputAssertionError === undefined ? 'form-group' : 'form-group has-error'}>
+            <div className='col-2 col-sm-12'>
+              <label className='form-label' htmlFor='addAssertion'>Assert:</label>
+            </div>
+            <div className='col-10 col-sm-12'>
+              <input className='form-input codeinput' type='text' id='addAssertion' placeholder='x > 1'
+                    onChange={e => dispatch({ type: 'INPUT_ASSERTION', source: e.target.value })} />
+              {verificationCondition.inputAssertionError === undefined ? '' :
+                (<p className='form-input-hint'>{verificationCondition.inputAssertionError}</p>) }
+            </div>
           </div>
-          <div className='col-10 col-sm-12'>
-            <input className='form-input codeinput' type='text' id='addAssertion' placeholder='x > 1'
-                   onChange={e => dispatch({ type: 'INPUT_ASSERTION', source: e.target.value })} />
-            {verificationCondition.inputAssertionError === undefined ? '' :
-              (<p className='form-input-hint'>{verificationCondition.inputAssertionError}</p>) }
-          </div>
-        </div>
-      </form>
+        </form>
       {!vc.hasModel() ? '' :
-        <ul className='plist'>
-          <li className='divider' data-content='WATCH EXPRESSIONS'></li>
-          {vc.getWatches().map(([expression, dynamicValue, staticValue], index) => (
+        <li className='divider' data-content='WATCH EXPRESSIONS'></li>}
+      {!vc.hasModel() ? '' :
+          vc.getWatches().map(([expression, dynamicValue, staticValue], index) => (
             <li className='plist-item clearfix' key={index}>
               <div className='plist-badge'>
                 <button className='btn btn-clear' onClick={() => dispatch({ type: 'REMOVE_WATCH', index })} />
@@ -114,7 +111,6 @@ export default function component ({ verificationCondition, dispatch }: Props) {
               </div>
             </li>
           ))}
-        </ul>}
       {!vc.hasModel() ? '' :
         <form className='form-horizontal'
               onSubmit={e => { e.preventDefault(); dispatch({ type: 'ADD_WATCH' }); }}>
@@ -129,9 +125,9 @@ export default function component ({ verificationCondition, dispatch }: Props) {
           </div>
         </form>}
       {scopes === undefined ? '' :
-        <ul className='plist scopes'>
-          <li className='divider' data-content='SCOPES' />
-          {scopes.map((scope, scopeIndex) =>
+          <li className='divider' data-content='SCOPES' />}
+      {scopes === undefined ? '' :
+         scopes.map((scope, scopeIndex) =>
             scope
             .filter(([varname]) => filterScopeEntries(varname, scopeIndex === scopes.length - 1))
             .map(([varname, dynamicValue, staticValue], index) => (
@@ -145,12 +141,10 @@ export default function component ({ verificationCondition, dispatch }: Props) {
           )
           .reduce((prev, curr, scopeIndex): Array<JSX.Element> =>
             [...prev, <li className='divider' key={'div' + scopeIndex} />, ...curr])}
-        </ul>
-      }
       {!vc.hasModel() ? '' :
-        <ul className='plist callstack'>
-          <li className='divider' data-content='CALL STACK'></li>
-          {vc.callstack().map(([description], index) => (
+          <li className='divider' data-content='CALL STACK'></li>}
+      {!vc.hasModel() ? '' :
+          vc.callstack().map(([description], index) => (
             <li className='plist-item' key={index}>
               <a href='#'
                 className={verificationCondition.selectedFrame === index ? 'active' : ''}
@@ -159,7 +153,7 @@ export default function component ({ verificationCondition, dispatch }: Props) {
               </a>
             </li>
           )).reverse()}
-        </ul>}
+        </ul>
       {!vc.hasModel() ? '' :
         <div>
           <br />
