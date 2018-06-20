@@ -55,7 +55,7 @@ export default function component ({ state, dispatch }: Props) {
   const sourceAnnotations: Array<[SourceLocation, Array<any>, any]> =
     state.showSourceAnnotations && vc !== undefined && vc.hasModel() ? vc.getAnnotations() : [];
   const ivc = currentIVC(state);
-  const otherVCs = availableVerificationConditions(state).filter(vc => vc !== ivc);
+  const availableVCs = availableVerificationConditions(state);
   const pc = vc !== undefined && ivc !== undefined && vc.hasModel() && ivc.selectedFrame !== undefined
     ? vc.callstack()[ivc.selectedFrame][1] : undefined;
   return (
@@ -67,13 +67,13 @@ export default function component ({ state, dispatch }: Props) {
             {' '}
             <button
               className={(verificationInProgress(state) ? 'loading ' : '') + 'btn btn-primary'}
-              onClick={() => dispatch(verify(state.sourceCode))}>verify</button>
+              onClick={() => dispatch(verify(state.sourceCode))}>Verify</button>
           </div>
           <h4 className='my-2'>Interactive Verification Environment</h4>
         </div>
         <Editor
           annotations={annotations}
-          selectedLine={state.selectedLine}
+          selectedVC={ivc === undefined ? undefined : ivc.vc.getLocation()}
           pc={pc}
           sourceAnnotations={sourceAnnotations}
           sourceCode={state.sourceCode}
@@ -92,14 +92,14 @@ export default function component ({ state, dispatch }: Props) {
           <div className='panel-header'>
             <div className='panel-title'>
               <div className='dropdown dropdown-right'>
-                {otherVCs.length > 0 ? (
+                {availableVCs.length > 1 ? (
                   <button className='btn dropdown-toggle float-right' tabIndex={0}>
                      ▼
                   </button>
                 ) : ''}
-                {otherVCs.length > 0 ? (
+                {availableVCs.length > 1 ? (
                   <ul className='menu'>
-                    {otherVCs.map((vc, idx) => {
+                    {availableVCs.map((vc, idx) => {
                       return (
                         <li className='menu-item' key={idx}>
                           <a

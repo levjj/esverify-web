@@ -9,7 +9,7 @@ import { Action } from '../app';
 export interface Props {
   sourceCode: string;
   annotations: Array<Annotation>;
-  selectedLine: number | undefined;
+  selectedVC: SourceLocation | undefined;
   pc: SourceLocation | undefined;
   sourceAnnotations: Array<[SourceLocation, Array<JSVal | undefined>, JSVal | undefined]>;
   dispatch: (action: Action) => void;
@@ -20,7 +20,7 @@ function valueToLabel (val: JSVal): string {
   return s.length > 32 ? s.substr(0, 29) + '..' : s;
 }
 
-export default function component ({ sourceCode, annotations, selectedLine, pc, sourceAnnotations, dispatch }: Props) {
+export default function component ({ sourceCode, annotations, selectedVC, pc, sourceAnnotations, dispatch }: Props) {
   const markers: Array<Marker> = pc === undefined ? [] : [{
     startRow: pc.start.line - 1,
     startCol: pc.start.column,
@@ -29,14 +29,14 @@ export default function component ({ sourceCode, annotations, selectedLine, pc, 
     className: 'pc',
     type: 'text'
   }];
-  if (selectedLine !== undefined) {
+  if (selectedVC !== undefined) {
     markers.push({
-      startRow: selectedLine - 1,
-      startCol: 0,
-      endRow: selectedLine,
-      endCol: 0,
+      startRow: selectedVC.start.line - 1,
+      startCol: selectedVC.start.column,
+      endRow: selectedVC.end.line - 1,
+      endCol: selectedVC.end.column,
       className: 'selectedVC',
-      type: 'line'
+      type: 'text'
     });
   }
   markers.push(...sourceAnnotations.map(([location, dynamicValues, staticValue]): Marker => ({
