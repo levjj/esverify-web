@@ -155,7 +155,7 @@ export default function component ({ verificationCondition, dispatch }: Props) {
           )).reverse()}
         </ul>
       {!vc.hasModel() ? '' :
-        <div>
+        <div className='float-right'>
           <br />
           <button className='btn btn-primary' onClick={() => dispatch({ type: 'RESTART_INTERPRETER' })}>
             Restart
