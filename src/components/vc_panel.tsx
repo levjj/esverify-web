@@ -1,10 +1,11 @@
-import React = require('react');
-import { Action, InteractiveVC, addAssertion, removeAssumption, addAssumption } from '../app';
+import * as React from 'react';
 import { VerificationCondition, formatMessage } from 'esverify';
+import { Action, InteractiveVC, addAssertion, removeAssumption, addAssumption } from '../app';
 import Inspector from './inspector';
 
 export interface Props {
   verificationCondition: InteractiveVC;
+  enableDebugger: boolean;
   dispatch: (action: Action) => void;
 }
 
@@ -25,11 +26,11 @@ function filterScopeEntries (varname: string, global: boolean): boolean {
   return true;
 }
 
-export default function component ({ verificationCondition, dispatch }: Props) {
+export default function vcPanel ({ verificationCondition, enableDebugger, dispatch }: Props) {
   const vc = verificationCondition.selectedAssertion === undefined
     ? verificationCondition.vc
     : verificationCondition.otherAssertions[verificationCondition.selectedAssertion];
-  const scopes = vc.hasModel() && verificationCondition.selectedFrame !== undefined
+  const scopes = enableDebugger && vc.hasModel() && verificationCondition.selectedFrame !== undefined
     ? vc.getScopes(verificationCondition.selectedFrame) : undefined;
   return (
     <div className='panel-body'>
@@ -97,9 +98,9 @@ export default function component ({ verificationCondition, dispatch }: Props) {
             </div>
           </div>
         </form>
-      {!vc.hasModel() ? '' :
+      {!enableDebugger || !vc.hasModel() ? '' :
         <li className='divider' data-content='WATCH EXPRESSIONS'></li>}
-      {!vc.hasModel() ? '' :
+      {!enableDebugger || !vc.hasModel() ? '' :
           vc.getWatches().map(([expression, dynamicValue, staticValue], index) => (
             <li className='plist-item clearfix' key={index}>
               <div className='plist-badge'>
@@ -111,7 +112,7 @@ export default function component ({ verificationCondition, dispatch }: Props) {
               </div>
             </li>
           ))}
-      {!vc.hasModel() ? '' :
+      {!enableDebugger || !vc.hasModel() ? '' :
         <form className='form-horizontal'
               onSubmit={e => { e.preventDefault(); dispatch({ type: 'ADD_WATCH' }); }}>
           <div className='form-group'>
@@ -141,9 +142,9 @@ export default function component ({ verificationCondition, dispatch }: Props) {
           )
           .reduce((prev, curr, scopeIndex): Array<JSX.Element> =>
             [...prev, <li className='divider' key={'div' + scopeIndex} />, ...curr])}
-      {!vc.hasModel() ? '' :
+      {!enableDebugger || !vc.hasModel() ? '' :
           <li className='divider' data-content='CALL STACK'></li>}
-      {!vc.hasModel() ? '' :
+      {!enableDebugger || !vc.hasModel() ? '' :
           vc.callstack().map(([description], index) => (
             <li className='plist-item' key={index}>
               <a href='#'
@@ -154,7 +155,7 @@ export default function component ({ verificationCondition, dispatch }: Props) {
             </li>
           )).reverse()}
         </ul>
-      {!vc.hasModel() ? '' :
+      {!enableDebugger || !vc.hasModel() ? '' :
         <div className='float-right'>
           <br />
           <button className='btn btn-primary' onClick={() => dispatch({ type: 'RESTART_INTERPRETER' })}>

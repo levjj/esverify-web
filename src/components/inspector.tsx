@@ -1,6 +1,4 @@
-import React = require('react');
-import 'brace/mode/javascript';
-import 'brace/theme/chrome';
+import * as React from 'react';
 import { JSVal, valueToString } from 'esverify';
 
 export interface Props {
@@ -98,7 +96,7 @@ function expandableValue (value: JSVal, counter: boolean = false): JSX.Element {
   );
 }
 
-export default function component ({ dynamicValue, staticValue }: Props) {
+export default function Inspector ({ dynamicValue, staticValue }: Props) {
   if (dynamicValue === undefined) {
     return (
       <code className='float-right text-right label label-error'>

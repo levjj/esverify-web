@@ -1,4 +1,4 @@
-import { Message, setOptions, verificationConditions, VerificationCondition } from 'esverify';
+import { Message, setOptions, verificationConditions, VerificationCondition, testPreamble } from 'esverify';
 
 import { ExampleName, getExample, getExampleNames } from './examples';
 import { arraySplice } from './util';
@@ -18,6 +18,15 @@ export type InteractiveVC = Readonly<{
   selectedFrame: number | undefined;
 }>;
 
+export enum UserStudyStep {
+  TUTORIAL, EXPERIMENTS, SURVEY
+}
+
+export type UserStudyState = Readonly<{
+  currentStep: UserStudyStep;
+  showModal: boolean;
+}>;
+
 export type AppState = Readonly<{
   selected: ExampleName;
   selectedLine: number | undefined;
@@ -26,6 +35,7 @@ export type AppState = Readonly<{
   vcs: ReadonlyArray<InteractiveVC>;
   selectedVC: number | undefined;
   showSourceAnnotations: boolean;
+  userStudy: UserStudyState;
 }>;
 
 export function verificationInProgress (state: AppState): boolean {
@@ -65,14 +75,19 @@ export function initialState (): AppState {
   if (window.location.hash && window.location.hash !== '#' && window.location.hash !== '#max') {
     initialExample = getExampleNames().find(name => name === window.location.hash.substr(1)) || initialExample;
   }
+  let sourceCode = getExample(initialExample).source;
+  if (window.location.pathname.endsWith('/userstudy-experiments')) {
+    sourceCode = sourceForUserStudy(UserStudyStep.TUTORIAL);
+  }
   return {
     selected: initialExample,
     selectedLine: undefined,
-    sourceCode: getExample(initialExample).source,
+    sourceCode,
     message: undefined,
     vcs: [],
     selectedVC: undefined,
-    showSourceAnnotations: true
+    showSourceAnnotations: true,
+    userStudy: { currentStep: UserStudyStep.TUTORIAL, showModal: true }
   };
 }
 
@@ -131,6 +146,10 @@ export interface VerificationDone {
 export interface VerificationError {
   type: 'VERIFICATION_ERROR';
   message: Message;
+}
+
+export interface RunCode {
+  type: 'RUN_CODE';
 }
 
 export interface SelectLine {
@@ -218,11 +237,20 @@ export interface StepOut {
   type: 'STEP_OUT';
 }
 
+export interface UserStudyNext {
+  type: 'USER_STUDY_NEXT';
+}
+
+export interface UserStudyCloseModal {
+  type: 'USER_STUDY_CLOSE_MODAL';
+}
+
 export type BaseAction = SelectExample
                        | ChangeSource
                        | Verify
                        | VerificationDone
                        | VerificationError
+                       | RunCode
                        | SelectLine
                        | SelectVerificationCondition
                        | SetSourceAnnotations
@@ -239,7 +267,9 @@ export type BaseAction = SelectExample
                        | RestartInterpreter
                        | StepInto
                        | StepOver
-                       | StepOut;
+                       | StepOut
+                       | UserStudyNext
+                       | UserStudyCloseModal;
 export type Action = BaseAction | AsynchrousAction;
 
 // --- internal API ---
@@ -360,6 +390,31 @@ export function removeAssumption (ivc: InteractiveVC, index: number): Action {
   }
 }
 
+function userStudyNextStep (step: UserStudyStep): UserStudyStep {
+  switch (step) {
+    case UserStudyStep.TUTORIAL: return UserStudyStep.EXPERIMENTS;
+    case UserStudyStep.EXPERIMENTS: return UserStudyStep.SURVEY;
+    case UserStudyStep.SURVEY: return UserStudyStep.SURVEY;
+  }
+}
+
+function sourceForUserStudy (step: UserStudyStep): string {
+  switch (step) {
+    case UserStudyStep.TUTORIAL:
+      return `// This is a live demo, simply edit the code and click "run".
+
+const height = 3;
+const width = 4;
+const area_of_rect = height * height;
+
+alert(area_of_rect); // Should print 12, but prints 9 instead`;
+    case UserStudyStep.EXPERIMENTS:
+      return `// This is a really difficult task`;
+    case UserStudyStep.SURVEY:
+      return '';
+  }
+}
+
 export function reduce (state: AppState, action: BaseAction): AppState {
   switch (action.type) {
     case 'SELECT_EXAMPLE': {
@@ -396,6 +451,16 @@ export function reduce (state: AppState, action: BaseAction): AppState {
         message: undefined,
         selectedVC: undefined
       };
+    }
+    case 'RUN_CODE': {
+      const source = state.sourceCode;
+      try {
+        /* tslint:disable:no-eval */
+        eval(testPreamble() + source);
+      } catch (e) {
+        alert(String(e));
+      }
+      return state;
     }
     case 'VERIFICATION_DONE': {
       return state;
@@ -635,6 +700,32 @@ export function reduce (state: AppState, action: BaseAction): AppState {
           ...state.vcs[state.selectedVC],
           selectedFrame: vc !== undefined && vc.hasModel() ? vc.callstack().length - 1 : undefined
         })
+      };
+    }
+    case 'USER_STUDY_NEXT': {
+      const next = userStudyNextStep(state.userStudy.currentStep);
+      return {
+        ...state,
+        userStudy: {
+          ...state.userStudy,
+          currentStep: next,
+          showModal: true
+        },
+        selectedLine: undefined,
+        sourceCode: sourceForUserStudy(next),
+        message: undefined,
+        vcs: [],
+        selectedVC: undefined,
+        showSourceAnnotations: true
+      };
+    }
+    case 'USER_STUDY_CLOSE_MODAL': {
+      return {
+        ...state,
+        userStudy: {
+          ...state.userStudy,
+          showModal: false
+        }
       };
     }
   }

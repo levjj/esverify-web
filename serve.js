@@ -3,7 +3,7 @@ const express = require('express');
 
 const app = express();
 
-const pages = ['try', 'ide'];
+const pages = ['try', 'ide', 'userstudy', 'userstudy-consent', 'userstudy-experiments', 'userstudy-done'];
 
 pages.forEach(page => {
   app.use(`/${page}`, (req, res, next) => {

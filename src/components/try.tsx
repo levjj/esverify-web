@@ -1,4 +1,4 @@
-import React = require('react');
+import * as React from 'react';
 import AceEditor, { Annotation } from 'react-ace';
 import 'brace';
 import 'brace/mode/javascript';
@@ -46,7 +46,7 @@ function vcAsAnnotation (vc: InteractiveVC): Annotation {
   }
 }
 
-export default function component ({ state, dispatch }: Props) {
+export default function Try ({ state, dispatch }: Props) {
   const annotations: Array<Annotation> = state.message !== undefined
     ? [messageAsAnnotation(state.message)]
     : state.vcs.map(vcAsAnnotation);
@@ -61,6 +61,10 @@ export default function component ({ state, dispatch }: Props) {
             <button
               className={(verificationInProgress(state) ? 'loading ' : '') + 'btn btn-primary'}
               onClick={() => dispatch(verify(state.sourceCode))}>verify</button>
+            {' '}
+            <button
+              className='btn btn-primary'
+              onClick={() => dispatch({ type: 'RUN_CODE' })}>run</button>
           </div>
         </div>
       </div>

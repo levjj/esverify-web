@@ -1,6 +1,6 @@
-import React = require('react');
+import * as React from 'react';
 import AceEditor, { Annotation, Marker } from 'react-ace';
-import { Editor, Range } from 'brace';
+import { Editor as BraceEditor, Range } from 'brace';
 import 'brace/mode/javascript';
 import 'brace/theme/chrome';
 import { SourceLocation, JSVal, valueToString } from 'esverify';
@@ -20,7 +20,7 @@ function valueToLabel (val: JSVal): string {
   return s.length > 32 ? s.substr(0, 29) + '..' : s;
 }
 
-export default function component ({ sourceCode, annotations, selectedVC, pc, sourceAnnotations, dispatch }: Props) {
+export default function Editor ({ sourceCode, annotations, selectedVC, pc, sourceAnnotations, dispatch }: Props) {
   const markers: Array<Marker> = pc === undefined ? [] : [{
     startRow: pc.start.line - 1,
     startCol: pc.start.column,
@@ -47,7 +47,7 @@ export default function component ({ sourceCode, annotations, selectedVC, pc, so
     className: 'sourceAnnotation',
     // @ts-ignore front marker
     inFront: true,
-    type: function (this: { editor: Editor }, stringBuilder: Array<string>, range: Range,
+    type: function (this: { editor: BraceEditor }, stringBuilder: Array<string>, range: Range,
                     left: number, top: number, config: any) {
       const height = config.lineHeight;
       const width = (range.end.column - range.start.column) * config.characterWidth;
@@ -83,7 +83,7 @@ export default function component ({ sourceCode, annotations, selectedVC, pc, so
       highlightActiveLine={false}
       markers={markers}
       onLoad={editorProps => {
-        const editor = editorProps as Editor;
+        const editor = editorProps as BraceEditor;
         const gutter: any = (editor.renderer as any).$gutterLayer;
         editor.getSession().on('changeFrontMarker', () => {
           // @ts-ignore access last marker ID

@@ -233,3 +233,31 @@ code > span.in { color: #008000; } /* Information */
   background: #f8f9fa;
   color: #ba8900;
 }
+header .step {
+  .step-item a {
+    color: #333;
+  }
+  .step-item a::before {
+    background: #fff;
+    border: 0.1rem solid #5764c6;
+  }
+  .step-item.active a::before {
+    background: #5764c6;
+    border: 0.1rem solid #5764c6;
+  }
+  .step-item.active ~ .step-item::before {
+    background: #aaa;
+  }
+  .step-item.active ~ .step-item a::before {
+    background: #e7e9ed;
+    border: 0.1rem solid #aaa;
+  }
+}
+.userstudy-helper {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  width: 320px;
+  z-index: 300;
+  box-shadow: 0 .2rem (.25rem) * 2 rgba(69, 77, 93, .3);
+}

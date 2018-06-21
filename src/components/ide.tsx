@@ -1,15 +1,21 @@
-import React = require('react');
+import * as React from 'react';
+import { Message, formatMessage, SourceLocation } from 'esverify';
+import { Annotation } from 'react-ace';
+import SplitPane from 'react-split-pane';
 import { AppState, Action, verify, verificationInProgress, availableVerificationConditions,
          InteractiveVC, currentVC, currentIVC} from '../app';
 import ExampleDropDown from './example_dropdown';
 import VCPanel from './vc_panel';
 import Editor from './editor';
-import { Message, formatMessage, SourceLocation } from 'esverify';
-import { Annotation } from 'react-ace';
-import SplitPane from 'react-split-pane';
 
 export interface Props {
   state: AppState;
+  enableExampleSelect: boolean;
+  enableVerification: boolean;
+  enableSourceAnnotations: boolean;
+  enableVCPanel: boolean;
+  enableDebugger: boolean;
+  large: boolean;
   dispatch: (action: Action) => void;
 }
 
@@ -47,47 +53,61 @@ function vcAsAnnotation (vc: InteractiveVC): Annotation {
   }
 }
 
-export default function component ({ state, dispatch }: Props) {
+export default function IDE ({ enableExampleSelect, enableVerification, enableSourceAnnotations, enableVCPanel,
+                               enableDebugger, large, state, dispatch }: Props) {
   const annotations: Array<Annotation> = state.message !== undefined
     ? [messageAsAnnotation(state.message)]
     : state.vcs.map(vcAsAnnotation);
   const vc = currentVC(state);
   const sourceAnnotations: Array<[SourceLocation, Array<any>, any]> =
-    state.showSourceAnnotations && vc !== undefined && vc.hasModel() ? vc.getAnnotations() : [];
+    enableSourceAnnotations && state.showSourceAnnotations && vc !== undefined && vc.hasModel()
+    ? vc.getAnnotations()
+    : [];
   const ivc = currentIVC(state);
   const availableVCs = availableVerificationConditions(state);
-  const pc = vc !== undefined && ivc !== undefined && vc.hasModel() && ivc.selectedFrame !== undefined
-    ? vc.callstack()[ivc.selectedFrame][1] : undefined;
+  const pc = enableDebugger && vc !== undefined && ivc !== undefined && vc.hasModel() && ivc.selectedFrame !== undefined
+    ? vc.callstack()[ivc.selectedFrame][1]
+    : undefined;
   return (
-    <SplitPane split='vertical' defaultSize='66%' className='container grid-xl' style={{ height: '90vh' }}>
+    <SplitPane split='vertical' defaultSize='66%' style={{ height: '90vh' }}
+               className={large ? 'container grid-xl' : 'container grid-lg'}>
       <div>
         <div className='p-2'>
           <div className='float-right'>
-            <ExampleDropDown selected={state.selected} dispatch={dispatch} />
+            { enableExampleSelect
+              ? <ExampleDropDown selected={state.selected} dispatch={dispatch} />
+              : ''
+            }
+            {' '}
+            { enableVerification ?
+              <button
+                className={(verificationInProgress(state) ? 'loading ' : '') + 'btn btn-primary'}
+                onClick={() => dispatch(verify(state.sourceCode))}>Verify</button> : ''}
             {' '}
             <button
-              className={(verificationInProgress(state) ? 'loading ' : '') + 'btn btn-primary'}
-              onClick={() => dispatch(verify(state.sourceCode))}>Verify</button>
+              className='btn btn-primary'
+              onClick={() => dispatch({ type: 'RUN_CODE' })}>run</button>
           </div>
           <h4 className='my-2'>Interactive Verification Environment</h4>
         </div>
         <Editor
           annotations={annotations}
-          selectedVC={ivc === undefined ? undefined : ivc.vc.getLocation()}
+          selectedVC={enableVCPanel && ivc !== undefined ? ivc.vc.getLocation() : undefined}
           pc={pc}
           sourceAnnotations={sourceAnnotations}
           sourceCode={state.sourceCode}
           dispatch={dispatch} />
-        <div className='form-group float-right'>
-          <label className='form-switch'>
-            <input type='checkbox'
-                   checked={state.showSourceAnnotations}
-                   onChange={evt => dispatch({ type: 'SET_SOURCE_ANNOTATIONS', enabled: evt.target.checked }) } />
-            <i className='form-icon'></i> Show Counter Example Annotations
-          </label>
-        </div>
+        { enableSourceAnnotations ?
+          <div className='form-group float-right'>
+            <label className='form-switch'>
+              <input type='checkbox'
+                    checked={state.showSourceAnnotations}
+                    onChange={evt => dispatch({ type: 'SET_SOURCE_ANNOTATIONS', enabled: evt.target.checked }) } />
+              <i className='form-icon'></i> Show Counter Example Annotations
+            </label>
+          </div> : ''}
       </div>
-      {state.selectedLine === undefined ? <div /> :
+      {!enableVCPanel || state.selectedLine === undefined ? <div /> :
         <div className='panel vc-panel'>
           <div className='panel-header'>
             <div className='panel-title'>
@@ -120,7 +140,7 @@ export default function component ({ state, dispatch }: Props) {
             </div>
           </div>
           {ivc === undefined ? '' :
-            <VCPanel verificationCondition={ivc} dispatch={dispatch} />
+            <VCPanel verificationCondition={ivc} enableDebugger={enableDebugger} dispatch={dispatch} />
           }
         </div>
       }
