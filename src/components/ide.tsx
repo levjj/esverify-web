@@ -15,6 +15,7 @@ export interface Props {
   enableSourceAnnotations: boolean;
   enableVCPanel: boolean;
   enableDebugger: boolean;
+  enableRunning: boolean;
   large: boolean;
   dispatch: (action: Action) => void;
 }
@@ -54,7 +55,7 @@ function vcAsAnnotation (vc: InteractiveVC): Annotation {
 }
 
 export default function IDE ({ enableExampleSelect, enableVerification, enableSourceAnnotations, enableVCPanel,
-                               enableDebugger, large, state, dispatch }: Props) {
+                               enableDebugger, enableRunning, large, state, dispatch }: Props) {
   const annotations: Array<Annotation> = state.message !== undefined
     ? [messageAsAnnotation(state.message)]
     : state.vcs.map(vcAsAnnotation);
@@ -69,7 +70,7 @@ export default function IDE ({ enableExampleSelect, enableVerification, enableSo
     ? vc.callstack()[ivc.selectedFrame][1]
     : undefined;
   return (
-    <SplitPane split='vertical' defaultSize='66%' style={{ height: '90vh' }}
+    <SplitPane split='vertical' defaultSize='60%' style={{ height: '90vh' }}
                className={large ? 'container grid-xl' : 'container grid-lg'}>
       <div>
         <div className='p-2'>
@@ -82,11 +83,12 @@ export default function IDE ({ enableExampleSelect, enableVerification, enableSo
             { enableVerification ?
               <button
                 className={(verificationInProgress(state) ? 'loading ' : '') + 'btn btn-primary'}
-                onClick={() => dispatch(verify(state.sourceCode))}>Verify</button> : ''}
+                onClick={() => dispatch(verify(state.sourceCode))}>verify</button> : ''}
             {' '}
-            <button
-              className='btn btn-primary'
-              onClick={() => dispatch({ type: 'RUN_CODE' })}>run</button>
+            { enableRunning ?
+              <button
+                className='btn btn-primary'
+                onClick={() => dispatch({ type: 'RUN_CODE' })}>run</button> : ''}
           </div>
           <h4 className='my-2'>Interactive Verification Environment</h4>
         </div>
@@ -103,11 +105,11 @@ export default function IDE ({ enableExampleSelect, enableVerification, enableSo
               <input type='checkbox'
                     checked={state.showSourceAnnotations}
                     onChange={evt => dispatch({ type: 'SET_SOURCE_ANNOTATIONS', enabled: evt.target.checked }) } />
-              <i className='form-icon'></i> Show Counter Example Annotations
+              <i className='form-icon'></i> Show Counter Example Popups
             </label>
           </div> : ''}
       </div>
-      {!enableVCPanel || state.selectedLine === undefined ? <div /> :
+      {!enableVCPanel || state.selectedLine === undefined || availableVCs.length < 1 ? <div /> :
         <div className='panel vc-panel'>
           <div className='panel-header'>
             <div className='panel-title'>

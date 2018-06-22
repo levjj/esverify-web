@@ -42,7 +42,7 @@ function render () {
     ReactDOM.render(
       <IDE state={state} dispatch={dispatch} enableDebugger={true} enableExampleSelect={true}
            enableSourceAnnotations={true} enableVCPanel={true} enableVerification={true}
-           large={true} />,
+           large={true} enableRunning={true} />,
       document.getElementById('root')
     );
   }

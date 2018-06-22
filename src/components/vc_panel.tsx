@@ -19,7 +19,7 @@ function panelTitle (verificationCondition: VerificationCondition) {
 }
 
 const knownGlobals =
-  ['Object', 'Function', 'Array', 'String', 'console', 'parseInt', 'Math', 'Number', 'assert', 'spec'];
+  ['Object', 'Function', 'Array', 'String', 'console', 'parseInt', 'Math', 'Number', 'assert', 'spec', 'alert'];
 function filterScopeEntries (varname: string, global: boolean): boolean {
   if (varname.startsWith('_') || varname.startsWith('old_')) return false;
   if (global && knownGlobals.indexOf(varname) >= 0) return false;
@@ -115,13 +115,16 @@ export default function vcPanel ({ verificationCondition, enableDebugger, dispat
       {!enableDebugger || !vc.hasModel() ? '' :
         <form className='form-horizontal'
               onSubmit={e => { e.preventDefault(); dispatch({ type: 'ADD_WATCH' }); }}>
-          <div className='form-group'>
+          <div
+            className={verificationCondition.inputWatchError === undefined ? 'form-group' : 'form-group has-error'}>
             <div className='col-2 col-sm-12'>
               <label className='form-label' htmlFor='addWatch'>Watch:</label>
             </div>
             <div className='col-10 col-sm-12'>
               <input className='form-input codeinput' type='text' id='addWatch' placeholder='x + y'
                     onChange={e => dispatch({ type: 'INPUT_WATCH', source: e.target.value })} />
+              {verificationCondition.inputWatchError === undefined ? '' :
+                (<p className='form-input-hint'>{verificationCondition.inputWatchError}</p>) }
             </div>
           </div>
         </form>}

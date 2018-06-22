@@ -7,11 +7,11 @@ export interface Props {
   dispatch: (action: Action) => void;
 }
 
-export default function UserStudyTutorial1 ({ state, dispatch }: Props) {
+export default function UserStudyTutorial2 ({ state, dispatch }: Props) {
   return (
     <div>
       <IDE state={state} dispatch={dispatch} enableDebugger={false} enableExampleSelect={false}
-           enableSourceAnnotations={false} enableVCPanel={false} enableVerification={false}
+           enableSourceAnnotations={false} enableVCPanel={false} enableVerification={true}
            large={false} enableRunning={true} />
       <div className={state.userStudy.showModal ? 'modal active' : 'modal'}>
         <a onClick={e => { e.preventDefault(); dispatch({ type: 'USER_STUDY_CLOSE_MODAL' }); }}
@@ -21,14 +21,16 @@ export default function UserStudyTutorial1 ({ state, dispatch }: Props) {
           <div className='modal-header'>
             <a onClick={e => { e.preventDefault(); dispatch({ type: 'USER_STUDY_CLOSE_MODAL' }); }}
                href='#' className='btn btn-clear float-right' aria-label='Close'></a>
-            <div className='modal-title h5'>JavaScript Live Editing</div>
+            <div className='modal-title h5'>Program Verification With Pre- and Postconditions</div>
           </div>
           <div className='modal-body'>
             <div className='content'>
-              <p>This user study involves interactions with a programming environments.</p>
-              <p>The source code can be edited direclty and the resulting program evaluated.</p>
-              <p>Test the editor by fixing the JavaScript program such that it computes the correct
-                 area of a rectangle.</p>
+              <p><code>esverify</code> extends JavaScript with special syntax to annotate functions with
+                  pre- and postconditions.</p>
+              <p>These are written as pseudo function calls that are skipped during evaluation.</p>
+              <p>The following example includes an incorrect <code>max</code> function that
+                 should be fixed such that it returns the maximum of its arguments and verification succeeds.
+              </p>
             </div>
           </div>
           <div className='modal-footer'>
@@ -42,17 +44,19 @@ export default function UserStudyTutorial1 ({ state, dispatch }: Props) {
       <div className='userstudy-helper'>
         <div className='card'>
           <div className='card-header'>
-            <div className='card-title h5'>JavaScript Live Editing</div>
+            <div className='card-title h5'>Program Verification With Pre- and Postconditions</div>
             <div className='card-subtitle text-gray'>
-              Edit and run a simple JavaScript program
+              Verify the given annotated <code>max</code> function and fix potential issues.
             </div>
           </div>
           <div className='card-body'>
             <ol>
-              <li>Click the <span className='label label-primary'>run</span>
-                  button to see that it returns the wrong result.</li>
-              <li>Change the source code to compute the correct area of an rectangle.</li>
-              <li>Click the <span className='label label-primary'>run</span> button again to test the code.</li>
+              <li>Click the <span className='label label-primary'>verify</span> button to
+                  verify all assertions in the code.</li>
+              <li>The second postcondition does not hold due to a bug in the implementation.</li>
+              <li>Change the source code to return the correct maximum of <code>a</code> and <code>b</code>.</li>
+              <li>Click the <span className='label label-primary'>verify</span> button
+                  again to ensure that the new code verifies.</li>
             </ol>
           </div>
           <div className='card-footer clearfix'>

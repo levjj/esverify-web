@@ -51,7 +51,7 @@ function expandedValue (value: JSVal, counter: boolean) {
         {value.elems.map((v, idx) => (
           <div key={idx}>
             <div className='float-left'>{idx}</div>
-            {expandableValue(v)}
+            {expandableValue(v, counter)}
           </div>
         ))}
         </div>
@@ -61,7 +61,7 @@ function expandedValue (value: JSVal, counter: boolean) {
         {Object.keys(value.v).map((key, idx) => (
           <div key={idx}>
             <div className='float-left'>{key}</div>
-            {expandableValue(value.v[key])}
+            {expandableValue(value.v[key], counter)}
           </div>
         ))}
         </div>
@@ -70,7 +70,7 @@ function expandedValue (value: JSVal, counter: boolean) {
       return (<div>
         {value.args.map((arg, idx) => (
           <div key={idx}>
-            {expandableValue(arg)}
+            {expandableValue(arg, counter)}
           </div>
         ))}
         </div>

@@ -7,12 +7,12 @@ export interface Props {
   dispatch: (action: Action) => void;
 }
 
-export default function UserStudyTutorial1 ({ state, dispatch }: Props) {
+export default function UserStudyExperiment2 ({ state, dispatch }: Props) {
   return (
     <div>
       <IDE state={state} dispatch={dispatch} enableDebugger={false} enableExampleSelect={false}
-           enableSourceAnnotations={false} enableVCPanel={false} enableVerification={false}
-           large={false} enableRunning={true} />
+           enableSourceAnnotations={false} enableVCPanel={false} enableVerification={true}
+           large={false} enableRunning={false} />
       <div className={state.userStudy.showModal ? 'modal active' : 'modal'}>
         <a onClick={e => { e.preventDefault(); dispatch({ type: 'USER_STUDY_CLOSE_MODAL' }); }}
            href='#'className='modal-overlay' aria-label='Close'>
@@ -21,14 +21,15 @@ export default function UserStudyTutorial1 ({ state, dispatch }: Props) {
           <div className='modal-header'>
             <a onClick={e => { e.preventDefault(); dispatch({ type: 'USER_STUDY_CLOSE_MODAL' }); }}
                href='#' className='btn btn-clear float-right' aria-label='Close'></a>
-            <div className='modal-title h5'>JavaScript Live Editing</div>
+            <div className='modal-title h5'>Experiment 2: Dice Rolls</div>
           </div>
           <div className='modal-body'>
             <div className='content'>
-              <p>This user study involves interactions with a programming environments.</p>
-              <p>The source code can be edited direclty and the resulting program evaluated.</p>
-              <p>Test the editor by fixing the JavaScript program such that it computes the correct
-                 area of a rectangle.</p>
+              <p>This experiment involves an function for rolling a six-sided dice.</p>
+              <p>A correct implementation is given and the following assertions should be verifiable but
+                 important annotations are missing.</p>
+              <p>The verification inspector is not available.</p>
+              <p>Click 'Next' if you fixed the example or if you want to move to the next experiment.</p>
             </div>
           </div>
           <div className='modal-footer'>
@@ -42,17 +43,13 @@ export default function UserStudyTutorial1 ({ state, dispatch }: Props) {
       <div className='userstudy-helper'>
         <div className='card'>
           <div className='card-header'>
-            <div className='card-title h5'>JavaScript Live Editing</div>
-            <div className='card-subtitle text-gray'>
-              Edit and run a simple JavaScript program
-            </div>
+            <div className='card-title h5'>Experiment 2: Dice Rolls</div>
           </div>
           <div className='card-body'>
             <ol>
-              <li>Click the <span className='label label-primary'>run</span>
-                  button to see that it returns the wrong result.</li>
-              <li>Change the source code to compute the correct area of an rectangle.</li>
-              <li>Click the <span className='label label-primary'>run</span> button again to test the code.</li>
+              <li>Add missing annotations in order to verify the assertions.</li>
+              <li>You can verify code but there is no verification inspector.</li>
+              <li>Click 'Next' if you fixed the example or if you want to move to the next experiment.</li>
             </ol>
           </div>
           <div className='card-footer clearfix'>

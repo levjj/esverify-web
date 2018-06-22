@@ -15,16 +15,27 @@ export type InteractiveVC = Readonly<{
   inputAssumption: string;
   inputAssumptionError: string | undefined;
   inputWatch: string;
+  inputWatchError: string | undefined;
   selectedFrame: number | undefined;
 }>;
 
 export enum UserStudyStep {
-  TUTORIAL, EXPERIMENTS, SURVEY
+  TUTORIAL_1,
+  TUTORIAL_2,
+  TUTORIAL_3,
+  TUTORIAL_4,
+  EXPERIMENT_1,
+  EXPERIMENT_2,
+  EXPERIMENT_3,
+  SURVEY
 }
 
 export type UserStudyState = Readonly<{
   currentStep: UserStudyStep;
   showModal: boolean;
+  experiment1Time: number | undefined;
+  experiment2Time: number | undefined;
+  experiment3Time: number | undefined;
 }>;
 
 export type AppState = Readonly<{
@@ -77,7 +88,7 @@ export function initialState (): AppState {
   }
   let sourceCode = getExample(initialExample).source;
   if (window.location.pathname.endsWith('/userstudy-experiments')) {
-    sourceCode = sourceForUserStudy(UserStudyStep.TUTORIAL);
+    sourceCode = sourceForUserStudy(UserStudyStep.TUTORIAL_1);
   }
   return {
     selected: initialExample,
@@ -87,7 +98,13 @@ export function initialState (): AppState {
     vcs: [],
     selectedVC: undefined,
     showSourceAnnotations: true,
-    userStudy: { currentStep: UserStudyStep.TUTORIAL, showModal: true }
+    userStudy: {
+      currentStep: UserStudyStep.TUTORIAL_1,
+      showModal: true,
+      experiment1Time: undefined,
+      experiment2Time: undefined,
+      experiment3Time: undefined
+    }
   };
 }
 
@@ -102,6 +119,7 @@ function interpret (vc: InteractiveVC): InteractiveVC {
       inputAssumption: '',
       inputAssumptionError: undefined,
       inputWatch: '',
+      inputWatchError: undefined,
       selectedFrame: vc.vc.callstack().length - 1
     };
   }
@@ -112,6 +130,7 @@ function interpret (vc: InteractiveVC): InteractiveVC {
     inputAssumption: '',
     inputAssumptionError: undefined,
     inputWatch: '',
+    inputWatchError: undefined,
     selectedFrame: undefined
   };
 }
@@ -278,7 +297,8 @@ export function init (): void {
   setOptions({
     remote: true,
     z3url: '/z3',
-    logformat: 'html'
+    logformat: 'html',
+    maxInterpreterSteps: 1000
   });
 }
 
@@ -392,24 +412,117 @@ export function removeAssumption (ivc: InteractiveVC, index: number): Action {
 
 function userStudyNextStep (step: UserStudyStep): UserStudyStep {
   switch (step) {
-    case UserStudyStep.TUTORIAL: return UserStudyStep.EXPERIMENTS;
-    case UserStudyStep.EXPERIMENTS: return UserStudyStep.SURVEY;
+    case UserStudyStep.TUTORIAL_1: return UserStudyStep.TUTORIAL_2;
+    case UserStudyStep.TUTORIAL_2: return UserStudyStep.TUTORIAL_3;
+    case UserStudyStep.TUTORIAL_3: return UserStudyStep.TUTORIAL_4;
+    case UserStudyStep.TUTORIAL_4: return UserStudyStep.EXPERIMENT_1;
+    case UserStudyStep.EXPERIMENT_1: return UserStudyStep.EXPERIMENT_2;
+    case UserStudyStep.EXPERIMENT_2: return UserStudyStep.EXPERIMENT_3;
+    case UserStudyStep.EXPERIMENT_3: return UserStudyStep.SURVEY;
     case UserStudyStep.SURVEY: return UserStudyStep.SURVEY;
   }
 }
 
 function sourceForUserStudy (step: UserStudyStep): string {
   switch (step) {
-    case UserStudyStep.TUTORIAL:
-      return `// This is a live demo, simply edit the code and click "run".
+    case UserStudyStep.TUTORIAL_1:
+      return `// This is a live demo, simply edit the code and click run
 
 const height = 3;
 const width = 4;
 const area_of_rect = height * height;
 
-alert(area_of_rect); // Should print 12, but prints 9 instead`;
-    case UserStudyStep.EXPERIMENTS:
-      return `// This is a really difficult task`;
+// should print '12', but prints '9' instead
+alert(area_of_rect)`;
+    case UserStudyStep.TUTORIAL_2:
+      return `
+// returns the maximum of the two provided numbers
+function max(a, b) {
+  requires(typeof(a) === 'number');
+  requires(typeof(b) === 'number');
+  ensures(res => res >= a);
+  ensures(res => res >= b);// postcondition does not hold
+
+  if (a >= b) {
+    return a;
+  } else {
+    return a; // <- due to a bug in the implementation
+  }
+}`;
+    case UserStudyStep.TUTORIAL_3:
+      return `
+// returns the maximum of the two provided numbers
+function max(a, b) {
+  ensures(res => res >= a);
+  ensures(res => res >= b);
+
+  if (a >= b) {
+    return a;
+  } else {
+    return b;
+  }
+}`;
+    case UserStudyStep.TUTORIAL_4:
+      return `
+// returns the maximum of the two provided numbers
+function max(a, b) {
+  requires(typeof(a) === 'number');
+  requires(typeof(b) === 'number');
+  ensures(res => res >= a);
+  ensures(res => res >= b);
+
+  if (a > b) {
+    return a;
+  }
+  if (b > a) {
+    return b;
+  }
+}`;
+    case UserStudyStep.EXPERIMENT_1:
+      return `
+// returns the factorial of the provided argument
+function factorial(n) {
+  requires(Number.isInteger(n));
+  ensures(res => res >= 1);
+
+  if (n === 0) {
+    return 1;
+  } else {
+    return factorial(n - 1) * n;
+  }
+}`;
+    case UserStudyStep.EXPERIMENT_2:
+      return `
+// Roll a six-sided dice
+function rollDice () {
+  // missing annotations
+
+  return Math.trunc(Math.random() * 6) + 1;
+}
+
+const r = rollDice() + rollDice() + rollDice();
+assert(r >= 3);
+assert(r <= 18);`;
+    case UserStudyStep.EXPERIMENT_3:
+      return `
+// Given the number of minutes since midnight,
+// returns the current hour and minute as object
+// in a { h: 0-23, m: 0-59 } format
+function clock_24 (min) {
+  requires(Number.isInteger(min) && 0 <= min);
+
+  ensures(res => res instanceof Object &&
+          'h' in res && 'm' in res);
+  ensures(res => Number.isInteger(res.h) &&
+          0 <= res.h && res.h < 24);
+  ensures(res => Number.isInteger(res.m) &&
+          0 <= res.m && res.m < 60);
+
+  return {
+    h: min / 60,
+    m: min % 60
+  };
+}`;
     case UserStudyStep.SURVEY:
       return '';
   }
@@ -430,7 +543,14 @@ export function reduce (state: AppState, action: BaseAction): AppState {
     }
     case 'CHANGE_SOURCE': {
       const { newSource } = action;
-      return { ...state, sourceCode: newSource, vcs: [], message: undefined, selectedVC: undefined };
+      return {
+        ...state,
+        sourceCode: newSource,
+        vcs: [],
+        message: undefined,
+        selectedLine: undefined,
+        selectedVC: undefined
+      };
     }
     case 'VERIFY': {
       const { vcs } = action;
@@ -446,6 +566,7 @@ export function reduce (state: AppState, action: BaseAction): AppState {
           inputAssumption: '',
           inputAssumptionError: undefined,
           inputWatch: '',
+          inputWatchError: undefined,
           selectedFrame: undefined
         })),
         message: undefined,
@@ -617,7 +738,8 @@ export function reduce (state: AppState, action: BaseAction): AppState {
         ...state,
         vcs: arraySplice(state.vcs, state.selectedVC, {
           ...state.vcs[state.selectedVC],
-          inputWatch: source
+          inputWatch: source,
+          inputWatchError: undefined
         })
       };
     }
@@ -625,14 +747,26 @@ export function reduce (state: AppState, action: BaseAction): AppState {
       const ivc = currentIVC(state);
       if (ivc === undefined || state.selectedVC === undefined) return state;
       const vcs = [ivc.vc, ...ivc.otherAssertions];
-      vcs.forEach(vc => vc.addWatch(ivc.inputWatch));
-      return {
-        ...state,
-        vcs: arraySplice(state.vcs, state.selectedVC, {
-          ...state.vcs[state.selectedVC],
-          inputWatch: ''
-        })
-      };
+      try {
+        vcs.forEach(vc => vc.addWatch(ivc.inputWatch));
+        return {
+          ...state,
+          vcs: arraySplice(state.vcs, state.selectedVC, {
+            ...state.vcs[state.selectedVC],
+            inputWatch: '',
+            inputWatchError: undefined
+          })
+        };
+      } catch (e) {
+        return {
+          ...state,
+          vcs: arraySplice(state.vcs, state.selectedVC, {
+            ...state.vcs[state.selectedVC],
+            inputWatch: '',
+            inputWatchError: String(e)
+          })
+        };
+      }
     }
     case 'REMOVE_WATCH': {
       const { index } = action;
@@ -709,7 +843,19 @@ export function reduce (state: AppState, action: BaseAction): AppState {
         userStudy: {
           ...state.userStudy,
           currentStep: next,
-          showModal: true
+          showModal: true,
+          experiment1Time:
+            state.userStudy.currentStep === UserStudyStep.EXPERIMENT_1 && state.userStudy.experiment1Time !== undefined
+              ? Date.now() - state.userStudy.experiment1Time
+              : state.userStudy.experiment1Time,
+          experiment2Time:
+            state.userStudy.currentStep === UserStudyStep.EXPERIMENT_2 && state.userStudy.experiment2Time !== undefined
+              ? Date.now() - state.userStudy.experiment2Time
+              : state.userStudy.experiment2Time,
+          experiment3Time:
+            state.userStudy.currentStep === UserStudyStep.EXPERIMENT_3 && state.userStudy.experiment3Time !== undefined
+              ? Date.now() - state.userStudy.experiment3Time
+              : state.userStudy.experiment3Time
         },
         selectedLine: undefined,
         sourceCode: sourceForUserStudy(next),
@@ -724,7 +870,13 @@ export function reduce (state: AppState, action: BaseAction): AppState {
         ...state,
         userStudy: {
           ...state.userStudy,
-          showModal: false
+          showModal: false,
+          experiment1Time:
+            state.userStudy.currentStep === UserStudyStep.EXPERIMENT_1 ? Date.now() : state.userStudy.experiment1Time,
+          experiment2Time:
+            state.userStudy.currentStep === UserStudyStep.EXPERIMENT_2 ? Date.now() : state.userStudy.experiment2Time,
+          experiment3Time:
+            state.userStudy.currentStep === UserStudyStep.EXPERIMENT_3 ? Date.now() : state.userStudy.experiment3Time
         }
       };
     }
