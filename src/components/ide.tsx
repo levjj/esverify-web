@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Message, formatMessage, SourceLocation } from 'esverify';
 import { Annotation } from 'react-ace';
-import SplitPane from 'react-split-pane';
+import * as SplitPane from 'react-split-pane';
 import { AppState, Action, verify, verificationInProgress, availableVerificationConditions,
          InteractiveVC, currentVC, currentIVC} from '../app';
 import ExampleDropDown from './example_dropdown';
@@ -70,6 +70,7 @@ export default function IDE ({ enableExampleSelect, enableVerification, enableSo
     ? vc.callstack()[ivc.selectedFrame][1]
     : undefined;
   return (
+    // @ts-ignore bug in split-pane typescript declarations
     <SplitPane split='vertical' defaultSize='60%' style={{ height: '90vh' }}
                className={large ? 'container grid-xl' : 'container grid-lg'}>
       <div>
