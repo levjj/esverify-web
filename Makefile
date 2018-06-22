@@ -1,6 +1,6 @@
 pages := $(patsubst public/%.html,build/%.html,$(wildcard public/*.html))
 
-default: clean site
+default: clean prod
 
 clean:
 	rm -rf node_modules public/index.html build esverify site.tar.gz
@@ -30,7 +30,7 @@ build/style.css: node_modules
 build/app.js: node_modules esverify
 	npm run prod
 
-dev: node_modules esverify $(pages) build/style.css
+dev: build/index.html node_modules esverify $(pages) build/style.css
 	npm run dev
 	npm run serve
 
