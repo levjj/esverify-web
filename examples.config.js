@@ -1,4 +1,4 @@
 module.exports = {
-  path: "../esverify/examples/",
+  path: "./esverify/examples/",
   filter: /\.js$/
 };
