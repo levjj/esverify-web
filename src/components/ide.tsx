@@ -71,7 +71,7 @@ export default function IDE ({ enableExampleSelect, enableVerification, enableSo
     : undefined;
   return (
     // @ts-ignore bug in split-pane typescript declarations
-    <SplitPane split='vertical' defaultSize='60%' style={{ height: '90vh' }}
+    <SplitPane split='vertical' defaultSize='60%' style={{ height: '80vh' }}
                className={large ? 'container grid-xl' : 'container grid-lg'}>
       <div>
         <div className='p-2'>
