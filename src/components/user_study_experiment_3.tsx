@@ -25,7 +25,8 @@ export default function UserStudyExperiment3 ({ state, dispatch }: Props) {
           </div>
           <div className='modal-body'>
             <div className='content'>
-              <p>Given the number of minutes until midnight,
+              <p>This is the third and final experiment of this user study.</p>
+              <p>Given the number of minutes since midnight,
                  you should return time in a 24-hour digital clock format.</p>
               <p>There are two bugs in provided example.</p>
               <p>You can use verification inspector and the editor counterexample popups.</p>
