@@ -33,9 +33,6 @@ export enum UserStudyStep {
 export type UserStudyState = Readonly<{
   currentStep: UserStudyStep;
   showModal: boolean;
-  experiment1Time: number | undefined;
-  experiment2Time: number | undefined;
-  experiment3Time: number | undefined;
 }>;
 
 export type AppState = Readonly<{
@@ -100,10 +97,7 @@ export function initialState (): AppState {
     showSourceAnnotations: true,
     userStudy: {
       currentStep: UserStudyStep.TUTORIAL_1,
-      showModal: true,
-      experiment1Time: undefined,
-      experiment2Time: undefined,
-      experiment3Time: undefined
+      showModal: true
     }
   };
 }
@@ -843,19 +837,7 @@ export function reduce (state: AppState, action: BaseAction): AppState {
         userStudy: {
           ...state.userStudy,
           currentStep: next,
-          showModal: true,
-          experiment1Time:
-            state.userStudy.currentStep === UserStudyStep.EXPERIMENT_1 && state.userStudy.experiment1Time !== undefined
-              ? Date.now() - state.userStudy.experiment1Time
-              : state.userStudy.experiment1Time,
-          experiment2Time:
-            state.userStudy.currentStep === UserStudyStep.EXPERIMENT_2 && state.userStudy.experiment2Time !== undefined
-              ? Date.now() - state.userStudy.experiment2Time
-              : state.userStudy.experiment2Time,
-          experiment3Time:
-            state.userStudy.currentStep === UserStudyStep.EXPERIMENT_3 && state.userStudy.experiment3Time !== undefined
-              ? Date.now() - state.userStudy.experiment3Time
-              : state.userStudy.experiment3Time
+          showModal: true
         },
         selectedLine: undefined,
         sourceCode: sourceForUserStudy(next),
@@ -870,13 +852,7 @@ export function reduce (state: AppState, action: BaseAction): AppState {
         ...state,
         userStudy: {
           ...state.userStudy,
-          showModal: false,
-          experiment1Time:
-            state.userStudy.currentStep === UserStudyStep.EXPERIMENT_1 ? Date.now() : state.userStudy.experiment1Time,
-          experiment2Time:
-            state.userStudy.currentStep === UserStudyStep.EXPERIMENT_2 ? Date.now() : state.userStudy.experiment2Time,
-          experiment3Time:
-            state.userStudy.currentStep === UserStudyStep.EXPERIMENT_3 ? Date.now() : state.userStudy.experiment3Time
+          showModal: false
         }
       };
     }
