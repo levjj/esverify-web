@@ -31,7 +31,7 @@ export default function UserStudySteps ({ step }: Props) {
             <img src='/logo.png' alt='esverify' />
           </a>
         </h1>
-        <h5 style={{ width: '10rem' }}>User Study</h5>
+        <h5 style={{ width: '10rem' }}><a href='/userstudy'>User Study</a></h5>
         <ul className='step'>
           <li className='step-item'>
             <a className='tooltip tooltip-bottom'

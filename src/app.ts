@@ -490,6 +490,7 @@ function factorial(n) {
 // Roll a six-sided dice
 function rollDice () {
   // missing annotations
+  // ensures(res => ...);
 
   return Math.trunc(Math.random() * 6) + 1;
 }

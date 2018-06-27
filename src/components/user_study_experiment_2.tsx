@@ -47,7 +47,9 @@ export default function UserStudyExperiment2 ({ state, dispatch }: Props) {
           </div>
           <div className='card-body'>
             <ol>
-              <li>Add missing postconditions in order to verify the assertions.</li>
+              <li>
+                Add missing postconditions with <code>ensures(res => ...);</code> in order to verify the assertions.
+              </li>
               <li>You can verify code but there is no verification inspector.</li>
               <li>Click 'Next' if you fixed the example or if you want to move to the next experiment.</li>
             </ol>
