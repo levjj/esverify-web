@@ -28,7 +28,8 @@ export default function UserStudyExperiment3 ({ state, dispatch }: Props) {
               <p>This is the third and final experiment of this user study.</p>
               <p>Given the number of minutes since midnight,
                  you should return time in a 24-hour digital clock format.</p>
-              <p>There are two bugs in provided example.</p>
+              <p>You need to add an additional precondition and change the returned value.
+                 (Hint: <code>Math.trunc</code> rounds a number down to an integer.)</p>
               <p>You can use verification inspector and the editor counterexample popups.</p>
               <p>Click 'Next' if you fixed the example or if you want to move to the next experiment.</p>
             </div>
@@ -48,8 +49,8 @@ export default function UserStudyExperiment3 ({ state, dispatch }: Props) {
           </div>
           <div className='card-body'>
             <ol>
-              <li>There are two bugs in provided example.</li>
-              <li>Change the precondition, the implementation or both.</li>
+              <li>You need to add an additional precondition and change the returned value.
+                 (Hint: <code>Math.trunc</code> rounds a number down to an integer.)</li>
               <li>You can use verification inspector and the editor counterexample popups.</li>
               <li>Click 'Next' if you fixed the example or if you want to move to the next experiment.</li>
             </ol>

@@ -26,8 +26,8 @@ export default function UserStudyExperiment2 ({ state, dispatch }: Props) {
           <div className='modal-body'>
             <div className='content'>
               <p>This experiment involves an function for rolling a six-sided dice.</p>
-              <p>A correct implementation is given and the following assertions should be verifiable but
-                 important annotations are missing.</p>
+              <p>A correct implementation is given and the following assertions should be verifiable
+                 but the postconditions are missing.</p>
               <p>The verification inspector is not available.</p>
               <p>Click 'Next' if you fixed the example or if you want to move to the next experiment.</p>
             </div>
@@ -47,7 +47,7 @@ export default function UserStudyExperiment2 ({ state, dispatch }: Props) {
           </div>
           <div className='card-body'>
             <ol>
-              <li>Add missing annotations in order to verify the assertions.</li>
+              <li>Add missing postconditions in order to verify the assertions.</li>
               <li>You can verify code but there is no verification inspector.</li>
               <li>Click 'Next' if you fixed the example or if you want to move to the next experiment.</li>
             </ol>

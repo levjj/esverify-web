@@ -25,7 +25,7 @@ export default function UserStudyTutorial2 ({ state, dispatch }: Props) {
           </div>
           <div className='modal-body'>
             <div className='content'>
-              <p><code>esverify</code> extends JavaScript with special syntax to annotate functions with
+              <p><b>esverify</b> extends JavaScript with special syntax to annotate functions with
                   pre- and postconditions.</p>
               <p>These are written as pseudo function calls that are skipped during evaluation.</p>
               <p>The following example includes an incorrect <code>max</code> function that

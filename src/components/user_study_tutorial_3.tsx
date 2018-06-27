@@ -27,12 +27,12 @@ export default function UserStudyTutorial3 ({ state, dispatch }: Props) {
             <div className='content'>
               <p>The following example includes a <code>max</code> function with missing preconditions.</p>
               <p>
-                To better understand the problem, the esverify programming environment includes an interactive
+                To better understand the problem, the <b>esverify</b> programming environment includes an interactive
                 inspector for verification conditions that explains assumptions, assertions and counter examples
                 if available.
               </p>
               <p>
-                This inspector also allows interactive edits of assumptions and assertions.
+                This inspector also allows interactively adding assumptions and assertions.
               </p>
             </div>
           </div>
@@ -58,14 +58,14 @@ export default function UserStudyTutorial3 ({ state, dispatch }: Props) {
                   verify all assertions in the code.</li>
               <li>Click on the yellow triangle in front of line 4 to select the verification condition.</li>
               <li>The panel on the right lists assumptions and assertions and the editor shows
-                  values for the counterexample as popup markers which can also be disabled below.</li>
+                  values for the counterexample as popup markers.</li>
               <li>
                 According to the editor popups, the postcondition does not hold if the arguments are not numbers.
                 Check this hypothesis by entering <code>typeof a === 'number'</code> next to 'Assume:'
                 and confirm this with by pressing the enter/return key.
               </li>
               <li>
-                Also add the assumption <code>typeof a === 'number'</code>.
+                Also add the assumption <code>typeof b === 'number'</code>.
               </li>
               <li>
                  With these assumptions, the postcondition can be verified.

@@ -65,8 +65,9 @@ export default function UserStudyTutorial4 ({ state, dispatch }: Props) {
               <li>It seems the function returns <code>undefined</code>.</li>
               <li>To see the control flow, step through the code by clicking
                   <span className='label label-primary'>Restart</span> and then
-                  clicking <span className='label label-primary'>Step Into</span> about nine times.</li>
-              <li>It seems none of the two <code>if</code> statements returned a value.</li>
+                  clicking <span className='label label-primary'>Step Into</span> about eight times.</li>
+              <li>It seems none of the two <code>if</code> statements returned a value
+                  when stepping through the code with this counterexample.</li>
             </ol>
           </div>
           <div className='card-footer clearfix'>

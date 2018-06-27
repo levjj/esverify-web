@@ -25,8 +25,8 @@ export default function UserStudyTutorial1 ({ state, dispatch }: Props) {
           </div>
           <div className='modal-body'>
             <div className='content'>
-              <p>This user study involves interactions with a programming environments.</p>
-              <p>The source code can be edited direclty and the resulting program evaluated.</p>
+              <p>This user study involves interactions with a programming environment.</p>
+              <p>The source code can be edited directly and the program can be executed in the browser.</p>
               <p>Test the editor by fixing the JavaScript program such that it computes the correct
                  area of a rectangle.</p>
             </div>
@@ -50,7 +50,7 @@ export default function UserStudyTutorial1 ({ state, dispatch }: Props) {
           <div className='card-body'>
             <ol>
               <li>Click the <span className='label label-primary'>run</span>
-                  button to see that it returns the wrong result.</li>
+                  button to see the result of the computation.</li>
               <li>Change the source code to compute the correct area of an rectangle.</li>
               <li>Click the <span className='label label-primary'>run</span> button again to test the code.</li>
             </ol>

@@ -26,7 +26,8 @@ export default function UserStudyExperiment1 ({ state, dispatch }: Props) {
           <div className='modal-body'>
             <div className='content'>
               <p>This first experiment involves an incorrect factorial function.</p>
-              <p>This example can either be fixed by changing the precondition or by changing the implementation.</p>
+              <p>This example can either be fixed by adding a stronger precondition or
+                 by changing the <code>if</code> statement.</p>
               <p>You can use verification inspector and the integrated counterexample debugger.</p>
               <p>Click 'Next' if you fixed the example or if you want to move to the next experiment.</p>
             </div>
@@ -46,7 +47,8 @@ export default function UserStudyExperiment1 ({ state, dispatch }: Props) {
           </div>
           <div className='card-body'>
             <ol>
-              <li>Change the precondition, the implementation or both.</li>
+              <li>This example can either be fixed by adding a stronger precondition or
+                 by changing the <code>if</code> statement.</li>
               <li>You can use verification inspector and the integrated counterexample debugger.</li>
               <li>Click 'Next' if you fixed the example or if you want to move to the next experiment.</li>
             </ol>
