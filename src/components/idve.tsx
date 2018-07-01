@@ -54,7 +54,7 @@ function vcAsAnnotation (vc: InteractiveVC): Annotation {
   }
 }
 
-export default function IDE ({ enableExampleSelect, enableVerification, enableSourceAnnotations, enableVCPanel,
+export default function IDVE ({ enableExampleSelect, enableVerification, enableSourceAnnotations, enableVCPanel,
                                enableDebugger, enableRunning, large, state, dispatch }: Props) {
   const annotations: Array<Annotation> = state.message !== undefined
     ? [messageAsAnnotation(state.message)]
@@ -91,7 +91,7 @@ export default function IDE ({ enableExampleSelect, enableVerification, enableSo
                 className='btn btn-primary'
                 onClick={() => dispatch({ type: 'RUN_CODE' })}>run</button> : ''}
           </div>
-          <h4 className='my-2'>Interactive Verification Environment</h4>
+          <h4 className='my-2'>IDVE: Interactive Development and Verification Environment</h4>
         </div>
         <Editor
           annotations={annotations}

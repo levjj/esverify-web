@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 
 import { AppState, Action, reduce, initialState, init } from './app';
 import Try from './components/try';
-import IDE from './components/ide';
+import IDVE from './components/idve';
 import UserStudySteps from './components/user_study_steps';
 import UserStudy from './components/user_study';
 
@@ -24,9 +24,11 @@ function dispatch (action: Action) {
 }
 
 function render () {
-  if (window.location.pathname.endsWith('/try')) {
+  if (window.location.pathname.endsWith('/idve')) {
     ReactDOM.render(
-      <Try state={state} dispatch={dispatch} />,
+      <IDVE state={state} dispatch={dispatch} enableDebugger={true} enableExampleSelect={true}
+           enableSourceAnnotations={true} enableVCPanel={true} enableVerification={true}
+           large={true} enableRunning={true} />,
       document.getElementById('root')
     );
   } else if (window.location.pathname.endsWith('/userstudy-experiments')) {
@@ -40,9 +42,7 @@ function render () {
     );
   } else {
     ReactDOM.render(
-      <IDE state={state} dispatch={dispatch} enableDebugger={true} enableExampleSelect={true}
-           enableSourceAnnotations={true} enableVCPanel={true} enableVerification={true}
-           large={true} enableRunning={true} />,
+      <Try state={state} dispatch={dispatch} />,
       document.getElementById('root')
     );
   }

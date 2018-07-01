@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { AppState, Action } from '../app';
-import IDE from './ide';
+import IDVE from './idve';
 
 export interface Props {
   state: AppState;
@@ -10,7 +10,7 @@ export interface Props {
 export default function UserStudyExperiment3 ({ state, dispatch }: Props) {
   return (
     <div>
-      <IDE state={state} dispatch={dispatch} enableDebugger={false} enableExampleSelect={false}
+      <IDVE state={state} dispatch={dispatch} enableDebugger={false} enableExampleSelect={false}
            enableSourceAnnotations={true} enableVCPanel={true} enableVerification={true}
            large={false} enableRunning={false} />
       <div className={state.userStudy.showModal ? 'modal active' : 'modal'}>
