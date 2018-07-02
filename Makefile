@@ -18,7 +18,7 @@ build:
 	mkdir build
 	cp static/* build
 
-build/ide.html: public/ide.html build
+build/idve.html: public/idve.html build
 	head -n -1 templates/header.html | sed s/grid-lg/grid-xl/ | cat - $< templates/footer.html > $@
 
 build/%.html: public/%.html build
