@@ -26,8 +26,7 @@ export enum UserStudyStep {
   TUTORIAL_4,
   EXPERIMENT_1,
   EXPERIMENT_2,
-  EXPERIMENT_3,
-  SURVEY
+  EXPERIMENT_3
 }
 
 export type UserStudyState = Readonly<{
@@ -412,8 +411,7 @@ function userStudyNextStep (step: UserStudyStep): UserStudyStep {
     case UserStudyStep.TUTORIAL_4: return UserStudyStep.EXPERIMENT_1;
     case UserStudyStep.EXPERIMENT_1: return UserStudyStep.EXPERIMENT_2;
     case UserStudyStep.EXPERIMENT_2: return UserStudyStep.EXPERIMENT_3;
-    case UserStudyStep.EXPERIMENT_3: return UserStudyStep.SURVEY;
-    case UserStudyStep.SURVEY: return UserStudyStep.SURVEY;
+    case UserStudyStep.EXPERIMENT_3: return UserStudyStep.EXPERIMENT_3;
   }
 }
 
@@ -518,8 +516,6 @@ function clock_24 (min) {
     m: min % 60
   };
 }`;
-    case UserStudyStep.SURVEY:
-      return '';
   }
 }
 

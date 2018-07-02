@@ -18,10 +18,6 @@ function isExperiment (step: UserStudyStep): boolean {
          step === UserStudyStep.EXPERIMENT_3;
 }
 
-function isSurvey (step: UserStudyStep): boolean {
-  return step === UserStudyStep.SURVEY;
-}
-
 export default function UserStudySteps ({ step }: Props) {
   return (
     <nav className='navbar container grid-lg'>
@@ -49,7 +45,7 @@ export default function UserStudySteps ({ step }: Props) {
             <a className='tooltip tooltip-bottom'
                data-tooltip='Programming tasks'>Experiments</a>
           </li>
-          <li className={isSurvey(step) ? 'step-item active' : 'step-item'}>
+          <li className='step-item'>
             <a className='tooltip tooltip-bottom'
                data-tooltip='Questionnaire about programming with esverify'>Survey</a>
           </li>

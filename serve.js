@@ -3,8 +3,11 @@ const express = require('express');
 
 const app = express();
 
-const pages = ['try', 'idve', 'userstudy', 'userstudy-consent', 'userstudy-experiments', 'userstudy-done'];
+const pages = ['try', 'idve', 'userstudy-archived', 'userstudy-experiments', 'userstudy-done'];
 
+app.get(`/userstudy`, (req, res) => {
+  res.redirect(301, '/userstudy-archived');
+});
 pages.forEach(page => {
   app.use(`/${page}`, (req, res, next) => {
     req.url = req.url + '.html';

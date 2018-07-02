@@ -56,10 +56,9 @@ export default function UserStudyExperiment3 ({ state, dispatch }: Props) {
             </ol>
           </div>
           <div className='card-footer clearfix'>
-            <button className='btn btn-primary float-right'
-                    onClick={() => dispatch({ type: 'USER_STUDY_NEXT' })}>
+            <a href='/userstudy-done' className='btn btn-primary float-right'>
               Next
-            </button>
+            </a>
           </div>
         </div>
       </div>

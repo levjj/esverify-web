@@ -7,7 +7,6 @@ import UserStudyTutorial4 from './user_study_tutorial_4';
 import UserStudyExperiment1 from './user_study_experiment_1';
 import UserStudyExperiment2 from './user_study_experiment_2';
 import UserStudyExperiment3 from './user_study_experiment_3';
-import UserStudySurvey from './user_study_survey';
 
 export interface Props {
   state: AppState;
@@ -27,9 +26,7 @@ export default function UserStudy ({ state, dispatch }: Props) {
     return (<UserStudyExperiment1 state={state} dispatch={dispatch} />);
   } else if (state.userStudy.currentStep === UserStudyStep.EXPERIMENT_2) {
     return (<UserStudyExperiment2 state={state} dispatch={dispatch} />);
-  } else if (state.userStudy.currentStep === UserStudyStep.EXPERIMENT_3) {
-    return (<UserStudyExperiment3 state={state} dispatch={dispatch} />);
   } else {
-    return (<UserStudySurvey state={state} />);
+    return (<UserStudyExperiment3 state={state} dispatch={dispatch} />);
   }
 }
