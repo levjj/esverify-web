@@ -8,6 +8,7 @@ import { AppState, Action, verify, verificationInProgress, InteractiveVC } from 
 import ExampleDropDown from './example_dropdown';
 
 export interface Props {
+  embed: boolean;
   state: AppState;
   dispatch: (action: Action) => void;
 }
@@ -46,27 +47,41 @@ function vcAsAnnotation (vc: InteractiveVC): Annotation {
   }
 }
 
-export default function Try ({ state, dispatch }: Props) {
+function tryHeader (state: AppState, dispatch: (action: Action) => void) {
+  return (<div className='panel-title'>
+    <span className='h4'>Live Demo and Examples</span>
+    <div className='float-right'>
+      <ExampleDropDown selected={state.selected} dispatch={dispatch} />
+      {' '}
+      <button
+        className={(verificationInProgress(state) ? 'loading ' : '') + 'btn btn-primary'}
+        onClick={() => dispatch(verify(state.sourceCode))}>verify</button>
+      {' '}
+      <button
+        className='btn btn-primary'
+        onClick={() => dispatch({ type: 'RUN_CODE' })}>run</button>
+    </div>
+  </div>);
+}
+
+function embedHeader (state: AppState, dispatch: (action: Action) => void) {
+  return (<div className='panel-title'>
+    <div className='float-right'>
+      <button
+        className={(verificationInProgress(state) ? 'loading ' : '') + 'btn btn-lg btn-primary'}
+        onClick={() => dispatch(verify(state.sourceCode))}>verify</button>
+    </div>
+  </div>);
+}
+
+export default function Try ({ embed, state, dispatch }: Props) {
   const annotations: Array<Annotation> = state.message !== undefined
     ? [messageAsAnnotation(state.message)]
     : state.vcs.map(vcAsAnnotation);
   return (
     <div className='panel'>
       <div className='panel-header'>
-        <div className='panel-title'>
-          <span className='h4'>Live Demo and Examples</span>
-          <div className='float-right'>
-            <ExampleDropDown selected={state.selected} dispatch={dispatch} />
-            {' '}
-            <button
-              className={(verificationInProgress(state) ? 'loading ' : '') + 'btn btn-primary'}
-              onClick={() => dispatch(verify(state.sourceCode))}>verify</button>
-            {' '}
-            <button
-              className='btn btn-primary'
-              onClick={() => dispatch({ type: 'RUN_CODE' })}>run</button>
-          </div>
-        </div>
+        {embed ? embedHeader(state, dispatch) : tryHeader(state, dispatch)}
       </div>
       <div className='panel-body'>
         <AceEditor

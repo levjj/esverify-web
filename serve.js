@@ -3,7 +3,7 @@ const express = require('express');
 
 const app = express();
 
-const pages = ['try', 'idve', 'userstudy-archived', 'userstudy-experiments', 'userstudy-done'];
+const pages = ['try', 'idve', 'userstudy-archived', 'userstudy-experiments', 'userstudy-done', 'embed'];
 
 app.get(`/userstudy`, (req, res) => {
   res.redirect(301, '/userstudy-archived');

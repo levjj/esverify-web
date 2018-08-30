@@ -40,9 +40,14 @@ function render () {
       <UserStudy state={state} dispatch={dispatch} />,
       document.getElementById('root')
     );
+  } else if (window.location.pathname.endsWith('/embed')) {
+    ReactDOM.render(
+      <Try embed={true} state={state} dispatch={dispatch} />,
+      document.getElementById('root')
+    );
   } else {
     ReactDOM.render(
-      <Try state={state} dispatch={dispatch} />,
+      <Try embed={false} state={state} dispatch={dispatch} />,
       document.getElementById('root')
     );
   }
