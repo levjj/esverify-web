@@ -68,6 +68,10 @@ function embedHeader (state: AppState, dispatch: (action: Action) => void) {
   return (<div className='panel-title'>
     <div className='float-right'>
       <button
+        className='btn btn-lg btn-primary'
+        onClick={() => dispatch({ type: 'RUN_CODE' })}>run</button>
+      {' '}
+      <button
         className={(verificationInProgress(state) ? 'loading ' : '') + 'btn btn-lg btn-primary'}
         onClick={() => dispatch(verify(state.sourceCode))}>verify</button>
     </div>
