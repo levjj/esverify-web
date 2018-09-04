@@ -5,7 +5,6 @@ import 'brace/mode/javascript';
 import 'brace/theme/chrome';
 import { Message, formatMessage } from 'esverify';
 import { AppState, Action, verify, verificationInProgress, InteractiveVC } from '../app';
-import ExampleDropDown from './example_dropdown';
 
 export interface Props {
   state: AppState;
@@ -46,43 +45,34 @@ function vcAsAnnotation (vc: InteractiveVC): Annotation {
   }
 }
 
-export default function Try ({ state, dispatch }: Props) {
+export default function Embed ({ state, dispatch }: Props) {
   const annotations: Array<Annotation> = state.message !== undefined
     ? [messageAsAnnotation(state.message)]
     : state.vcs.map(vcAsAnnotation);
   return (
-    <div className='panel'>
-      <div className='panel-header'>
-        <div className='panel-title'>
-          <span className='h4'>Live Demo and Examples</span>
-          <div className='float-right'>
-            <ExampleDropDown selected={state.selected} dispatch={dispatch} />
-            {' '}
-            <button
-              className={(verificationInProgress(state) ? 'loading ' : '') + 'btn btn-primary'}
-              onClick={() => dispatch(verify(state.sourceCode))}>verify</button>
-            {' '}
-            <button
-              className='btn btn-primary'
-              onClick={() => dispatch({ type: 'RUN_CODE' })}>run</button>
-          </div>
-        </div>
+    <div>
+      <div className='float-right'>
+        <button
+          className='btn btn-lg btn-primary'
+          onClick={() => dispatch({ type: 'RUN_CODE' })}>run</button>
+        {' '}
+        <button
+          className={(verificationInProgress(state) ? 'loading ' : '') + 'btn btn-lg btn-primary'}
+          onClick={() => dispatch(verify(state.sourceCode))}>verify</button>
       </div>
-      <div className='panel-body'>
-        <AceEditor
-          style={{ width: '100%', height: '65vh' }}
-          mode='javascript'
-          theme='chrome'
-          showPrintMargin={false}
-          setOptions={{
-            fontFamily: 'Fira Code',
-            fontSize: '12pt'
-          }}
-          annotations={annotations}
-          onChange={newSource => dispatch({ type: 'CHANGE_SOURCE', newSource })}
-          value={state.sourceCode}
-        />
-      </div>
+      <AceEditor
+        style={{ width: '100%', height: '65vh' }}
+        mode='javascript'
+        theme='chrome'
+        showPrintMargin={false}
+        setOptions={{
+          fontFamily: 'Fira Code',
+          fontSize: '12pt'
+        }}
+        annotations={annotations}
+        onChange={newSource => dispatch({ type: 'CHANGE_SOURCE', newSource })}
+        value={state.sourceCode}
+      />
     </div>
   );
 }

@@ -2,8 +2,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import { AppState, Action, reduce, initialState, init } from './app';
-import Try from './components/try';
+import Embed from './components/embed';
 import IDVE from './components/idve';
+import Try from './components/try';
 import UserStudySteps from './components/user_study_steps';
 import UserStudy from './components/user_study';
 
@@ -42,12 +43,12 @@ function render () {
     );
   } else if (window.location.pathname.endsWith('/embed')) {
     ReactDOM.render(
-      <Try embed={true} state={state} dispatch={dispatch} />,
+      <Embed state={state} dispatch={dispatch} />,
       document.getElementById('root')
     );
   } else {
     ReactDOM.render(
-      <Try embed={false} state={state} dispatch={dispatch} />,
+      <Try state={state} dispatch={dispatch} />,
       document.getElementById('root')
     );
   }
