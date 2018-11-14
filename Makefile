@@ -14,9 +14,10 @@ public/index.html: esverify
 node_modules:
 	npm install
 
-build:
+build: node_modules
 	mkdir build
 	cp static/* build
+	cp node_modules/tocbot/dist/tocbot.min.js build
 
 build/idve.html: public/idve.html build
 	head -n -1 templates/header.html | sed s/grid-lg/grid-xl/ | cat - $< templates/footer.html > $@

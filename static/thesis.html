@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en-us">
+<head>
+  <meta charSet="utf-8" />
+  <title>Towards Live Programming Environments for Statically Verified JavaScript (Interactive Thesis)</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto|EB+Garamond&subset=latin,greek" rel="stylesheet" type="text/css">
+  <link href="https://cdn.rawgit.com/tonsky/FiraCode/1.205/distr/fira_code.css" rel="stylesheet" type="text/css">
+  <link href="/style.css" rel="stylesheet" type="text/css">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+  <header>
+    <nav class="navbar container grid-md">
+      <div class="navbar-section">
+        <h1><a href="/"><img src="/logo.png" alt="esverify"></a></h1>
+        <a href="/try" class="btn btn-link">Try It Out!</a>
+        <a href="https://github.com/levjj/esverify" class="btn btn-link">GitHub↗</a>
+      </div>
+      <div class="navbar-section">
+      </div>
+    </nav>
+  </header>
+
+<div class="container grid-md">
+    <section class="thesis">
+
+<h1>Towards Live Programming Environments for Statically Verified JavaScript</h1>
+
+<p>
+  Lorem ipsum dolor sit amet
+</p>
+
+<h2 id="introduction">Introduction</h2>
+
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod finibus neque, eget dictum lacus tempor id. Mauris vulputate imperdiet sapien vitae sodales. Aliquam sit amet finibus eros, ut viverra urna. Integer aliquet, dui sit amet malesuada tempus, leo massa molestie nulla, sed rhoncus felis massa quis dui. Sed magna turpis, iaculis vel neque at, finibus commodo turpis. Curabitur malesuada, enim non faucibus pharetra, nisi leo dignissim ante, ac volutpat enim odio vel eros. Duis viverra quam ut posuere auctor. Donec eget dolor felis. Ut orci dui, mollis nec consectetur id, pellentesque ac tortor. Etiam posuere nulla libero, ac luctus quam commodo ut.
+</p>
+
+<div>
+  <blockquote>
+    <p>In JavaScript, there is a beautiful, elegant, highly expressive language
+       that is buried under a steaming pile of good intentions and blunders.</p>
+    <cite>– Douglas Crockford, JavaScript: The Good Parts</cite>
+  </blockquote>
+</div>
+
+<p>
+  Sed dapibus iaculis ex, ut accumsan sapien. Donec volutpat malesuada sollicitudin. Nam scelerisque laoreet tortor, ut molestie lectus fringilla in. Vestibulum arcu quam, viverra ac auctor ut, pulvinar ut eros. Sed pulvinar arcu quis risus bibendum, sed fermentum tellus mattis. Proin a leo mattis, finibus mauris posuere, eleifend erat. Integer sollicitudin fermentum mauris, vitae tristique metus elementum sed. Proin ligula magna, finibus eu erat vel, bibendum finibus justo. Praesent pharetra diam ut mollis consectetur.
+</p>
+
+<p>
+  Phasellus pulvinar nisi in magna dapibus, a commodo nibh luctus. Etiam fringilla ut eros vitae venenatis. Donec id tempor ante, eu molestie justo. Etiam sed ornare ipsum. Duis consectetur interdum ipsum a mattis. Donec lobortis lobortis lacus vitae placerat. In hac habitasse platea dictumst. Etiam sed nulla elit. Donec eget magna quis leo vehicula auctor efficitur nec ante. Sed scelerisque lectus eu lacus vestibulum dignissim. 
+</p>
+
+<h2 id="liveprogramming">Live Programming Environments for JavaScript</h2>
+
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod finibus neque, eget dictum lacus tempor id. Mauris vulputate imperdiet sapien vitae sodales. Aliquam sit amet finibus eros, ut viverra urna. Integer aliquet, dui sit amet malesuada tempus, leo massa molestie nulla, sed rhoncus felis massa quis dui. Sed magna turpis, iaculis vel neque at, finibus commodo turpis. Curabitur malesuada, enim non faucibus pharetra, nisi leo dignissim ante, ac volutpat enim odio vel eros. Duis viverra quam ut posuere auctor. Donec eget dolor felis. Ut orci dui, mollis nec consectetur id, pellentesque ac tortor. Etiam posuere nulla libero, ac luctus quam commodo ut.
+</p>
+
+<p>
+  Sed dapibus iaculis ex, ut accumsan sapien. Donec volutpat malesuada sollicitudin. Nam scelerisque laoreet tortor, ut molestie lectus fringilla in. Vestibulum arcu quam, viverra ac auctor ut, pulvinar ut eros. Sed pulvinar arcu quis risus bibendum, sed fermentum tellus mattis. Proin a leo mattis, finibus mauris posuere, eleifend erat. Integer sollicitudin fermentum mauris, vitae tristique metus elementum sed. Proin ligula magna, finibus eu erat vel, bibendum finibus justo. Praesent pharetra diam ut mollis consectetur.
+</p>
+
+<p>
+  Phasellus pulvinar nisi in magna dapibus, a commodo nibh luctus. Etiam fringilla ut eros vitae venenatis. Donec id tempor ante, eu molestie justo. Etiam sed ornare ipsum. Duis consectetur interdum ipsum a mattis. Donec lobortis lobortis lacus vitae placerat. In hac habitasse platea dictumst. Etiam sed nulla elit. Donec eget magna quis leo vehicula auctor efficitur nec ante. Sed scelerisque lectus eu lacus vestibulum dignissim. 
+</p>
+
+<h2 id="esverify">Program Verification for JavaScript</h2>
+
+<h3 id="esverify-example">Example</h3>
+
+<pre><code class="javascript">function max(a, b) {
+  requires(typeof(a)=="number");
+  requires(typeof(b)=="number");
+  ensures(result => result &gt;= a);
+
+  if (a &gt; b) {
+    return a;
+  } else {
+    return b;
+  }
+}
+</code></pre>
+  
+<div class="card">
+  <div class="card-image">
+  \[ \forall a \forall b.~\texttt{typeof}(a) = ``number'' ~ \wedge ~ \texttt{typeof}(b) = ``number'' \]
+  \[ \wedge ~ a &gt; b~\Rightarrow~result\negmedspace=\negmedspace a
+     \wedge ~ \lnot (a &gt; b)~\Rightarrow~result\negmedspace=\negmedspace b \]
+  \[ \Longrightarrow result \ge a \]
+  </div>
+</div>
+
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod finibus neque, eget dictum lacus tempor id. Mauris vulputate imperdiet sapien vitae sodales. Aliquam sit amet finibus eros, ut viverra urna. Integer aliquet, dui sit amet malesuada tempus, leo massa molestie nulla, sed rhoncus felis massa quis dui. Sed magna turpis, iaculis vel neque at, finibus commodo turpis. Curabitur malesuada, enim non faucibus pharetra, nisi leo dignissim ante, ac volutpat enim odio vel eros. Duis viverra quam ut posuere auctor. Donec eget dolor felis. Ut orci dui, mollis nec consectetur id, pellentesque ac tortor. Etiam posuere nulla libero, ac luctus quam commodo ut.
+</p>
+
+<h3 id="esverify-advanced">Advanced Features</h3>
+
+<iframe style="width: 100%; border: 0" src="/embed" seamless="seamless">
+</iframe>
+
+<p>
+  Sed dapibus iaculis ex, ut accumsan sapien. Donec volutpat malesuada sollicitudin. Nam scelerisque laoreet tortor, ut molestie lectus fringilla in. Vestibulum arcu quam, viverra ac auctor ut, pulvinar ut eros. Sed pulvinar arcu quis risus bibendum, sed fermentum tellus mattis. Proin a leo mattis, finibus mauris posuere, eleifend erat. Integer sollicitudin fermentum mauris, vitae tristique metus elementum sed. Proin ligula magna, finibus eu erat vel, bibendum finibus justo. Praesent pharetra diam ut mollis consectetur.
+</p>
+
+<p>
+  Phasellus pulvinar nisi in magna dapibus, a commodo nibh luctus. Etiam fringilla ut eros vitae venenatis. Donec id tempor ante, eu molestie justo. Etiam sed ornare ipsum. Duis consectetur interdum ipsum a mattis. Donec lobortis lobortis lacus vitae placerat. In hac habitasse platea dictumst. Etiam sed nulla elit. Donec eget magna quis leo vehicula auctor efficitur nec ante. Sed scelerisque lectus eu lacus vestibulum dignissim. 
+</p>
+
+<h2 id="formalism">Formal Development of Program Verification with $\lambda^S$</h2>
+
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod finibus neque, eget dictum lacus tempor id. Mauris vulputate imperdiet sapien vitae sodales. Aliquam sit amet finibus eros, ut viverra urna. Integer aliquet, dui sit amet malesuada tempus, leo massa molestie nulla, sed rhoncus felis massa quis dui. Sed magna turpis, iaculis vel neque at, finibus commodo turpis. Curabitur malesuada, enim non faucibus pharetra, nisi leo dignissim ante, ac volutpat enim odio vel eros. Duis viverra quam ut posuere auctor. Donec eget dolor felis. Ut orci dui, mollis nec consectetur id, pellentesque ac tortor. Etiam posuere nulla libero, ac luctus quam commodo ut.
+</p>
+
+<p>
+  Sed dapibus iaculis ex, ut accumsan sapien. Donec volutpat malesuada sollicitudin. Nam scelerisque laoreet tortor, ut molestie lectus fringilla in. Vestibulum arcu quam, viverra ac auctor ut, pulvinar ut eros. Sed pulvinar arcu quis risus bibendum, sed fermentum tellus mattis. Proin a leo mattis, finibus mauris posuere, eleifend erat. Integer sollicitudin fermentum mauris, vitae tristique metus elementum sed. Proin ligula magna, finibus eu erat vel, bibendum finibus justo. Praesent pharetra diam ut mollis consectetur.
+</p>
+
+<p>
+  Phasellus pulvinar nisi in magna dapibus, a commodo nibh luctus. Etiam fringilla ut eros vitae venenatis. Donec id tempor ante, eu molestie justo. Etiam sed ornare ipsum. Duis consectetur interdum ipsum a mattis. Donec lobortis lobortis lacus vitae placerat. In hac habitasse platea dictumst. Etiam sed nulla elit. Donec eget magna quis leo vehicula auctor efficitur nec ante. Sed scelerisque lectus eu lacus vestibulum dignissim. 
+</p>
+
+<h2 id="testgen">Automatic Test Generation with Counterexamples</h2>
+
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod finibus neque, eget dictum lacus tempor id. Mauris vulputate imperdiet sapien vitae sodales. Aliquam sit amet finibus eros, ut viverra urna. Integer aliquet, dui sit amet malesuada tempus, leo massa molestie nulla, sed rhoncus felis massa quis dui. Sed magna turpis, iaculis vel neque at, finibus commodo turpis. Curabitur malesuada, enim non faucibus pharetra, nisi leo dignissim ante, ac volutpat enim odio vel eros. Duis viverra quam ut posuere auctor. Donec eget dolor felis. Ut orci dui, mollis nec consectetur id, pellentesque ac tortor. Etiam posuere nulla libero, ac luctus quam commodo ut.
+</p>
+
+<p>
+  Sed dapibus iaculis ex, ut accumsan sapien. Donec volutpat malesuada sollicitudin. Nam scelerisque laoreet tortor, ut molestie lectus fringilla in. Vestibulum arcu quam, viverra ac auctor ut, pulvinar ut eros. Sed pulvinar arcu quis risus bibendum, sed fermentum tellus mattis. Proin a leo mattis, finibus mauris posuere, eleifend erat. Integer sollicitudin fermentum mauris, vitae tristique metus elementum sed. Proin ligula magna, finibus eu erat vel, bibendum finibus justo. Praesent pharetra diam ut mollis consectetur.
+</p>
+
+<p>
+  Phasellus pulvinar nisi in magna dapibus, a commodo nibh luctus. Etiam fringilla ut eros vitae venenatis. Donec id tempor ante, eu molestie justo. Etiam sed ornare ipsum. Duis consectetur interdum ipsum a mattis. Donec lobortis lobortis lacus vitae placerat. In hac habitasse platea dictumst. Etiam sed nulla elit. Donec eget magna quis leo vehicula auctor efficitur nec ante. Sed scelerisque lectus eu lacus vestibulum dignissim. 
+</p>
+
+<h2 id="ide">Integrated Development and Verification Environments</h2>
+
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod finibus neque, eget dictum lacus tempor id. Mauris vulputate imperdiet sapien vitae sodales. Aliquam sit amet finibus eros, ut viverra urna. Integer aliquet, dui sit amet malesuada tempus, leo massa molestie nulla, sed rhoncus felis massa quis dui. Sed magna turpis, iaculis vel neque at, finibus commodo turpis. Curabitur malesuada, enim non faucibus pharetra, nisi leo dignissim ante, ac volutpat enim odio vel eros. Duis viverra quam ut posuere auctor. Donec eget dolor felis. Ut orci dui, mollis nec consectetur id, pellentesque ac tortor. Etiam posuere nulla libero, ac luctus quam commodo ut.
+</p>
+
+<p>
+  Sed dapibus iaculis ex, ut accumsan sapien. Donec volutpat malesuada sollicitudin. Nam scelerisque laoreet tortor, ut molestie lectus fringilla in. Vestibulum arcu quam, viverra ac auctor ut, pulvinar ut eros. Sed pulvinar arcu quis risus bibendum, sed fermentum tellus mattis. Proin a leo mattis, finibus mauris posuere, eleifend erat. Integer sollicitudin fermentum mauris, vitae tristique metus elementum sed. Proin ligula magna, finibus eu erat vel, bibendum finibus justo. Praesent pharetra diam ut mollis consectetur.
+</p>
+
+<p>
+  Phasellus pulvinar nisi in magna dapibus, a commodo nibh luctus. Etiam fringilla ut eros vitae venenatis. Donec id tempor ante, eu molestie justo. Etiam sed ornare ipsum. Duis consectetur interdum ipsum a mattis. Donec lobortis lobortis lacus vitae placerat. In hac habitasse platea dictumst. Etiam sed nulla elit. Donec eget magna quis leo vehicula auctor efficitur nec ante. Sed scelerisque lectus eu lacus vestibulum dignissim. 
+</p>
+
+<h2 id="conclusions">Conclusions and Related Work</h2>
+
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod finibus neque, eget dictum lacus tempor id. Mauris vulputate imperdiet sapien vitae sodales. Aliquam sit amet finibus eros, ut viverra urna. Integer aliquet, dui sit amet malesuada tempus, leo massa molestie nulla, sed rhoncus felis massa quis dui. Sed magna turpis, iaculis vel neque at, finibus commodo turpis. Curabitur malesuada, enim non faucibus pharetra, nisi leo dignissim ante, ac volutpat enim odio vel eros. Duis viverra quam ut posuere auctor. Donec eget dolor felis. Ut orci dui, mollis nec consectetur id, pellentesque ac tortor. Etiam posuere nulla libero, ac luctus quam commodo ut.
+</p>
+
+<p>
+  Sed dapibus iaculis ex, ut accumsan sapien. Donec volutpat malesuada sollicitudin. Nam scelerisque laoreet tortor, ut molestie lectus fringilla in. Vestibulum arcu quam, viverra ac auctor ut, pulvinar ut eros. Sed pulvinar arcu quis risus bibendum, sed fermentum tellus mattis. Proin a leo mattis, finibus mauris posuere, eleifend erat. Integer sollicitudin fermentum mauris, vitae tristique metus elementum sed. Proin ligula magna, finibus eu erat vel, bibendum finibus justo. Praesent pharetra diam ut mollis consectetur.
+</p>
+
+<p>
+  Phasellus pulvinar nisi in magna dapibus, a commodo nibh luctus. Etiam fringilla ut eros vitae venenatis. Donec id tempor ante, eu molestie justo. Etiam sed ornare ipsum. Duis consectetur interdum ipsum a mattis. Donec lobortis lobortis lacus vitae placerat. In hac habitasse platea dictumst. Etiam sed nulla elit. Donec eget magna quis leo vehicula auctor efficitur nec ante. Sed scelerisque lectus eu lacus vestibulum dignissim. 
+</p>
+
+    </section>
+  </div>
+  <nav class="hide-xl toc">
+  </nav>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      jax: ["input/TeX", "output/SVG", "output/PreviewHTML"],
+      extensions: ["tex2jax.js","MathMenu.js","MathZoom.js", "fast-preview.js", "AssistiveMML.js", "[Contrib]/a11y/accessibility-menu.js"],
+      TeX: { extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"] },
+      messageStyle: "none",
+      tex2jax: {inlineMath: [['$','$']], displayMath: [['\\[', '\\]']]}
+    });
+  </script>
+  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+  </script>
+  <script src="/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script src="/tocbot.min.js"></script>
+  <script>
+    tocbot.init({
+      tocSelector: '.toc',
+      contentSelector: 'section',
+      headingSelector: 'h2, h3',
+      listClass: 'nav',
+      headingsOffset: 180,
+      listItemClass: 'nav-item',
+      orderedList: false
+    });
+  </script>
+</body>
+</html>
