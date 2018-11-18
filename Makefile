@@ -16,8 +16,23 @@ node_modules:
 
 build: node_modules
 	mkdir build
-	cp static/* build
+	cp -r static/* build
 	cp node_modules/tocbot/dist/tocbot.min.js build
+	cp node_modules/jquery/dist/jquery.min.js build
+	cp node_modules/mathjax/MathJax.js build
+	mkdir -p build/jax/input
+	cp -av node_modules/mathjax/jax/input/TeX build/jax/input
+	mkdir -p build/jax/element/mml
+	cp -av node_modules/mathjax/jax/element/mml/jax.js build/jax/element/mml
+	mkdir -p build/jax/output
+	cp -av node_modules/mathjax/jax/output/SVG build/jax/output
+	cp -av node_modules/mathjax/jax/output/PreviewHTML build/jax/output
+	mkdir -p build/extensions
+	cp node_modules/mathjax/extensions/MathEvents.js build/extensions
+	cp node_modules/mathjax/extensions/MathMenu.js build/extensions
+	cp node_modules/mathjax/extensions/MathZoom.js build/extensions
+	cp node_modules/mathjax/extensions/tex2jax.js build/extensions
+	cp -av node_modules/mathjax/extensions/TeX build/extensions
 
 build/idve.html: public/idve.html build
 	head -n -1 templates/header.html | sed s/grid-lg/grid-xl/ | cat - $< templates/footer.html > $@

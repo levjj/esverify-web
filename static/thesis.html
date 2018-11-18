@@ -3,7 +3,7 @@
 <head>
   <meta charSet="utf-8" />
   <title>Towards Live Programming Environments for Statically Verified JavaScript (Interactive Thesis)</title>
-  <link href="https://fonts.googleapis.com/css?family=Roboto|EB+Garamond&subset=latin,greek" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=EB+Garamond|Noto+Sans:400,700" rel="stylesheet" type="text/css">
   <link href="https://cdn.rawgit.com/tonsky/FiraCode/1.205/distr/fira_code.css" rel="stylesheet" type="text/css">
   <link href="/style.css" rel="stylesheet" type="text/css">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
@@ -29,46 +29,702 @@
 <div class="container grid-md">
     <section class="thesis">
 
-<h1>Towards Live Programming Environments for Statically Verified JavaScript</h1>
+<h1>
+  Towards Live Programming Environments for Statically Verified JavaScript <br />
+  <small>
+    <a class="text-gray" href="https://livoris.net/">Christopher Schuster</a><span class="text-gray">, December 2018</span>
+  </small>
+</h1>
 
 <p>
-  Lorem ipsum dolor sit amet
+  This page gives a brief summary of my PhD thesis with
+  interactive demos and illustrations.
+  The full thesis can be found <a href="/thesis.pdf">here</a>.
 </p>
 
 <h2 id="introduction">Introduction</h2>
 
 <p>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod finibus neque, eget dictum lacus tempor id. Mauris vulputate imperdiet sapien vitae sodales. Aliquam sit amet finibus eros, ut viverra urna. Integer aliquet, dui sit amet malesuada tempus, leo massa molestie nulla, sed rhoncus felis massa quis dui. Sed magna turpis, iaculis vel neque at, finibus commodo turpis. Curabitur malesuada, enim non faucibus pharetra, nisi leo dignissim ante, ac volutpat enim odio vel eros. Duis viverra quam ut posuere auctor. Donec eget dolor felis. Ut orci dui, mollis nec consectetur id, pellentesque ac tortor. Etiam posuere nulla libero, ac luctus quam commodo ut.
+  Programming is often tedious, frustrating and error-prone
+  because it involves specifying the intended behavior of a computer program
+  in a very precise and technical programming language.
+  Unlike communication in a natural language,
+  programming is generally a process of trial-and-error.
 </p>
 
 <div>
   <blockquote>
-    <p>In JavaScript, there is a beautiful, elegant, highly expressive language
-       that is buried under a steaming pile of good intentions and blunders.</p>
-    <cite>– Douglas Crockford, JavaScript: The Good Parts</cite>
+    Nobody actually creates perfect code the first time around, except me.
+    But there's only one of me.
+    <cite>– Linus Torvalds <a href="https://youtu.be/4XpnKHJAok8?t=1338">↗</a></cite>
   </blockquote>
 </div>
 
-<p>
-  Sed dapibus iaculis ex, ut accumsan sapien. Donec volutpat malesuada sollicitudin. Nam scelerisque laoreet tortor, ut molestie lectus fringilla in. Vestibulum arcu quam, viverra ac auctor ut, pulvinar ut eros. Sed pulvinar arcu quis risus bibendum, sed fermentum tellus mattis. Proin a leo mattis, finibus mauris posuere, eleifend erat. Integer sollicitudin fermentum mauris, vitae tristique metus elementum sed. Proin ligula magna, finibus eu erat vel, bibendum finibus justo. Praesent pharetra diam ut mollis consectetur.
-</p>
+<div class="columns my-2">
+  <div class="col-6 col-xs-12 column">
+    <p>
+      In addition to the programming language,
+      the programming environment itself should be considered
+      for new solutions that support this iterative process of code edits and feedback.
+    </p>
+    <p>
+      <div class="toast">
+        The issue of understanding and iteratively changing program behavior
+        is independent of potential advances in artificial intelligence
+        because users still to somehow communicate and validate their intentions.
+      </div>
+    </p>
+    <p>
+      In order to improve this process with more immediate feedback,
+      <strong>live programming environments</strong>
+      enable programmers to edit the code of running programs and
+      thereby observe the effects of the edit without having to re-compile and restart the program.
+    </p>
+  </div>
+  <div class="col-6 col-xs-12 column">
+    <div class="card">
+      <div class="card-body">
+        <img src="/gulfs-anim.gif" class="img-responsive centered">
+        Programming as an iterative cycle of code edits and feedback
+        until the program behavior matches the intended behavior.
+      </div>
+      <div class="card-footer">
+        <div class="card-subtitle text-gray">
+          Animation is based on art by monirath <a href="https://openclipart.org/detail/191428">↗</a>.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <p>
-  Phasellus pulvinar nisi in magna dapibus, a commodo nibh luctus. Etiam fringilla ut eros vitae venenatis. Donec id tempor ante, eu molestie justo. Etiam sed ornare ipsum. Duis consectetur interdum ipsum a mattis. Donec lobortis lobortis lacus vitae placerat. In hac habitasse platea dictumst. Etiam sed nulla elit. Donec eget magna quis leo vehicula auctor efficitur nec ante. Sed scelerisque lectus eu lacus vestibulum dignissim. 
+  Furthermore,
+  programming environments can check whether multiple specifications are
+  consistent with each other and provide feedback about potential discrepancies.
+  For example,
+  the <span class="label label-gray">program code</span> can be checked against automatic unit
+  <span class="label label-primary">tests</span>,
+  <span class="label label-error">types</span> annotations
+  or logical expressions such as invariants, pre- and postconditions and assertions
+  (<span class="label label-success">program verification</span>).
+</p>
+
+<div class="columns my-2">
+  <div class="col-9 col-xs-12 column centered">
+    <div class="card">
+      <div class="card-body">
+        <img src="/intro-puzzle.png" class="img-responsive centered">
+        By describing the program behavior in multiple different ways,
+        any mismatch can be detected automatically.
+        More detailed and precise descriptions
+        result in a higher redundancy and thereby a higher chance
+        to find discrepancies (and potential bugs).
+      </div>
+    </div>
+  </div>
+</div>
+
+<p>
+  As part of my thesis research,
+  I made contributions to both <strong>live programming</strong> and <strong>program verification</strong>
+  and thought about ways to integrate both in a programming environment.
 </p>
 
 <h2 id="liveprogramming">Live Programming Environments for JavaScript</h2>
 
 <p>
+  The term <em>live programming</em> is closely related (and sometimes confused with)
+  concepts such as live coding, dynamic software updates and self-contained environments.  
+</p>
+
+<div class="columns my-2">
+  <div class="col-6 col-sm-12 column centered">
+    <div class="card">
+      <div class="card-image">
+        <div class="video-responsive">
+          <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/yD4HPX8TdA8"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen></iframe>
+        </div>
+      </div>
+      <div class="card-header">
+        <div class="card-title h5">Live Coding</div>
+      </div>
+      <div class="card-body">
+        <p>an art or music performance in front of an audience</p>
+        <p class="text-gray">see e.g. Sam Aaron and Ben Smith <a href="https://youtu.be/yD4HPX8TdA8">↗</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-sm-12 column centered">
+    <div class="card">
+      <div class="card-image">
+        <img src="/lp-dsu.png" class="img-responsive centered">
+      </div>
+      <div class="card-header">
+        <div class="card-title h5">Dynamic Software Updating</div>
+      </div>
+      <div class="card-body">
+        <p>patching running systems with explicit state migrations</p>
+        <p class="text-gray">see e.g. Michael Hicks and Scott Nettles <a href="https://dl.acm.org/citation.cfm?id=1108971">↗</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="columns my-2">
+  <div class="col-6 col-sm-12 column centered">
+    <div class="card">
+      <div class="card-image">
+        <img src="/lp-squeak.png" class="img-responsive centered">
+      </div>
+      <div class="card-header">
+        <div class="card-title h5">Self-contained Development Environments</div>
+      </div>
+      <div class="card-body">
+        <p>environments with integrated development tools and runtime code updates</p>
+        <p class="text-gray">see e.g. Squeak Smalltalk <a href="https://squeak.org/">↗</a></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-sm-12 column centered">
+    <div class="card">
+      <div class="card-image">
+        <div class="video-responsive">
+          <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/RUeLd7T7Xi4"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen></iframe>
+        </div>
+      </div>
+      <div class="card-header">
+        <div class="card-title h5">Live Programming</div>
+      </div>
+      <div class="card-body">
+        <p>runtime code updates during the development process with explicit emphasis on immediate
+          (or even continuous) feedback</p>
+        <p class="text-gray">see e.g. Elm Debugger <a href="https://youtu.be/RUeLd7T7Xi4">↗</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <blockquote>
+    If there is any delay in that feedback loop between thinking of something and
+    seeing it and building on it, then there is this whole world of ideas which will never be.<br />
+    <cite>– Bret Victor <a href="https://vimeo.com/36579366#t=538s">↗</a></cite>
+  </blockquote>
+</div>
+
+<p>
+  Live code updates of running programs can be tricky
+  because the previous execution state may not be compatible with the new code.
+</p>
+
+<ul>
+  <li>
+    <span class="label label-primary">Problem 1</span>
+    Where and how does the execution resume if the currently executed expression, statement or function
+    is changed or removed?
+  </li>
+  <li>
+    <span class="label label-success">Problem 2</span>
+    How can the visible output be updated to reflect the new version of the code?
+  </li>
+  <li>
+    <span class="label label-error">Problem 3</span>
+    How are function values (closures) maintained if the surrounding code is modified?
+  </li>
+  <li>
+    <span class="label label-gray">Problem 4</span>
+    What happens if the format or shape of application is changed in an incompatible way?
+  </li>
+</ul>
+
+<p>
+  Some of these problems can be resolved by restricting update points and
+  imposes a certain programming model.
+</p>
+
+<div class="my-2">
+  <div class="card">
+    <div class="card-body">
+      <div class="columns">
+        <div class="col-6 column">
+          <div class="video-responsive" style="min-height: 16rem">
+            <iframe id="lp-exec" src="/lp-exec-state.svg" width="800" height="800" frameborder="0">
+            </iframe>
+          </div>
+        </div>
+        <div class="col-6 column">
+          <p class="clearfix">
+            <span>
+              Proposed Solutions: 
+            </span>
+            <a id="lp-next" class="btn btn-lg btn-primary float-right" href="#">Next</a>
+            <a id="lp-back" class="btn btn-lg btn-link float-right" style="display: none" href="#">Back</a>
+          </p>
+          <ul>
+            <li id="lp-step1" style="display: none">
+              Single-threaded event loop and code updates only between events (e.g. JavaScript)
+            </li>
+            <li id="lp-step2" style="display: none">
+              Pure Rendering Function
+              to safely refresh output after each code update
+               (see <a href="#lp-separate">below</a>)
+            </li>
+            <li id="lp-step3" style="display: none">
+              Restrict application state to not contain closures 
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+  window.addEventListener('load', function() {
+    let step = 0;
+    const svgDoc = $("#lp-exec")[0].contentDocument;
+    $("#output-g", svgDoc).fadeOut(0);
+    const shadowRect = $('<div></div>');
+    shadowRect.css('height', 429);
+    const show = () => {
+      if (step === 0) {
+        $("#pc-f", svgDoc).fadeIn('slow');
+        $("#stack-f", svgDoc).fadeIn('slow');
+        $("#stack", svgDoc).fadeIn('slow');
+        $("#closures-f", svgDoc).fadeIn('slow');
+        $("#closures", svgDoc).fadeIn('slow');
+        shadowRect.animate({height: 429},
+          { duration: 'slow', step: now => $("#execRect", svgDoc).attr('height', Math.round(now)) });
+        $("#output", svgDoc).fadeIn('slow');
+        $("#output-g", svgDoc).fadeOut('slow');
+        $("#lp-step1").fadeOut('slow');
+        $("#lp-step2").fadeOut('slow');
+        $("#lp-step3").fadeOut('slow');
+        $("#lp-next").fadeIn('slow');
+        $("#lp-back").fadeOut('slow');
+      } else if (step === 1) {
+        $("#pc-f", svgDoc).fadeOut('slow');
+        $("#stack-f", svgDoc).fadeOut('slow');
+        $("#stack", svgDoc).fadeOut('slow');
+        $("#closures-f", svgDoc).fadeIn('slow');
+        $("#closures", svgDoc).fadeIn('slow');
+        shadowRect.animate({height: 429},
+          { duration: 'slow', step: now => $("#execRect", svgDoc).attr('height', Math.round(now)) });
+        $("#output", svgDoc).fadeIn('slow');
+        $("#output-g", svgDoc).fadeOut('slow');
+        $("#lp-step1").fadeIn('slow');
+        $("#lp-step2").fadeOut('slow');
+        $("#lp-step3").fadeOut('slow');
+        $("#lp-next").fadeIn('slow');
+        $("#lp-back").fadeIn('slow');
+      } else if (step === 2) {
+        $("#pc-f", svgDoc).fadeOut('slow');
+        $("#stack-f", svgDoc).fadeOut('slow');
+        $("#stack", svgDoc).fadeOut('slow');
+        $("#closures-f", svgDoc).fadeIn('slow');
+        $("#closures", svgDoc).fadeIn('slow');
+        $("#output", svgDoc).fadeOut('slow');
+        shadowRect.animate({height: 244},
+          { duration: 'slow', step: now => $("#execRect", svgDoc).attr('height', Math.round(now)) });
+        $("#output-g", svgDoc).fadeIn('slow');
+        $("#lp-step1").fadeIn('slow');
+        $("#lp-step2").fadeIn('slow');
+        $("#lp-step3").fadeOut('slow');
+        $("#lp-next").fadeIn('slow');
+        $("#lp-back").fadeIn('slow');
+      } else {
+        $("#pc-f", svgDoc).fadeOut('slow');
+        $("#stack-f", svgDoc).fadeOut('slow');
+        $("#stack", svgDoc).fadeOut('slow');
+        $("#closures-f", svgDoc).fadeOut('slow');
+        $("#closures", svgDoc).fadeOut('slow');
+        $("#output", svgDoc).fadeOut('slow');
+        shadowRect.animate({height: 244},
+          { duration: 'slow', step: now => $("#execRect", svgDoc).attr('height', Math.round(now)) });
+        $("#output-g", svgDoc).fadeIn('slow');
+        $("#lp-step1").fadeIn('slow');
+        $("#lp-step2").fadeIn('slow');
+        $("#lp-step3").fadeIn('slow');
+        $("#lp-next").fadeOut('slow');
+        $("#lp-back").fadeIn('slow');
+      }
+    };
+    $("#lp-back").click(() => { step = Math.max(0, step - 1); show(); return false; });
+    $("#lp-next").click(() => { step = Math.min(3, step + 1); show(); return false; });
+  });
+  </script>
+</div>
+
+<p>
+  Unfortunately, there is no automatic unambiguous way to migrate existing application
+  data if the data format changes.
+  The programmer has to either supply an explicit state transformer/schema migration or
+  restart the program.
+</p>
+
+<h3 id="lp-separate">Separating Rendering from Event Handling (MVU)</h3>
+
+<p>
+  Certain programming styles make live programming extremely difficult.
+  The following example uses <a href="https://jquery.com/">jQuery</a>
+  to registers an event handler for the button
+  and to update the display with the current click count.
+</p>
+
+<div class="my-2">
+  <div class="card">
+    <div class="clearfix">
+      <div class="float-left" style="margin-left:1rem;margin-right:0.1rem">
+        <pre><code> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9</code></pre>
+      </div>
+      <div class="float-left" style="margin-right:1rem">
+        <pre><code class="html">&#x3C;span id=&#x22;val&#x22;&#x3E;Count: 0&#x3C;/span&#x3E;
+&#x3C;button id=&#x22;incButton&#x22;&#x3E;+&#x3C;/button&#x3E;
+&#x3C;script&#x3E;
+  var count = 0;
+  <span id="lp-l5a">$(&#x22;#incButton&#x22;).on(&#x22;click&#x22;, function () {
+    <span id="lp-l6a">count++;</span>
+    <span id="lp-l7a">$(&#x22;#val&#x22;).html(&#x22;Count: &#x22; + count);</span>
+  });</span>
+&#x3C;/script&#x3E;</code></pre>
+      </div>
+      <div class="m-2" style="padding-top: 1rem">
+        <span id="lp-val">Count: 0</span>
+        <button id="lp-incButton">+</button>
+        <script>
+          window.addEventListener('load', function() {
+            var count = 0;
+            $("#lp-incButton").on("click", function () {
+              count++;
+              $("#lp-val").html("Count: " + count);
+            });
+          });
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p>
+  If the programmers wants to change <code>"Count:"</code> to <code>"Clicks:"</code>,
+  the programming environment should update both the visible output
+  and the event handlers used for subsequent clicks.
+  This essentially involves registering new event handlers
+  <mark id="lp-l5">(re-evaluating line 5)</mark>
+  <strong>and</strong> updating the output
+  <mark id="lp-l7">(re-evaluating line 7)</mark>
+  <strong>without</strong> changing the current application state
+  <mark id="lp-l6">(<em>not</em> re-evaluating line 6)</mark>.
+</p>
+
+<script>
+window.addEventListener('load', function() {
+  $('#lp-l5').hover(() => $('#lp-l5a').addClass('mark'), () => $('#lp-l5a').removeClass('mark'));
+  $('#lp-l6').hover(() => $('#lp-l6a').addClass('mark'), () => $('#lp-l6a').removeClass('mark'));
+  $('#lp-l7').hover(() => $('#lp-l7a').addClass('mark'), () => $('#lp-l7a').removeClass('mark'));
+});
+</script>
+
+<div class="toast my-2">
+  Due to the structure of the code,
+  it is difficult to provide live feedback for such code changes in a consistent way.
+</div>
+
+<p>
+  There are many different approaches and programming styles
+  that advocate for a more declarative style
+  that separate the rendering code from the event handling code.
+  For an overview, see <a href="https://staltz.com/unidirectional-user-interface-architectures.html">André Staltz</a>.
+</p>
+
+<p>
+  Here,
+  we adopt the <strong>Model-View-Update (MVU)</strong> pattern,
+  which is similar to the <a href="https://guide.elm-lang.org/architecture/">Elm Architecture</a>.
+</p>
+
+<div class="my-2">
+  <table class="table">
+    <tbody>
+      <tr>
+        <td rowspan="3">
+          <pre><code class="javascript">let count = 0;
+
+
+function view() {
+  return (
+    &lt;div&gt;
+      &lt;span&gt;
+        Count: {count}
+      &lt;/span&gt;
+      &lt;button onclick={inc}&gt;
+        Inc!
+      &lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+function inc() {
+  count++;
+}</code></pre>
+        </td>
+        <td>
+          <strong>Model</strong> <br />
+          encompasses the entire application state including the UI state<br />
+          <span class="text-gray">
+            in this case a simple global variable
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>View</strong> <pre class="inline text-gray"> :: Model -> Output</pre> <br />
+          returns the output/user interface based on the current model <br />
+          <span class="text-error">
+            should not mutate the model!
+          </span>
+          <br />
+          <span class="text-gray">
+            in this case, a JSX/React-style notation is used for inline HTML
+          </span> <br />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <strong>Update</strong> <pre class="inline text-gray"> :: Model × Event -> Model</pre> <br />
+          processes events, yielding a new model <br />
+          <span class="text-gray">
+            in this case just mutates the global variable
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  Rendering the entire user interface each time may incur a performance overhead
+  but this could be avoided or mitigated with
+  techniques such as reactive programming and differential updates of virtual DOMs.
+</p>
+
+<h3 id="lp-updates">Live Code Updates and Time Travel</h3>
+
+<p>
+  With the MVU pattern, the programming environment can re-render the output on demand.
+  In particular, to provide feedback for live code updates.
+</p>
+
+<div class="columns my-2">
+  <div class="col-6 col-xs-12 column">
+    <figure class="figure">
+      <img src="/lp-view-update.svg" class="img-responsive mx-2 centered">
+      <figcaption class="my-2">
+        Live programming enables immediate feedback
+        in terms of a re-render output
+        for changes to the <strong>view</strong> code.
+      </figcaption>
+    </figure>
+  </div>
+  <div class="col-6 col-xs-12 column">
+    <figure class="figure">
+      <img src="/lp-update-update.svg" class="img-responsive mx-2 centered">
+      <figcaption class="my-2">
+          Changes to the <strong>update</strong> code only affect subsequent events.
+          However, the environment could record and replay past events to provide live feedback.
+      </figcaption>
+    </figure>
+  </div>
+</div>
+
+<p>
+  The following demo shows an small live programming environment for MVU applications.
+</p>
+
+<div class="my-2">
+  <div class="card">
+    <div class="card-image">
+      <div class="video-responsive" style="margin-bottom: -2.7rem">
+        <iframe data-height="70" src="rde1/index.html#demo" seamless="seamless"
+          style="width:640px;height:330px;transform-origin: top left; transform: scale(1.33); border: none" frameborder="0"></iframe>
+      </div>
+    </div>
+    <div class="card-body">
+      <p>
+        The editor on the left allows live code updates.
+        In particular,
+        changing <code>"Count:"</code> to <code>"Clicks:"</code>
+        yields immediate feedback in the output.
+        Changes to the model (i.e. the global variables) require a restart to take effect.
+      </p>
+    </div>
+  </div>
+</div>
+
+<p>
+  By re-rendering the output on demand,
+  the programming environment can additionally provide live feedback
+  for past states of the execution (<em>back-in-time debugging</em>)
+  and for previous versions of the view code (<em>runtime version control</em>).
+</p>
+
+<div class="my-2">
+  <div class="card">
+    <div class="card-body">
+      <div class="video-responsive centered col-9 col-sm-12 col-xs-12">
+        <iframe id="lp-tt" src="/lp-tt.svg" width="800" height="800" frameborder="0">
+        </iframe>
+      </div>
+      <p class="clearfix">
+        <span>
+          The programming environment can provide immediate feedback for input events
+          and code updates but also for restoring previous version of the code or
+          going back-in-time to previous models.
+          This enables navigation of application states and code versions on two dimensions.
+        </span>
+        <a id="lp-ttnext" class="btn btn-lg btn-primary float-right" href="#">Next</a>
+        <a id="lp-ttback" class="btn btn-lg btn-link float-right" style="display: none" href="#">Back</a>
+      </p>
+    </div>
+  </div>
+  <script>
+  window.addEventListener('load', function() {
+    let step = 0;
+    const svgDoc = $("#lp-tt")[0].contentDocument;
+    $("#tt1", svgDoc).fadeOut(0);
+    $("#tt2", svgDoc).fadeOut(0);
+    $("#tt3", svgDoc).fadeOut(0);
+    $("#tt4", svgDoc).fadeOut(0);
+    $("#tt5", svgDoc).fadeOut(0);
+    const show = () => {
+      if (step === 0) {
+        $("#tt1", svgDoc).fadeOut('slow');
+        $("#tt2", svgDoc).fadeOut('slow');
+        $("#tt3", svgDoc).fadeOut('slow');
+        $("#tt4", svgDoc).fadeOut('slow');
+        $("#tt5", svgDoc).fadeOut('slow');
+        $("#lp-ttnext").fadeIn('slow');
+        $("#lp-ttback").fadeOut('slow');
+      } else if (step === 1) {
+        $("#tt1", svgDoc).fadeIn('slow');
+        $("#tt2", svgDoc).fadeOut('slow');
+        $("#tt3", svgDoc).fadeOut('slow');
+        $("#tt4", svgDoc).fadeOut('slow');
+        $("#tt5", svgDoc).fadeOut('slow');
+        $("#lp-ttnext").fadeIn('slow');
+        $("#lp-ttback").fadeIn('slow');
+      } else if (step === 2) {
+        $("#tt1", svgDoc).fadeIn('slow');
+        $("#tt2", svgDoc).fadeIn('slow');
+        $("#tt3", svgDoc).fadeOut('slow');
+        $("#tt4", svgDoc).fadeOut('slow');
+        $("#tt5", svgDoc).fadeOut('slow');
+        $("#lp-ttnext").fadeIn('slow');
+        $("#lp-ttback").fadeIn('slow');
+      } else if (step === 3) {
+        $("#tt1", svgDoc).fadeIn('slow');
+        $("#tt2", svgDoc).fadeIn('slow');
+        $("#tt3", svgDoc).fadeIn('slow');
+        $("#tt4", svgDoc).fadeOut('slow');
+        $("#tt5", svgDoc).fadeOut('slow');
+        $("#lp-ttnext").fadeIn('slow');
+        $("#lp-ttback").fadeIn('slow');
+      } else if (step === 4) {
+        $("#tt1", svgDoc).fadeIn('slow');
+        $("#tt2", svgDoc).fadeIn('slow');
+        $("#tt3", svgDoc).fadeIn('slow');
+        $("#tt4", svgDoc).fadeIn('slow');
+        $("#tt5", svgDoc).fadeOut('slow');
+        $("#lp-ttnext").fadeIn('slow');
+        $("#lp-ttback").fadeIn('slow');
+      } else {
+        $("#tt1", svgDoc).fadeIn('slow');
+        $("#tt2", svgDoc).fadeIn('slow');
+        $("#tt3", svgDoc).fadeIn('slow');
+        $("#tt4", svgDoc).fadeIn('slow');
+        $("#tt5", svgDoc).fadeIn('slow');
+        $("#lp-ttnext").fadeOut('slow');
+        $("#lp-ttback").fadeIn('slow');
+      }
+    };
+    $("#lp-ttback").click(() => { step = Math.max(0, step - 1); show(); return false; });
+    $("#lp-ttnext").click(() => { step = Math.min(5, step + 1); show(); return false; });
+  });
+  </script>
+</div>
+
+<p>
+  The following live programming environment is augmented with controls
+  for going back to previous states and versions of the code.
+</p>
+
+<div class="my-2">
+  <div class="card">
+    <div class="card-image">
+      <div class="video-responsive" style="margin-bottom: -2.7rem">
+        <iframe data-height="70" src="rde2/index.html#demo" seamless="seamless"
+          style="width:640px;height:330px;transform-origin: top left; transform: scale(1.33); border: none" frameborder="0"></iframe>
+      </div>
+    </div>
+    <div class="card-body">
+      <p>
+        This editor has a panel on the right that allows navigating to previous
+        versions of the code and past application states.
+      </p>
+    </div>
+  </div>
+</div>
+
+<p>
+  Here is another example of an interactive game inspired by Flappy Bird.
+</p>
+
+<div class="my-2">
+  <div class="card">
+    <div class="card-image">
+      <div class="video-responsive" style="margin-bottom: -1.3rem;min-height: 27rem">
+        <iframe src="rde3/index.html#demo" seamless="seamless"
+          style="border: none;height:32.5rem;" frameborder="0"></iframe>
+      </div>
+    </div>
+    <div class="card-body">
+      <p>
+        In addition to live code updates and back-in-time debugging,
+        an additional button can be used to start and stop the animation.
+        (Clicking in the output makes the bird fly up.)
+      </p>
+    </div>
+    <div class="card-footer">
+      <div class="card-subtitle text-gray">
+        Art by jsstrn <a href="https://openclipart.org/detail/181345">↗</a>
+        and GDJ <a href="https://openclipart.org/detail/267338">↗</a>.
+      </div>
+    </div>
+  </div>
+</div>
+
+<p>
+  The programming environment ensures re-rendering after events,
+  it manages state snapshots for back-in-time debugging,
+  it prevents mutation to the application state during rendering,
+  and it checks the state for closures.
+</p>
+
+<h3 id="lp-lpbe">Live Programming by Example</h3>
+
+<p>
   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod finibus neque, eget dictum lacus tempor id. Mauris vulputate imperdiet sapien vitae sodales. Aliquam sit amet finibus eros, ut viverra urna. Integer aliquet, dui sit amet malesuada tempus, leo massa molestie nulla, sed rhoncus felis massa quis dui. Sed magna turpis, iaculis vel neque at, finibus commodo turpis. Curabitur malesuada, enim non faucibus pharetra, nisi leo dignissim ante, ac volutpat enim odio vel eros. Duis viverra quam ut posuere auctor. Donec eget dolor felis. Ut orci dui, mollis nec consectetur id, pellentesque ac tortor. Etiam posuere nulla libero, ac luctus quam commodo ut.
-</p>
-
-<p>
-  Sed dapibus iaculis ex, ut accumsan sapien. Donec volutpat malesuada sollicitudin. Nam scelerisque laoreet tortor, ut molestie lectus fringilla in. Vestibulum arcu quam, viverra ac auctor ut, pulvinar ut eros. Sed pulvinar arcu quis risus bibendum, sed fermentum tellus mattis. Proin a leo mattis, finibus mauris posuere, eleifend erat. Integer sollicitudin fermentum mauris, vitae tristique metus elementum sed. Proin ligula magna, finibus eu erat vel, bibendum finibus justo. Praesent pharetra diam ut mollis consectetur.
-</p>
-
-<p>
-  Phasellus pulvinar nisi in magna dapibus, a commodo nibh luctus. Etiam fringilla ut eros vitae venenatis. Donec id tempor ante, eu molestie justo. Etiam sed ornare ipsum. Duis consectetur interdum ipsum a mattis. Donec lobortis lobortis lacus vitae placerat. In hac habitasse platea dictumst. Etiam sed nulla elit. Donec eget magna quis leo vehicula auctor efficitur nec ante. Sed scelerisque lectus eu lacus vestibulum dignissim. 
 </p>
 
 <h2 id="esverify">Program Verification for JavaScript</h2>
@@ -177,13 +833,13 @@
   <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       jax: ["input/TeX", "output/SVG", "output/PreviewHTML"],
-      extensions: ["tex2jax.js","MathMenu.js","MathZoom.js", "fast-preview.js", "AssistiveMML.js", "[Contrib]/a11y/accessibility-menu.js"],
+      extensions: ["tex2jax.js"],
       TeX: { extensions: ["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"] },
       messageStyle: "none",
       tex2jax: {inlineMath: [['$','$']], displayMath: [['\\[', '\\]']]}
     });
   </script>
-  <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js">
+  <script type="text/javascript" async src="/MathJax.js">
   </script>
   <script src="/highlight.pack.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
@@ -198,6 +854,18 @@
       listItemClass: 'nav-item',
       orderedList: false
     });
+  </script>
+  <script>
+    document.querySelectorAll("section h2, section h3").forEach(function (n) {
+      const link = document.createElement("a");
+      link.setAttribute("href", "#" + n.id);
+      link.setAttribute("class", "text-gray");
+      link.appendChild(document.createTextNode("#"));
+      n.appendChild(document.createTextNode(" "));
+      n.appendChild(link);
+    });
+  </script>
+  <script type="text/javascript" src="/jquery.min.js">
   </script>
 </body>
 </html>
