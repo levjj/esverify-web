@@ -248,38 +248,34 @@
 </p>
 
 <div class="my-2">
-  <div class="card">
-    <div class="card-body">
-      <div class="columns">
-        <div class="col-6 column">
-          <div class="video-responsive" style="min-height: 16rem">
-            <iframe id="lp-exec" src="/lp-exec-state.svg" width="800" height="800" frameborder="0">
-            </iframe>
-          </div>
-        </div>
-        <div class="col-6 column">
-          <p class="clearfix">
-            <span>
-              Proposed Solutions: 
-            </span>
-            <a id="lp-next" class="btn btn-lg btn-primary float-right" href="#">Next</a>
-            <a id="lp-back" class="btn btn-lg btn-link float-right" style="display: none" href="#">Back</a>
-          </p>
-          <ul>
-            <li id="lp-step1" style="display: none">
-              Single-threaded event loop and code updates only between events (e.g. JavaScript)
-            </li>
-            <li id="lp-step2" style="display: none">
-              Pure Rendering Function
-              to safely refresh output after each code update
-               (see <a href="#lp-separate">below</a>)
-            </li>
-            <li id="lp-step3" style="display: none">
-              Restrict application state to not contain closures 
-            </li>
-          </ul>
-        </div>
+  <div class="columns">
+    <div class="col-6 column">
+      <div class="video-responsive" style="min-height: 16rem">
+        <iframe id="lp-exec" src="/lp-exec-state.svg" width="800" height="800" frameborder="0">
+        </iframe>
       </div>
+    </div>
+    <div class="col-6 column">
+      <p class="clearfix">
+        <span>
+          Proposed Solutions: 
+        </span>
+        <a id="lp-next" class="btn btn-lg btn-primary float-right" href="#">Next</a>
+        <a id="lp-back" class="btn btn-lg btn-link float-right" style="display: none" href="#">Back</a>
+      </p>
+      <ul>
+        <li id="lp-step1" style="display: none">
+          Single-threaded event loop and code updates only between events (e.g. JavaScript)
+        </li>
+        <li id="lp-step2" style="display: none">
+          Pure Rendering Function
+          to safely refresh output after each code update
+            (see <a href="#lp-separate">below</a>)
+        </li>
+        <li id="lp-step3" style="display: none">
+          Restrict application state to not contain closures 
+        </li>
+      </ul>
     </div>
   </div>
   <script>
@@ -436,9 +432,11 @@ window.addEventListener('load', function() {
 });
 </script>
 
-<div class="toast my-2">
-  Due to the structure of the code,
-  it is difficult to provide live feedback for such code changes in a consistent way.
+<div class="my-2">
+  <div class="toast">
+    Due to the structure of the code,
+    it is difficult to provide live feedback for such code changes in a consistent way.
+  </div>
 </div>
 
 <p>
@@ -553,24 +551,19 @@ function inc() {
 </p>
 
 <div class="my-2">
-  <div class="card">
-    <div class="card-image">
-      <div class="video-responsive" style="margin-bottom: -2.7rem">
-        <iframe data-height="70" src="rde1/index.html#demo" seamless="seamless"
-          style="width:640px;height:330px;transform-origin: top left; transform: scale(1.33); border: none" frameborder="0"></iframe>
-      </div>
-    </div>
-    <div class="card-body">
-      <p>
-        The editor on the left allows live code updates.
-        In particular,
-        changing <code>"Count:"</code> to <code>"Clicks:"</code>
-        yields immediate feedback in the output.
-        Changes to the model (i.e. the global variables) require a restart to take effect.
-      </p>
-    </div>
+  <div class="video-responsive" style="margin-bottom: -1.8rem">
+    <iframe data-height="70" src="rde1/index.html#demo" seamless="seamless"
+      style="width:640px;height:330px;transform-origin: top left; transform: scale(1.33); border: none" frameborder="0"></iframe>
   </div>
 </div>
+
+<p>
+  The editor on the left allows live code updates.
+  In particular,
+  changing <code>"Count:"</code> to <code>"Clicks:"</code>
+  yields immediate feedback in the output.
+  Changes to the model (i.e. the global variables) require a restart to take effect.
+</p>
 
 <p>
   By re-rendering the output on demand,
@@ -670,49 +663,37 @@ function inc() {
 </p>
 
 <div class="my-2">
-  <div class="card">
-    <div class="card-image">
-      <div class="video-responsive" style="margin-bottom: -2.7rem">
-        <iframe data-height="70" src="rde2/index.html#demo" seamless="seamless"
-          style="width:640px;height:330px;transform-origin: top left; transform: scale(1.33); border: none" frameborder="0"></iframe>
-      </div>
-    </div>
-    <div class="card-body">
-      <p>
-        This editor has a panel on the right that allows navigating to previous
-        versions of the code and past application states.
-      </p>
-    </div>
+  <div class="video-responsive" style="margin-bottom: -1.8rem">
+    <iframe data-height="70" src="rde2/index.html#demo" seamless="seamless"
+      style="width:640px;height:330px;transform-origin: top left; transform: scale(1.33); border: none" frameborder="0"></iframe>
   </div>
 </div>
+
+<p>
+  This editor has a panel on the right that allows navigating to previous
+  versions of the code and past application states.
+</p>
 
 <p>
   Here is another example of an interactive game inspired by Flappy Bird.
 </p>
 
 <div class="my-2">
-  <div class="card">
-    <div class="card-image">
-      <div class="video-responsive" style="margin-bottom: -1.3rem;min-height: 27rem">
-        <iframe src="rde3/index.html#demo" seamless="seamless"
-          style="border: none;height:32.5rem;" frameborder="0"></iframe>
-      </div>
-    </div>
-    <div class="card-body">
-      <p>
-        In addition to live code updates and back-in-time debugging,
-        an additional button can be used to start and stop the animation.
-        (Clicking in the output makes the bird fly up.)
-      </p>
-    </div>
-    <div class="card-footer">
-      <div class="card-subtitle text-gray">
-        Art by jsstrn <a href="https://openclipart.org/detail/181345">↗</a>
-        and GDJ <a href="https://openclipart.org/detail/267338">↗</a>.
-      </div>
-    </div>
+  <div class="video-responsive" style="margin-bottom: -0.9rem;min-height: 27rem">
+    <iframe src="rde3/index.html#demo" seamless="seamless"
+      style="border: none;height:32.5rem;" frameborder="0"></iframe>
   </div>
 </div>
+
+<p>
+  In addition to live code updates and back-in-time debugging,
+  an additional button can be used to start and stop the animation.
+  <em>Clicking in the output makes the bird fly up.</em>
+  <span class="text-gray">
+    Art by jsstrn <a href="https://openclipart.org/detail/181345">↗</a>
+    and GDJ <a href="https://openclipart.org/detail/267338">↗</a>.
+  </span>
+</p>
 
 <p>
   The programming environment ensures re-rendering after events,
@@ -724,14 +705,297 @@ function inc() {
 <h3 id="lp-lpbe">Live Programming by Example</h3>
 
 <p>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod finibus neque, eget dictum lacus tempor id. Mauris vulputate imperdiet sapien vitae sodales. Aliquam sit amet finibus eros, ut viverra urna. Integer aliquet, dui sit amet malesuada tempus, leo massa molestie nulla, sed rhoncus felis massa quis dui. Sed magna turpis, iaculis vel neque at, finibus commodo turpis. Curabitur malesuada, enim non faucibus pharetra, nisi leo dignissim ante, ac volutpat enim odio vel eros. Duis viverra quam ut posuere auctor. Donec eget dolor felis. Ut orci dui, mollis nec consectetur id, pellentesque ac tortor. Etiam posuere nulla libero, ac luctus quam commodo ut.
+  The live programming environment described above enables
+  the programmer to update the view code and get live feedback.
+  Based on this concept,
+  the environment can also support <strong>programming-by-example</strong>
+  such that the programmer supplies an <strong>example</strong>
+  output and the system automatically infers and updates the view code.
 </p>
 
-<h2 id="esverify">Program Verification for JavaScript</h2>
+<div class="columns my-2">
+  <div class="col-9 col-xs-12 column centered">
+    <div class="card">
+      <div class="card-body">
+        <figure class="figure">
+          <img src="/lpbe.svg" class="img-responsive mx-2 centered">
+          <figcaption class="my-2">
+            Based on the current output,
+            the user can create a new output example (e.g. by direct manipulation)
+            that will be used to infer updates to the view code
+            such that the new output (Output'') closely matches the example (Output').
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p>
+  Depending on the concrete implementation,
+  different kinds of direct manipulation and different inference algorithms could be supported.
+</p>
+
+<p>
+  In the following example,
+  stopping the execution makes any text in the output <em>editable</em>.
+  In particular,
+  "Demmo" can be changed to "Demo" simply by pausing the execution,
+  clicking on the text and then deleting the superfluous "m".
+  These changes can also be made in the raw HTML representation of the output.
+</p>
+
+<div class="my-2">
+  <div class="video-responsive" style="margin-bottom: -0.8rem">
+    <iframe data-height="70" src="rde4/index.html#demo" seamless="seamless"
+      style="width:640px;height:355px;transform-origin: top left; transform: scale(1.33); border: none" frameborder="0"></iframe>
+  </div>
+</div>
+
+<p>
+  This prototype implementation only allows edits to string literals appearing in the source code.
+  Internally, this is implemented by rewriting the source code such that string literals are wrapped
+  in transparent proxies that track string origin information
+  (even when strings are manipulated with operators).
+</p>
+
+<div class="my-2">
+  <div class="card centered">
+    <div class="card-body clearfix">
+      <div class="float-left" style="margin-right:0.4rem">
+        <pre><code class="javascript">let x = "ab";
+let y = x + "c";
+let z = y[1];</code></pre>
+      </div>
+      <div class="float-left">
+        <pre><code>x: [ ("ab", loc: 9) ]
+y: [ ("ab", loc: 9), ("c", loc: 16) ]
+z: [ ("b", loc: 10) ]</code></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p>
+  Changing string literals in the program by manipulating text in the output
+  avoids ambiguities that are common in program synthesis applications.
+  More sophisticated approaches have to address these ambiguities with
+  heuristics or manual user intervention.
+  For example, the programming environment
+  might present a ranked list of code candidates for the programmer to choose from.
+</p>
+
+<p>
+  <span class="label label-dark text-bold">To summarize:</span>
+  By restricting the programming model to follow an event-based MVU architecture,
+  the programming environment can support runtime code updates with live feedback,
+  back-in-time debugging, runtime version control and live programming by example.
+</p>
+
+<div class="my-2">
+  <div class="toast">
+    The source code of these demos is available on <a href="https://github.com/levjj/rde">GitHub</a>.
+    The ideas were previously presented at
+    <a href="https://2015.splashcon.org/track/rebls2015">REBLS'2015</a>
+    (<a href="https://users.soe.ucsc.edu/~cschuster/rebls15/rebls2015-final.pdf">preprint</a>)
+    and <a href="https://2016.ecoop.org/track/LIVE-2016">LIVE'2016</a>
+    (<a href="https://users.soe.ucsc.edu/~cschuster/live16/live16-lpbe.pdf">preprint</a>).
+  </div>
+</div>
+
+<h2 id="esverify">JavaScript Program Verification</h2>
+
+<p>
+  As mentioned in the <a href="#introduction">introduction</a>,
+  programming environments can also provide feedback by automatically checking
+  the <span class="label label-gray">implementation</span> (the <em>executable</em> specification)
+  against other specifications of expected behavior,
+  such as <span class="label label-primary">tests</span> and
+  <span class="label label-error">types</span>.
+  Both testing and type checking have become a successful and popular part
+  of software development but they also have limitations.
+</p>
+
+<p>
+  <span class="label label-primary">Automatic unit testing</span> only compares the expected behavior for certain example values,
+  so no amount of testing can cover all possible inputs.
+</p>
+
+<div class="my-2">
+  <div class="video-responsive" style="height: 14rem;">
+    <iframe src="/embed?run&height=12&source=function%20max%28a%2C%20b%29%20%7B%0A%20%20if%20%28a%20%3E%20b%29%20%7B%0A%20%20%20%20return%20a%3B%0A%20%20%7D%20else%20%7B%0A%20%20%20%20return%20a%3B%0A%20%20%7D%0A%7D%0Afunction%20testMax%28%29%20%7B%0A%20%20const%20result%20%3D%20max%285%2C%203%29%3B%0A%20%20assert%28result%20%3D%3D%3D%205%29%3B%20%20%20%20%20%2F%2F%20no%20error%2C%20so%20is%20%27max%27%20correct%3F%0A%7D%0AtestMax%28%29%3B"
+      seamless="seamless" style="border: none" frameborder="0"></iframe>
+  </div>
+</div>
+
+<p>
+  <span class="label label-error">Typechecking</span> also falls short 
+  for this particular example because it relies on a type language
+  that is often too imprecise to express the expected behavior.
+</p>
+
+<div class="my-2">
+  <div class="toast">
+    The examples below use <a href="https://typescriptlang.org/">TypeScript</a> 3.1.6, a superset of JavaScript with type annotations.
+  </div>
+</div>
+
+<div class="my-2">
+  <div class="video-responsive" style="height: 9rem;">
+    <iframe src="/tsembed?height=7&source=
+function%20max%28a%3A%20number%2C%20b%3A%20number%29%3A%20number%20%7B%0A%20%20if%20%28a%20%3E%20b%29%20%7B%0A%20%20%20%20return%20a%3B%0A%20%20%7D%20else%20%7B%0A%20%20%20%20return%20a%3B%0A%20%20%7D%0A%7D"
+      seamless="seamless" style="border: none" frameborder="0"></iframe>
+  </div>
+</div>
+
+<p>
+  Furthermore, static typechecking also affects the code style.
+  Some dynamically-typed programming idioms are not well supported and
+  need to be avoided despite commonly used in JavaScript.
+  In the example below, <code>x</code> can be a string,
+  a string function or a generic type <code>T</code>.
+  The code only calls <code>x()</code> if it is a function
+  but TypeScript cannot accommodate this pattern.
+</p>
+
+<div class="my-2">
+  <div class="video-responsive" style="height: 8rem;">
+    <iframe src="/tsembed?height=5&source=function%20f%3CT%3E%28x%3A%20string%20%7C%20%28%28%29%20%3D%3E%20string%29%20%7C%20T%29%20%7B%0A%20%20%20%20if%20%28typeof%20x%20%3D%3D%3D%20%27function%27%29%20%7B%0A%20%20%20%20%20%20%20%20return%20x%28%29%3B%20%2F%2F%20type%20error%20%3F%0A%20%20%20%20%7D%0A%7D"
+      seamless="seamless" style="border: none" frameborder="0"></iframe>
+  </div>
+</div>
+
+In addition to tests and types,
+it is possible to statically check JavaScript code
+based on <strong>logical propositions</strong>
+such as pre- and postcondition and invariants
+written as standard JavaScript boolean expressions.
 
 <h3 id="esverify-example">Example</h3>
 
-<pre><code class="javascript">function max(a, b) {
+<div class="my-2">
+  <div class="video-responsive" style="height: 13rem;">
+    <iframe src="/embed?verify&height=11&source=function%20max%28a%2C%20b%29%20%7B%0A%20%20requires%28typeof%20a%20%3D%3D%3D%20%27number%27%29%3B%0A%20%20requires%28typeof%20b%20%3D%3D%3D%20%27number%27%29%3B%0A%20%20ensures%28result%20%3D%3E%20result%20%3E%3D%20a%29%3B%0A%20%20ensures%28result%20%3D%3E%20result%20%3E%3D%20b%29%3B%0A%20%20if%20%28a%20%3E%20b%29%20%7B%0A%20%20%20%20return%20a%3B%0A%20%20%7D%20else%20%7B%0A%20%20%20%20return%20a%3B%0A%20%20%7D%0A%7D"
+      seamless="seamless" style="border: none" frameborder="0"></iframe>
+  </div>
+</div>
+
+<ul>
+  <li>
+    The calls to <code>requires</code> and <code>ensures</code> in lines 2-5
+    are only used for verification purposes and skipped during execution.
+  </li>
+  <li>
+    Instead of type annotations,
+    the standard <code>typeof</code> operator is used to restrict the arguments <code>a</code> and <code>b</code>.
+  </li>
+  <li>
+    Due to a bug in line 9,
+    the <code>max</code> function does not return the maximum if <code>b</code> is greater than <code>a</code>;
+    violating the postcondition in line 5.
+  </li>
+</ul>
+
+<p>
+  With conjunction, disjunction and negation,
+  logical annotations can express detailed specifications,
+  similar to union and intersection types and possibly going beyond.
+</p>
+
+<div class="my-2">
+  <div class="video-responsive" style="height: 7rem;">
+    <iframe src="/embed?verify&height=5&source=function%20double%28x%29%20%7B%0A%20%20requires%28typeof%20x%20%3D%3D%3D%20%27number%27%20%7C%7C%20typeof%20x%20%3D%3D%3D%20%27string%27%29%3B%0A%20%20ensures%28result%20%3D%3E%20typeof%20result%20%3D%3D%3D%20typeof%20x%29%3B%0A%20%20return%20x%20%2B%20x%3B%0A%7D"
+      seamless="seamless" style="border: none" frameborder="0"></iframe>
+  </div>
+</div>
+
+<h3 id="esverify-smt">Annotations and SMT solving</h3>
+
+<p>
+  Internally,
+  the program verifier translates the annotations as well as the implementation code into a logic.
+  Each assertion, postcondition, etc. then corresponds to a verification condition that is passed
+  to an SMT solver such as <a href="https://github.com/Z3Prover/z3">z3</a> or <a href="http://cvc4.cs.stanford.edu/web/">CVC4</a>.
+</p>
+
+<p>
+  The following example shows a simple assertion that is translated to logic and statically verified.
+</p>
+
+<div class="my-2">
+  <div class="video-responsive" style="height: 9rem;">
+    <iframe src="/vembed?math&smtinh&ontype&height=3&source=const%20x%20%3D%202%3B%0Aconst%20y%20%3D%20x%20*%202%3B%0Aassert(y%20>%20x)%3B"
+      seamless="seamless" style="border: none" frameborder="0"></iframe>
+  </div>
+</div>
+
+<p>
+  The original JavaScript code is on the left,
+  the middle pane shows the verification condition
+  and the right pane displays the (partial) <a href="http://smtlib.cs.uiowa.edu/">SMTLIB 2</a> input for the solver.
+</p>
+
+<div class="my-2">
+  <div class="toast">
+    Verification conditions that refer to unknown values, such as function arguments,
+    need to hold for <strong>all</strong> possible variable assignments.
+  </div>
+</div>
+
+<p>
+  For the <code>max</code> function above,
+  the SMT solver finds and returns counterexample that refutes the verification condition.
+</p>
+
+<div class="my-2">
+  <div class="video-responsive" style="height: 22rem;">
+    <iframe src="/vembed?math&ontype&counter&remforall&height=12&source=function%20max%28a%2C%20b%29%20%7B%0A%20%20requires%28typeof%20a%20%3D%3D%3D%20%27number%27%29%3B%0A%20%20requires%28typeof%20b%20%3D%3D%3D%20%27number%27%29%3B%0A%20%20ensures%28result%20%3D%3E%20result%20%3E%3D%20a%29%3B%0A%20%20ensures%28result%20%3D%3E%20result%20%3E%3D%20b%29%3B%0A%20%20if%20%28a%20%3E%20b%29%20%7B%0A%20%20%20%20return%20a%3B%0A%20%20%7D%20else%20%7B%0A%20%20%20%20return%20a%3B%0A%20%20%7D%0A%7D"
+      seamless="seamless" style="border: none" frameborder="0"></iframe>
+  </div>
+</div>
+
+<p>
+  Mutable variables are represented by references to heap contents $H_n$.
+  The special syntax <code>old(x)</code> can be used to refer to previous values.
+</p>
+
+<div class="my-2">
+  <div class="video-responsive" style="height: 12.5rem;">
+    <iframe src="/vembed?math&ontype&remforall&height=8&vcn=4&source=let%20x%20%3D%200%3B%0Ainvariant%28typeof%20x%20%3D%3D%3D%20%27number%27%29%3B%0Afunction%20f%28%29%20%7B%0A%20%20ensures%28x%20%3E%20old%28x%29%29%3B%0A%20%20x%2B%2B%3B%0A%7D"
+      seamless="seamless" style="border: none" frameborder="0"></iframe>
+  </div>
+</div>
+
+<p>
+  Loops and recursion lead to an unbound number of code paths
+  and pose a challenge for verification.
+  Therefore,
+  explicit loop invariants and postconditions are necessary.
+  The following example sums up the first $n$ natural numbers and proves
+  that the result is equal to $\frac{n^2 + n}{2}$.
+</p>
+
+<div class="my-2">
+  <div class="video-responsive" style="height: 19rem;">
+    <iframe src="/embed?verify&height=17&source=function%20sumTo%20%28n%29%20%7B%0A%20%20requires%28Number.isInteger%28n%29%29%3B%0A%20%20requires%28n%20%3E%3D%200%29%3B%0A%20%20ensures%28res%20%3D%3E%20res%20%3D%3D%3D%20%28n%20%2B%201%29%20%2A%20n%20%2F%202%29%3B%0A%0A%20%20let%20i%20%3D%200%3B%0A%20%20let%20s%20%3D%200%3B%0A%20%20while%20%28i%20%3C%20n%29%20%7B%0A%20%20%20%20invariant%28Number.isInteger%28i%29%29%3B%0A%20%20%20%20invariant%28Number.isInteger%28s%29%29%3B%0A%20%20%20%20invariant%28i%20%3C%3D%20n%29%3B%0A%20%20%20%20invariant%28s%20%3D%3D%3D%20%28i%20%2B%201%29%20%2A%20i%20%2F%202%29%3B%0A%20%20%20%20i%2B%2B%3B%0A%20%20%20%20s%20%3D%20s%20%2B%20i%3B%0A%20%20%7D%0A%20%20return%20s%3B%0A%7D"
+      seamless="seamless" style="border: none" frameborder="0"></iframe>
+  </div>
+</div>
+
+<h3 id="esverify-qi">Function Calls and Quantifier Instantiation</h3>
+
+<p>
+  Function calls need to refer to the pre- and postcondition of the called function.
+  In general,
+  function definitions correspond to a universally quantified formula
+  that are <mark>instantiated</mark> with the function call arguments.
+</p>
+
+<div class="my-2">
+  <div class="columns">
+    <div class="col-6 column">
+      <pre><code class="javascript">
+function max(a, b) {
   requires(typeof(a)=="number");
   requires(typeof(b)=="number");
   ensures(result => result &gt;= a);
@@ -742,89 +1006,787 @@ function inc() {
     return b;
   }
 }
-</code></pre>
-  
-<div class="card">
-  <div class="card-image">
-  \[ \forall a \forall b.~\texttt{typeof}(a) = ``number'' ~ \wedge ~ \texttt{typeof}(b) = ``number'' \]
-  \[ \wedge ~ a &gt; b~\Rightarrow~result\negmedspace=\negmedspace a
-     \wedge ~ \lnot (a &gt; b)~\Rightarrow~result\negmedspace=\negmedspace b \]
-  \[ \Longrightarrow result \ge a \]
+<span class="esverify-2">const x = max(23, 42);
+assert(x >= 23);</span>
+ </code></pre>
+    </div>
+    <div class="col-6 column">
+      <div class="esverify-3">
+      \[ \forall x. \]
+      </div>
+      <div class="esverify-1">
+        <div class="esverify-4">
+          \[ \left ( \begin{matrix} \forall a, b. ~ \texttt{typeof}(a) = \text{"number"} ~\wedge \\ 
+          \texttt{typeof}(b) = \text{"number"} ~\Rightarrow \\ max(a, b) \ge a \end{matrix} \right ) \]
+        </div>
+      </div>
+      <div class="esverify-3">
+        <div class="esverify-4">
+        \[ \wedge ~~~~ x = max(23, 42) \]
+        </div>
+        \[ \Longrightarrow x \ge 23 \]
+      </div>
+    </div>
+    <div class="col-12 column">
+      <a id="esverify-next" class="btn btn-lg btn-primary float-right" href="#">Next</a>
+      <a id="esverify-back" class="btn btn-lg btn-link float-right" style="display: none" href="#">Back</a>
+    </div>
+  </div>
+  <script>
+  window.addEventListener('load', function() {
+    let step = 0;
+    $(".esverify-1").fadeOut(0);
+    $(".esverify-2").fadeOut(0);
+    $(".esverify-3").fadeOut(0);
+    const show = () => {
+      if (step === 0) {
+        $(".esverify-1").fadeOut('slow');
+        $(".esverify-2").fadeOut('slow');
+        $(".esverify-3").fadeOut('slow');
+        $(".esverify-4").removeClass('mark');
+        $("#esverify-next").fadeIn('slow');
+        $("#esverify-back").fadeOut('slow');
+      } else if (step === 1) {
+        $(".esverify-1").fadeIn('slow');
+        $(".esverify-2").fadeOut('slow');
+        $(".esverify-3").fadeOut('slow');
+        $(".esverify-4").removeClass('mark');
+        $("#esverify-next").fadeIn('slow');
+        $("#esverify-back").fadeIn('slow');
+      } else if (step === 2) {
+        $(".esverify-1").fadeIn('slow');
+        $(".esverify-2").fadeIn('slow');
+        $(".esverify-3").fadeOut('slow');
+        $(".esverify-4").removeClass('mark');
+        $("#esverify-next").fadeIn('slow');
+        $("#esverify-back").fadeIn('slow');
+      } else if (step === 3) {
+        $(".esverify-1").fadeIn('slow');
+        $(".esverify-2").fadeIn('slow');
+        $(".esverify-3").fadeIn('slow');
+        $(".esverify-4").removeClass('mark');
+        $("#esverify-next").fadeIn('slow');
+        $("#esverify-back").fadeIn('slow');
+      } else {
+        $(".esverify-1").fadeIn('slow');
+        $(".esverify-2").fadeIn('slow');
+        $(".esverify-3").fadeIn('slow');
+        $(".esverify-4").addClass('mark');
+        $("#esverify-next").fadeOut('slow');
+        $("#esverify-back").fadeIn('slow');
+      }
+    };
+    $("#esverify-back").click(() => { step = Math.max(0, step - 1); show(); return false; });
+    $("#esverify-next").click(() => { step = Math.min(4, step + 1); show(); return false; });
+  });
+  </script>
+</div>
+
+<p>
+  In simple cases like this, the pre- and postconditions of a callee can be looked by function name.
+  However,
+  this is not generally possible, in particular for higher-order functions.
+</p>
+
+<div class="my-2">
+  <div class="toast">
+    In verification conditions,
+    the pre- and postcondition of a function can be referred to with
+    the uninterpreted construct $\texttt{pre} (f, x)$ and $\texttt{post} (f, x)$.
   </div>
 </div>
 
 <p>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod finibus neque, eget dictum lacus tempor id. Mauris vulputate imperdiet sapien vitae sodales. Aliquam sit amet finibus eros, ut viverra urna. Integer aliquet, dui sit amet malesuada tempus, leo massa molestie nulla, sed rhoncus felis massa quis dui. Sed magna turpis, iaculis vel neque at, finibus commodo turpis. Curabitur malesuada, enim non faucibus pharetra, nisi leo dignissim ante, ac volutpat enim odio vel eros. Duis viverra quam ut posuere auctor. Donec eget dolor felis. Ut orci dui, mollis nec consectetur id, pellentesque ac tortor. Etiam posuere nulla libero, ac luctus quam commodo ut.
+  In the following example,
+  the argument <code>23</code> needs to satisfy the precondition of <code>f</code>,
+  i.e. $\texttt{pre} (f, 23)$ needs to be implied by the instantiated function definition of $f$.
 </p>
 
-<h3 id="esverify-advanced">Advanced Features</h3>
-
-<iframe style="width: 100%; border: 0" src="/embed" seamless="seamless">
-</iframe>
+<div class="my-2">
+  <div class="video-responsive" style="height: 16rem;">
+    <iframe src="/vembed?mathv&ontype&height=4&source=function%20f%20%28x%29%20%7B%0A%20%20requires%28Number.isInteger%28x%29%29%3B%0A%7D%0Af%2823%29%3B"
+      seamless="seamless" style="border: none" frameborder="0"></iframe>
+  </div>
+</div>
 
 <p>
-  Sed dapibus iaculis ex, ut accumsan sapien. Donec volutpat malesuada sollicitudin. Nam scelerisque laoreet tortor, ut molestie lectus fringilla in. Vestibulum arcu quam, viverra ac auctor ut, pulvinar ut eros. Sed pulvinar arcu quis risus bibendum, sed fermentum tellus mattis. Proin a leo mattis, finibus mauris posuere, eleifend erat. Integer sollicitudin fermentum mauris, vitae tristique metus elementum sed. Proin ligula magna, finibus eu erat vel, bibendum finibus justo. Praesent pharetra diam ut mollis consectetur.
+  In this example, the <mark>quantifier instantiation</mark> follows directly from the matching call.
+  However, quantifier instantiations in SMT solvers are usually unrestricted and follow heuristics.
+</p>
+
+<div class="my-2">
+  <div class="toast">
+    To ensure a decidable and predictable verification process,
+    a <em>bounded trigger-based quantifier instantiation algorithm</em> is used:
+    function calls act as <strong>triggers</strong> for a limited number of instantiations
+    before remaining quantifiers are removed.
+    This avoids brittle instantiation heuristics, matching loops and SMT solver timeouts.
+  </div>
+</div>
+
+<p>
+  The following example uses the same code to show the verification condition before
+  and after quantifier instantiation.
+</p>
+
+<div class="my-2">
+  <div class="video-responsive" style="height: 27rem;">
+    <iframe src="/vembed?mathv&qi&ontype&height=4&source=function%20f%20%28x%29%20%7B%0A%20%20requires%28Number.isInteger%28x%29%29%3B%0A%7D%0Af%2823%29%3B"
+      seamless="seamless" style="border: none" frameborder="0"></iframe>
+  </div>
+</div>
+
+<h3 id="esverify-ho">Higher-order Functions</h3>
+
+<p>
+  For higher-order functions, a custom <code>spec</code> syntax can be used to
+  specify a maximum pre- and a minimum postcondition.
+  In verification conditions,
+  this syntax translates to a quantifier - similar to function definitions.
+</p>
+
+<div class="my-2">
+  <div class="video-responsive" style="height: 30rem;">
+    <iframe src="/vembed?mathv&ontype&remfforall&height=7&source=function%20twice%20%28f%2C%20n%29%20%7B%0A%20%20requires%28spec%28f%2C%20%28x%29%20%20%20%3D%3E%20Number.isInteger%28x%29%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%28x%2Cy%29%20%3D%3E%20Number.isInteger%28y%29%20%26%26%20y%20%3E%20x%29%29%3B%0A%20%20requires%28Number.isInteger%28n%29%29%3B%0A%20%20ensures%28res%20%3D%3E%20res%20%3E%3D%20n%20%2B%202%29%3B%0A%20%20return%20f%28f%28n%29%29%3B%0A%7D"
+      seamless="seamless" style="border: none" frameborder="0"></iframe>
+  </div>
+</div>
+
+<p>
+  With <code>spec</code>, the pre- and postconditions can refer to the function argument
+  and the return value.
+  Additionally, <code>spec</code> can also be nested.
+  Is it therefore comparable to a dependent function type.
+</p>
+
+<h3 id="esverify-eval">Classes and Class Invariants</h3>
+
+<p>
+  In addition to simple data types such as booleans, numbers, strings,
+  immutable arrays and simple immutable objects/records,
+  the verifier also enables user-defined classes.
+</p>
+
+<div class="my-2">
+  <div class="toast">
+    The verifier only supports simple immutable classes without inheritance.
+    However,
+    classes can define a <strong>class invariant</strong>
+    that enables complex and recursive data structures.
+  </div>
+</div>
+
+<p>
+  Similarly to function definitions and function calls,
+  the invariant definition corresponds to a quantified formula
+  that gets instantiated when accessing properties of a class instance.
+  The following example shows a minimal class definition with an
+  invariant that gets instantiated by the $\texttt{access}$ trigger.
+</p>
+
+<div class="my-2">
+  <div class="video-responsive" style="height: 28.5rem;">
+    <iframe src="/vembed?mathv&qi&ontype&remfforall&height=7&source=class%20A%20%7B%0A%20%20constructor%20%28x%29%20%7B%20this.x%20%3D%20x%3B%20%7D%0A%20%20invariant%20%28%29%20%7B%20return%20this.x%20%3E%3D%200%3B%20%7D%0A%20%20m%20%28%29%20%7B%0A%20%20%20%20assert%28this.x%20%3E%3D%20-2%29%3B%0A%20%20%7D%0A%7D"
+      seamless="seamless" style="border: none" frameborder="0"></iframe>
+  </div>
+</div>
+
+<h3 id="esverify-eval">Larger Examples</h3>
+
+<p>
+  While this verifier is still an early prototype, it supports verification of some
+  non-trivial applications:
+</p>
+
+<ul>
+  <li>
+    A custom integer list class and a reverse function
+    such that reversing an ascending list yields a descending list
+    <a href="https://esverify.org/try#reverse-asc">↗</a>.
+  </li>
+  <li>
+    A verified implementation of MergeSort such that returned lists are sorted
+    <a href="https://esverify.org/try#msort">↗</a>.
+  </li>
+  <li>
+    A custom list class that can be parameterized by an invariant
+    (somewhat analogous to "generics")
+    <a href="https://esverify.org/try#map">↗</a>.
+  </li>
+  <li>
+    A theorem and proof written in JavaScript
+    showing that any locally increasing integer-ranged function is globally increasing.
+    <a href="https://esverify.org/try#fmono">↗</a>.
+  </li>
+</ul>
+
+<p>
+  Besides pre- and postconditions,
+  these examples also use explicit triggers and other code that is solely used for verification
+  purposes.
+</p>
+
+<div class="my-2">
+  <div class="toast">
+  In general, about 50-80% of the source code for these examples are verifier annotations compared
+  with 20-50% for computation.
+  </div>
+</div>
+
+<h3 id="esverify-formalism">Formal Development of Program Verification with $\lambda^S$</h3>
+
+<p>
+  In order to formally describe the program verification approach and 
+  prove its properties,
+  we developed a pure functional core language $\lambda^S$ with 
+  with annotated pre- and postconditions written as logical propositions.
 </p>
 
 <p>
-  Phasellus pulvinar nisi in magna dapibus, a commodo nibh luctus. Etiam fringilla ut eros vitae venenatis. Donec id tempor ante, eu molestie justo. Etiam sed ornare ipsum. Duis consectetur interdum ipsum a mattis. Donec lobortis lobortis lacus vitae placerat. In hac habitasse platea dictumst. Etiam sed nulla elit. Donec eget magna quis leo vehicula auctor efficitur nec ante. Sed scelerisque lectus eu lacus vestibulum dignissim. 
+  The syntax of $\lambda^S$ is in A-normal form, so its evaluation rules
+  use variable bindings instead of substitution to simplify the proofs.
+  As an example,
+  the following annotated JavaScript function 
+  could be expressed in $\lambda^S$ as follows:
 </p>
 
-<h2 id="formalism">Formal Development of Program Verification with $\lambda^S$</h2>
+<div class="my-2">
+  <div class="card">
+    <pre><code class="javascript">function inc (x) {
+  requires(Number.isInteger(x));
+  ensures(result => Number.isInteger(y) && result > x);
+  return x + 1;
+}
+...</code></pre>
+    <div class="divider"></div>
+    <div>
+    $ \begin{array}{l}
+    \text{let}~inc (x)~\text{req}~(isInt(x))~\text{ens}~\left(isInt(inc(x)) \wedge inc(x) > x\right) = \\
+    \hspace{2em} \text{let}~y = x + 1 \\
+    \hspace{2em} \text{in}~y \\
+    \text{in}~ ...
+    \end{array} $
+    </div>
+  </div>
+</div>
 
 <p>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod finibus neque, eget dictum lacus tempor id. Mauris vulputate imperdiet sapien vitae sodales. Aliquam sit amet finibus eros, ut viverra urna. Integer aliquet, dui sit amet malesuada tempus, leo massa molestie nulla, sed rhoncus felis massa quis dui. Sed magna turpis, iaculis vel neque at, finibus commodo turpis. Curabitur malesuada, enim non faucibus pharetra, nisi leo dignissim ante, ac volutpat enim odio vel eros. Duis viverra quam ut posuere auctor. Donec eget dolor felis. Ut orci dui, mollis nec consectetur id, pellentesque ac tortor. Etiam posuere nulla libero, ac luctus quam commodo ut.
+  The verification rules of $\lambda^S$ resemble typing rules with
+  verification conditions $ \langle P~\Rightarrow~Q \rangle$
+  whose validity is checked with an axiomatized SMT solver.
+  As an example,
+  the following verification rule for applying an unary operator $\otimes$
+  assumes a precondition $P$.
 </p>
 
 <p>
-  Sed dapibus iaculis ex, ut accumsan sapien. Donec volutpat malesuada sollicitudin. Nam scelerisque laoreet tortor, ut molestie lectus fringilla in. Vestibulum arcu quam, viverra ac auctor ut, pulvinar ut eros. Sed pulvinar arcu quis risus bibendum, sed fermentum tellus mattis. Proin a leo mattis, finibus mauris posuere, eleifend erat. Integer sollicitudin fermentum mauris, vitae tristique metus elementum sed. Proin ligula magna, finibus eu erat vel, bibendum finibus justo. Praesent pharetra diam ut mollis consectetur.
+  \[ \frac{\begin{matrix}
+        x~\in~FV(P) \hspace{2ex}
+        y~\not \in~FV(P) \hspace{2ex}
+        \left \langle P~\Rightarrow~pre(\otimes, x) \right \rangle \\
+        P~\wedge~y = \otimes x~\vdash~e~:~Q\end{matrix}}{P~\vdash~\text{let}~y~=~\otimes x~\text{in}~e :~\exists y.~y = \otimes x~\wedge~Q} \]
 </p>
 
 <p>
-  Phasellus pulvinar nisi in magna dapibus, a commodo nibh luctus. Etiam fringilla ut eros vitae venenatis. Donec id tempor ante, eu molestie justo. Etiam sed ornare ipsum. Duis consectetur interdum ipsum a mattis. Donec lobortis lobortis lacus vitae placerat. In hac habitasse platea dictumst. Etiam sed nulla elit. Donec eget magna quis leo vehicula auctor efficitur nec ante. Sed scelerisque lectus eu lacus vestibulum dignissim. 
+  The complete formal development can be found <a href="/thesis.pdf">in the thesis</a>.
+  Most importantly,
+  the following two theorems can be shown about $\lambda^S$:
 </p>
 
-<h2 id="testgen">Automatic Test Generation with Counterexamples</h2>
+<div class="my-2">
+  <div class="toast toast-success">
+    <strong>Theorem:</strong><br>
+    Verification is <em>sound</em>:
+    verified programs can be evaluated without getting stuck.
+  </div>
+</div>
+
+<div class="my-2">
+  <div class="toast toast-success">
+    <strong>Theorem:</strong><br>
+    The verification algorithm is <em>decidable</em>:
+    the decision procedure terminates for all inputs.
+  </div>
+</div>
 
 <p>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod finibus neque, eget dictum lacus tempor id. Mauris vulputate imperdiet sapien vitae sodales. Aliquam sit amet finibus eros, ut viverra urna. Integer aliquet, dui sit amet malesuada tempus, leo massa molestie nulla, sed rhoncus felis massa quis dui. Sed magna turpis, iaculis vel neque at, finibus commodo turpis. Curabitur malesuada, enim non faucibus pharetra, nisi leo dignissim ante, ac volutpat enim odio vel eros. Duis viverra quam ut posuere auctor. Donec eget dolor felis. Ut orci dui, mollis nec consectetur id, pellentesque ac tortor. Etiam posuere nulla libero, ac luctus quam commodo ut.
+  The proofs are specified and checked with the <a href="https://leanprover.github.io/">Lean</a> Theorem Prover.
+  The source code of the definitions, lemmas and proof steps can be found
+  <a href="https://github.com/levjj/esverify-theory/">here</a>.
+</p>
+
+<h3 id="esverify-types">Comparison with Refinement Types $\lambda^T$</h3>
+
+<p>
+  Additionally, is is useful to compare static verification with static typing,
+  so we introduced $\lambda^T$, a functional language with
+  refined base types and dependent function types:
 </p>
 
 <p>
-  Sed dapibus iaculis ex, ut accumsan sapien. Donec volutpat malesuada sollicitudin. Nam scelerisque laoreet tortor, ut molestie lectus fringilla in. Vestibulum arcu quam, viverra ac auctor ut, pulvinar ut eros. Sed pulvinar arcu quis risus bibendum, sed fermentum tellus mattis. Proin a leo mattis, finibus mauris posuere, eleifend erat. Integer sollicitudin fermentum mauris, vitae tristique metus elementum sed. Proin ligula magna, finibus eu erat vel, bibendum finibus justo. Praesent pharetra diam ut mollis consectetur.
+  \[ T \in \text{Types} ~::=~ \{~x: B~|~ R~\} ~|~ x:T \rightarrow T \hspace{2.5em}
+  B ~::=~ \text{Bool}~|~ \text{Int} \]
 </p>
 
 <p>
-  Phasellus pulvinar nisi in magna dapibus, a commodo nibh luctus. Etiam fringilla ut eros vitae venenatis. Donec id tempor ante, eu molestie justo. Etiam sed ornare ipsum. Duis consectetur interdum ipsum a mattis. Donec lobortis lobortis lacus vitae placerat. In hac habitasse platea dictumst. Etiam sed nulla elit. Donec eget magna quis leo vehicula auctor efficitur nec ante. Sed scelerisque lectus eu lacus vestibulum dignissim. 
+  $\lambda^T$ programs can be translated to $\lambda^S:$
+  <ul>
+    <li>
+      Refined base types translate to type guards with <code>typeof</code>.
+      The refinements $R$ are a subset of $\lambda^S$ propositions $P$ and do not require translation.
+    </li>
+    <li>Dependent function types translate to function specifications with <code>spec</code>.</li>
+  </ul>
 </p>
+
+<div class="my-2">
+  <div class="toast toast-primary">
+    <strong>Conjecture:</strong><br>
+    Well-typed $\lambda^T$ programs translate to verifiable $\lambda^S$ programs.
+  </div>
+</div>
+
+<p>
+  This proof is more complex than the previous two and still unfinished,
+  primarily because of the quantifier instantiation algorithm.
+  However, empirical evidence from manually translating example programs
+  supports this conjecture.
+</p>
+
+<p>
+  <span class="label label-dark text-bold">To summarize:</span>
+  Static program verification can also be applied
+  to dynamically-typed JavaScript programs
+  including higher-order functions.
+  The underlying quantifier instantiation algorithm
+  ensures that the verification process remains predictable and avoids timeouts.
+  Using a formalism,
+  it can be shown that this verification approach is sound
+  and (apparently) at least as expressive as refinement type systems
+  such as <a href="https://ucsd-progsys.github.io/liquidhaskell-blog/">LiquidHaskell</a>.
+</p>
+
+<div class="my-2">
+  <div class="toast">
+    The source code of esverify is available on <a href="https://github.com/levjj/esverify">GitHub</a>.
+    Also, a paper (<a href="https://users.soe.ucsc.edu/~cschuster/ifl18/ifl18-esverify.pdf">preprint</a>)
+    was presented at
+    <a href="http://2018.iflconference.org/">
+      IFL'2018
+    </a>.
+  </div>
+</div>
 
 <h2 id="ide">Integrated Development and Verification Environments</h2>
 
 <p>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod finibus neque, eget dictum lacus tempor id. Mauris vulputate imperdiet sapien vitae sodales. Aliquam sit amet finibus eros, ut viverra urna. Integer aliquet, dui sit amet malesuada tempus, leo massa molestie nulla, sed rhoncus felis massa quis dui. Sed magna turpis, iaculis vel neque at, finibus commodo turpis. Curabitur malesuada, enim non faucibus pharetra, nisi leo dignissim ante, ac volutpat enim odio vel eros. Duis viverra quam ut posuere auctor. Donec eget dolor felis. Ut orci dui, mollis nec consectetur id, pellentesque ac tortor. Etiam posuere nulla libero, ac luctus quam commodo ut.
+  If program verification fails,
+  the verification errors are often hard to understand
+  and error messages may not be sufficient
+  to help the programmer resolve these issues.
+  However,
+  <em>executable counterexamples</em> and <em>interactive verification tools</em>
+  can provide better feedback and assist the programmer in determining
+  whether a verification issue corresponds to a bug in the code or an insufficient annotation or invariant.
+</p>
+
+<h3 id="testgen">Automatic Test Generation with Counterexamples</h3>
+
+<p>
+  For failed verification conditions,
+  the SMT solver returns a counterexample,
+  i.e. an assignment of free variables to values that serve as a witness for the error.
+  The following example shows a counterexample with values for <code>a</code> and <code>b</code>.
+  Based on these values and the original code,
+  a unit test is automatically generated
+  in order to demonstrate the verification issue with a concrete assertion violation.
+</p>
+
+<div class="my-2">
+  <div class="video-responsive" style="height: 27rem;">
+    <iframe src="/vembed?math&remforall&counter&test&ontype&height=4&source=function%20f%28x%2C%20y%29%20%7B%0A%20%20assert%28x%20%2B%20y%20%21%3D%3D%20%27abc%27%29%3B%0A%7D"
+      seamless="seamless" style="border: none" frameborder="0"></iframe>
+  </div>
+</div>
+
+<p>
+  Counterexamples may not always correspond to bugs in the code
+  that cause errors.
+  In the following example, the <code>fac</code> function is lacking a postcondition.
+  Multiplication requires both operands to be numbers,
+  including <code>n</code> and the return value of <code>fac(n - 1)</code>.
+  However,
+  the verifier cannot automatically infer the type of the return value due to recursion.
+</p>
+
+<div class="my-2">
+  <div class="video-responsive" style="height: 28.5rem;">
+    <iframe src="/vembed?counter&test&ontype&height=5&source=function%20fac%20%28n%29%20%7B%0A%20%20requires%28Number.isInteger%28n%29%29%3B%0A%20%20return%20n%20%3C%201%20%3F%200%20%3A%20n%20%2A%20fac%28n%20-%201%29%3B%0A%7D"
+      seamless="seamless" style="border: none" frameborder="0"></iframe>
+  </div>
+</div>
+
+<p>
+  The generated test from the SMT counterexample does not produce an error
+  or assertion violation.
+  This suggests that the computation is actually correct but the verifier annotations insufficient.
+  Indeed,
+  adding <code>ensures(res => typeof res === 'number');</code> as postcondition
+  lets the verification succeed.
+</p>
+
+<h3 id="idve-popups">Counterexample Popups</h3>
+
+<p>
+  The SMT counterexamples and test generation is the basis for an integrated development and verification
+  environment.
 </p>
 
 <p>
-  Sed dapibus iaculis ex, ut accumsan sapien. Donec volutpat malesuada sollicitudin. Nam scelerisque laoreet tortor, ut molestie lectus fringilla in. Vestibulum arcu quam, viverra ac auctor ut, pulvinar ut eros. Sed pulvinar arcu quis risus bibendum, sed fermentum tellus mattis. Proin a leo mattis, finibus mauris posuere, eleifend erat. Integer sollicitudin fermentum mauris, vitae tristique metus elementum sed. Proin ligula magna, finibus eu erat vel, bibendum finibus justo. Praesent pharetra diam ut mollis consectetur.
+  As a simple editor/IDE extension,
+  it is possible to show counterexample values of free variables as popups or tooltips in the editor itself.
+  The following demo shows such an editor integration with an incorrect <code>max</code> function
+  and instruction on how to use it.
+</p>
+
+<div class="my-2">
+  <div class='card'>
+    <div class='card-body'>
+      <div class="video-responsive" style="height: 16rem;">
+        <iframe src="/idembed?popups&height=12&source=%0A%0Afunction%20max%28a%2C%20%20b%29%20%7B%0A%20%20requires%28typeof%20a%20%3D%3D%3D%20%27number%27%29%3B%0A%20%20requires%28typeof%20b%20%3D%3D%3D%20%27number%27%29%3B%0A%20%20ensures%28result%20%3D%3E%20result%20%3E%3D%20a%29%3B%0A%20%20ensures%28result%20%3D%3E%20result%20%3E%3D%20b%29%3B%0A%20%20if%20%28a%20%3E%20b%29%20%7B%0A%20%20%20%20return%20a%3B%0A%20%20%7D%20else%20%7B%0A%20%20%20%20return%20a%3B%0A%20%20%7D%0A%7D"
+          seamless="seamless" style="border: none" frameborder="0"></iframe>
+      </div>
+      <p><strong>Instructions</strong></p>
+      <ol>
+        <li>Click the <span className='label label-primary'>verify</span> button to
+            verify all assertions in the code.</li>
+        <li>The second postcondition does not hold due to a bug in the implementation.</li>
+        <li>Click on the red box in front of line 7 to select the verification condition.</li>
+        <li>The editor now shows counterexample values for the free variables <code>a</code> and <code>b</code>.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<h3 id="idve-vcpanel">Verification Inspector</h3>
+
+<p>
+  Error messages, tooltips and counterexample popups enable a brief overview
+  of the verification issue.
+  In order to present a more detailed explanation,
+  an interactive <strong>verification inspector</strong> can be used.
+  This inspector lists assumptions (such as preconditions and invariants)
+  and the asserted logical statement.
+  Furthermore,
+  additional assumptions and assertions can be entered and tested by the user.
+  This feature can be useful for interactive exploration and experimentation
+  without having to change the original source code.
+  This is analogous to the way interactive step-by-step debuggers are preferable to <em>printf debugging</em>.
+</p>
+
+<div class="my-2">
+  <div class='card'>
+    <div class='card-body'>
+      <div class="video-responsive" style="height: 19rem;">
+        <iframe src="/idembed?panel&popups&height=15&source=%0A%0Afunction%20max%28a%2C%20b%29%20%7B%0A%20%20requires%28typeof%20a%20%3D%3D%3D%20%27number%27%29%3B%0A%20%20ensures%28res%20%3D%3E%20res%20%3E%3D%20a%29%3B%0A%20%20ensures%28res%20%3D%3E%20res%20%3E%3D%20b%29%3B%0A%0A%20%20if%20%28a%20%3E%3D%20b%29%20%7B%0A%20%20%20%20return%20a%3B%0A%20%20%7D%20else%20%7B%0A%20%20%20%20return%20b%3B%0A%20%20%7D%0A%7D"
+          seamless="seamless" style="border: none" frameborder="0"></iframe>
+      </div>
+      <p><strong>Instructions</strong></p>
+      <ol>
+        <li>Click the <span className='label label-primary'>verify</span> button to
+            verify all assertions in the code.</li>
+        <li>Click on the yellow triangle in front of line 5 to select the verification condition.</li>
+        <li>
+          The panel on the right lists assumptions and assertions and the editor shows
+          values for the counterexample as popup markers.
+        </li>
+        <li>
+          It seems the postcondition does not hold if <code>b</code> is not a number.
+          Check this hypothesis by entering <code>typeof b === 'number'</code> next to 'Assume:'
+          and confirm this with by pressing the enter/return key.
+        </li>
+        <li>
+            With this additional assumption, the postcondition can now be verified.
+        </li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<h3 id="idve-vcpanel">Integrated Test Debugger</h3>
+
+<p>
+  Finally, the automatically generated test can also be help with understanding verification issues.
+  Instead of presenting automatically generated test code the programmer directly,
+  the environment enables the programmer to step through the original code while
+  showing variables in scope, the current call stack and letting the user query
+  the (static) verifier state and (dynamic) test execution state with watch expressions.
+</p>
+
+<div class="my-2">
+  <div class='card'>
+    <div class='card-body'>
+      <div class="video-responsive" style="height: 24rem;">
+        <iframe src="/idembed?panel&popups&debugger&height=18&source=%0A%0Afunction%20max%28a%2C%20b%29%20%7B%0A%20%20requires%28typeof%28a%29%20%3D%3D%3D%20%27number%27%29%3B%0A%20%20requires%28typeof%28b%29%20%3D%3D%3D%20%27number%27%29%3B%0A%20%20ensures%28res%20%3D%3E%20res%20%3E%3D%20a%29%3B%0A%20%20ensures%28res%20%3D%3E%20res%20%3E%3D%20b%29%3B%0A%0A%20%20if%20%28a%20%3E%20b%29%20%7B%0A%20%20%20%20return%20a%3B%0A%20%20%7D%0A%20%20if%20%28b%20%3E%20a%29%20%7B%0A%20%20%20%20return%20b%3B%0A%20%20%7D%0A%7D"
+          seamless="seamless" style="border: none" frameborder="0"></iframe>
+      </div>
+      <p><strong>Instructions</strong></p>
+      <ol>
+        <li>Click the <span className='label label-primary'>verify</span> button
+            to verify all assertions in the code.</li>
+        <li>Click on the first incorrect verification condition in line 6.</li>
+        <li>The verification inspector in the panel on the right lists watch expressions,
+            variables in scope and the call stack.</li>
+        <li>In this case, the counterexample uses <code>0</code> for both <code>a</code> and <code>b</code>.</li>
+        <li>To query the return value, enter <code>res</code> next to 'Watch:'.</li>
+        <li>It seems the function returns <code>undefined</code>.</li>
+        <li>To see the control flow, step through the code by clicking
+            <span className='label label-primary'>Restart</span> and then
+            clicking <span className='label label-primary'>Step Into</span> about eight times.</li>
+        <li>It seems none of the two <code>if</code> statements returned a value
+            when stepping through the code with this counterexample.</li>
+      </ol>
+    </div>
+  </div>
+</div>
+
+<h3 id="userstudy">User Study</h3>
+
+<p>
+  The integrated verification and development environment was evaluated with a user study
+  with 18 participants.
+  The user study focussed on how the proposed features can be used for smaller programming and verification tasks.
+  Test subjects had no prior experience with the environment itself
+  but indicated to have at least basic knowledge of JavaScript
+  and might have used other program verifiers before.
 </p>
 
 <p>
-  Phasellus pulvinar nisi in magna dapibus, a commodo nibh luctus. Etiam fringilla ut eros vitae venenatis. Donec id tempor ante, eu molestie justo. Etiam sed ornare ipsum. Duis consectetur interdum ipsum a mattis. Donec lobortis lobortis lacus vitae placerat. In hac habitasse platea dictumst. Etiam sed nulla elit. Donec eget magna quis leo vehicula auctor efficitur nec ante. Sed scelerisque lectus eu lacus vestibulum dignissim. 
+  The user study was conducted entirely online.
+  Participants were presented with a brief introduction of the environment,
+  followed by a series of programming and verification tasks,
+  and finally surveyed about their experience using the tool.
 </p>
 
-<h2 id="conclusions">Conclusions and Related Work</h2>
+<div class="my-2">
+  <div class="toast">
+    An archived version of tutorial and the tasks is still available 
+    <a href="https://esverify.org/userstudy-archived">online</a>.
+  </div>
+</div>
 
 <p>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce euismod finibus neque, eget dictum lacus tempor id. Mauris vulputate imperdiet sapien vitae sodales. Aliquam sit amet finibus eros, ut viverra urna. Integer aliquet, dui sit amet malesuada tempus, leo massa molestie nulla, sed rhoncus felis massa quis dui. Sed magna turpis, iaculis vel neque at, finibus commodo turpis. Curabitur malesuada, enim non faucibus pharetra, nisi leo dignissim ante, ac volutpat enim odio vel eros. Duis viverra quam ut posuere auctor. Donec eget dolor felis. Ut orci dui, mollis nec consectetur id, pellentesque ac tortor. Etiam posuere nulla libero, ac luctus quam commodo ut.
+  The survey results are summarized in the tables below.
+</p>
+
+<div class="my-2">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th style="min-width: 40%">Response (%)</th>
+        <th class="text-center">Verification Inspector</th>
+        <th class="text-center">Counterexample Popups</th>
+        <th class="text-center">Integrated Debugger</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Used this feature in experiments</td>
+        <td class="text-right">39</td>
+        <td class="text-right">50</td>
+        <td class="text-right">28</td>
+      </tr>
+      <tr>
+        <td>Unsuccessfully tried using it</td>
+        <td class="text-right">33</td>
+        <td class="text-right">33</td>
+        <td class="text-right">22</td>
+      </tr>
+      <tr style="border-bottom: 0.2rem solid #e7e9ed;">
+        <td>Did not use it</td>
+        <td class="text-right">27</td>
+        <td class="text-right">17</td>
+        <td class="text-right">50</td>
+      </tr>
+      <tr>
+        <td>The feature is helpful</td>
+        <td class="text-right">33</td>
+        <td class="text-right">55</td>
+        <td class="text-right">44</td>
+      </tr>
+      <tr>
+        <td>It could be helpful with different UI</td>
+        <td class="text-right">50</td>
+        <td class="text-right">39</td>
+        <td class="text-right">44</td>
+      </tr>
+      <tr>
+        <td>It is not useful for development</td>
+        <td class="text-right">6</td>
+        <td class="text-right">6</td>
+        <td class="text-right">6</td>
+      </tr>
+      <tr>
+        <td>It impairs the development process</td>
+        <td class="text-right">11</td>
+        <td class="text-right">0</td>
+        <td class="text-right">6</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  As part of the user study,
+  participants ranked their JavaScript proficiency on a scale from 1 (novice) to 5 (export) and indicated
+  whether they had prior experience with program verification.
+</p>
+
+<div class="my-2">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Experience with</th>
+        <th class="text-center" colspan="5">JavaScript</th>
+        <th class="text-center" colspan="2">Verification</td>
+      </tr>
+      <tr>
+        <th>&nbsp;</th>
+        <th class="text-right">1</th>
+        <th class="text-right">2</th>
+        <th class="text-right">3</th>
+        <th class="text-right">4</th>
+        <th class="text-right">5</th>
+        <th class="text-right">no</th>
+        <th class="text-right">yes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td># Participants</td>
+        <td class="text-right">1</td>
+        <td class="text-right">2</td>
+        <td class="text-right">3</td>
+        <td class="text-right">6</td>
+        <td class="text-right">6</td>
+        <td class="text-right">8</td>
+        <td class="text-right">10</td>
+      </tr>
+      <tr>
+        <td># successfully used at least one feature</td>
+        <td class="text-right">1</td>
+        <td class="text-right">2</td>
+        <td class="text-right">3</td>
+        <td class="text-right">5</td>
+        <td class="text-right">4</td>
+        <td class="text-right">6</td>
+        <td class="text-right">9</td>
+      </tr>
+      <tr>
+        <td># see features as potentially helpful</td>
+        <td class="text-right">1</td>
+        <td class="text-right">2</td>
+        <td class="text-right">3</td>
+        <td class="text-right">6</td>
+        <td class="text-right">6</td>
+        <td class="text-right">8</td>
+        <td class="text-right">10</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<p>
+  The usage and the perceived benefits vary for the three main features of the environment.
+  While half of the participants made use of counterexample popups,
+  the verification inspector was only used by 39 percent of participants,
+  and the integrated debugger by 28 percent.
+  When features were used,
+  they are generally seen as helpful or at least potentially helpful.
 </p>
 
 <p>
-  Sed dapibus iaculis ex, ut accumsan sapien. Donec volutpat malesuada sollicitudin. Nam scelerisque laoreet tortor, ut molestie lectus fringilla in. Vestibulum arcu quam, viverra ac auctor ut, pulvinar ut eros. Sed pulvinar arcu quis risus bibendum, sed fermentum tellus mattis. Proin a leo mattis, finibus mauris posuere, eleifend erat. Integer sollicitudin fermentum mauris, vitae tristique metus elementum sed. Proin ligula magna, finibus eu erat vel, bibendum finibus justo. Praesent pharetra diam ut mollis consectetur.
+  The programming tasks in the experiment may have been 
+  too small or simple to require debugging
+  but the results might also indicate that the debugger integration
+  might benefit the most from user interface improvements.
 </p>
 
 <p>
-  Phasellus pulvinar nisi in magna dapibus, a commodo nibh luctus. Etiam fringilla ut eros vitae venenatis. Donec id tempor ante, eu molestie justo. Etiam sed ornare ipsum. Duis consectetur interdum ipsum a mattis. Donec lobortis lobortis lacus vitae placerat. In hac habitasse platea dictumst. Etiam sed nulla elit. Donec eget magna quis leo vehicula auctor efficitur nec ante. Sed scelerisque lectus eu lacus vestibulum dignissim. 
+  Finally,
+  it is noteworthy that
+  all participants,
+  including those without JavaScript expertise or prior verification experience,
+  found at least one of the the features helpful.
 </p>
+
+<p>
+  <span class="label label-dark text-bold">To summarize:</span>
+  Understanding and debugging verification errors can be difficult
+  but executable counterexamples and an integrated development and verification environment
+  can assist programmers.
+  The environment enables inspection of verification conditions
+  including the option to interactively add or remove assumptions and assertions.
+  Additionally,
+  the environment provides shows counterexample values in the editor and supports step-by-step debugging
+  for failed verification conditions based on automatically generated tests.
+  A user study found that the proposed features are generally seen as helpful.
+</p>
+
+<div class="my-2">
+  <div class="toast">
+    The source code of IDVE is available on <a href="https://github.com/levjj/esverify-web">GitHub</a>.
+    Also, a paper (<a href="about:blank">preprint</a>)
+    was submitted to
+    <a href="http://2019.programming-conference.org/">
+      Programming'2019
+    </a>.
+  </div>
+</div>
+
+<h2 id="ack">Related Work and Acknowledgements</h2>
+
+<p>
+  The work on live programming is closely related and partly inspired by
+  <a href="https://elm-lang.org/">Elm</a>,
+  <a href="https://www.touchdevelop.com/">TouchDevelop</a>
+  (especially the
+  <a href="https://www.microsoft.com/en-us/research/publication/its-alive-continuous-feedback-in-ui-programming/">It's Alive</a> paper),
+  the work by <a href="https://alarmingdevelopment.org/">Jonathan Edwards</a>
+  (including <a href="http://www.subtext-lang.org/">Subtext</a>),
+  and Smalltalk environments such as <a href="https://squeak.org/">Squeak</a>
+  and <a href="https://www.lively-kernel.org/">Lively Kernel</a>/
+  <a href="https://lively-next.org/">lively.next</a>.
+  I also want to thank my former teammates at CDG/<a href="https://harc.ycr.org/">Y Combinator Research</a>.
+</p>
+
+<p>
+  In terms of program verification,
+  <a href="https://www.microsoft.com/en-us/research/project/dafny-a-language-and-program-verifier-for-functional-correctness/">Dafny</a>
+  and <a href="https://ucsd-progsys.github.io/liquidhaskell-blog/">LiquidHaskell</a>
+  are both strong closely related and much more mature than <a href="https://esverify.org/">esverify</a>.
+  Additionally,
+  the <a href="https://leanprover.github.io/">Lean</a> Theorem Prover has been immensely helpful
+  for the formal development.
+</p>
+
+<p>
+  Finally,
+  I am very thankful to my PhD advisor, <a href="https://users.soe.ucsc.edu/~cormac/">Cormac Flanagan</a>,
+  and the programming language group at
+  <a href="https://www.ucsc.edu">UC Santa Cruz</a>,
+  including Sohum Banerjea and Thomas Schmitz.
+</p>
+
+<div class="divider"></div>
+
+<p class="text-gray">
+  The idea for this kind of interactive thesis comes from <a href="http://tomasp.net/">Tomas Petricek</a>
+  and his interactive page on <a href="http://tomasp.net/coeffects/">Coeffects</a>.
+</p>
+
+<br>
+<br>
 
     </section>
   </div>

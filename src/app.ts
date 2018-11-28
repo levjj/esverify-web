@@ -42,6 +42,8 @@ export type AppState = Readonly<{
   vcs: ReadonlyArray<InteractiveVC>;
   selectedVC: number | undefined;
   showSourceAnnotations: boolean;
+  running: boolean;
+  runMessage: string | undefined;
   userStudy: UserStudyState;
 }>;
 
@@ -86,6 +88,10 @@ export function initialState (): AppState {
   if (window.location.pathname.endsWith('/userstudy-experiments')) {
     sourceCode = sourceForUserStudy(UserStudyStep.TUTORIAL_1);
   }
+  const searchParams = new URLSearchParams(window.location.search);
+  if (searchParams.has('source')) {
+    sourceCode = searchParams.get('source') || sourceCode;
+  }
   return {
     selected: initialExample,
     selectedLine: undefined,
@@ -94,6 +100,8 @@ export function initialState (): AppState {
     vcs: [],
     selectedVC: undefined,
     showSourceAnnotations: true,
+    running: false,
+    runMessage: undefined,
     userStudy: {
       currentStep: UserStudyStep.TUTORIAL_1,
       showModal: true
@@ -162,6 +170,10 @@ export interface VerificationError {
 
 export interface RunCode {
   type: 'RUN_CODE';
+}
+
+export interface RunCodeDone {
+  type: 'RUN_CODE_DONE';
 }
 
 export interface SelectLine {
@@ -263,6 +275,7 @@ export type BaseAction = SelectExample
                        | VerificationDone
                        | VerificationError
                        | RunCode
+                       | RunCodeDone
                        | SelectLine
                        | SelectVerificationCondition
                        | SetSourceAnnotations
@@ -403,6 +416,16 @@ export function removeAssumption (ivc: InteractiveVC, index: number): Action {
   }
 }
 
+export function runCode (): Action {
+  return {
+    type: 'ASYNCHRONOUS',
+    start: { type: 'RUN_CODE' },
+    end: new Promise(resolve => {
+      setTimeout(() => resolve({ type: 'RUN_CODE_DONE' }), 300);
+    })
+  };
+}
+
 function userStudyNextStep (step: UserStudyStep): UserStudyStep {
   switch (step) {
     case UserStudyStep.TUTORIAL_1: return UserStudyStep.TUTORIAL_2;
@@ -540,7 +563,8 @@ export function reduce (state: AppState, action: BaseAction): AppState {
         vcs: [],
         message: undefined,
         selectedLine: undefined,
-        selectedVC: undefined
+        selectedVC: undefined,
+        runMessage: undefined
       };
     }
     case 'VERIFY': {
@@ -561,18 +585,24 @@ export function reduce (state: AppState, action: BaseAction): AppState {
           selectedFrame: undefined
         })),
         message: undefined,
+        runMessage: undefined,
         selectedVC: undefined
       };
     }
     case 'RUN_CODE': {
+      return { ...state, running: true, runMessage: undefined };
+    }
+    case 'RUN_CODE_DONE': {
       const source = state.sourceCode;
+      let runMessage: string;
       try {
         /* tslint:disable:no-eval */
         eval(testPreamble() + source);
+        runMessage = 'code ran successfully';
       } catch (e) {
-        alert(String(e));
+        runMessage = String(e);
       }
-      return state;
+      return { ...state, running: false, runMessage };
     }
     case 'VERIFICATION_DONE': {
       return state;

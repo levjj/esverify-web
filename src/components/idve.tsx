@@ -10,6 +10,7 @@ import Editor from './editor';
 
 export interface Props {
   state: AppState;
+  enableTitle: boolean;
   enableExampleSelect: boolean;
   enableVerification: boolean;
   enableSourceAnnotations: boolean;
@@ -17,6 +18,7 @@ export interface Props {
   enableDebugger: boolean;
   enableRunning: boolean;
   large: boolean;
+  height: number | undefined;
   dispatch: (action: Action) => void;
 }
 
@@ -55,7 +57,7 @@ function vcAsAnnotation (vc: InteractiveVC): Annotation {
 }
 
 export default function IDVE ({ enableExampleSelect, enableVerification, enableSourceAnnotations, enableVCPanel,
-                               enableDebugger, enableRunning, large, state, dispatch }: Props) {
+                                enableDebugger, enableRunning, enableTitle, height, large, state, dispatch }: Props) {
   const annotations: Array<Annotation> = state.message !== undefined
     ? [messageAsAnnotation(state.message)]
     : state.vcs.map(vcAsAnnotation);
@@ -70,7 +72,9 @@ export default function IDVE ({ enableExampleSelect, enableVerification, enableS
     ? vc.callstack()[ivc.selectedFrame][1]
     : undefined;
   return (
-    <SplitPane split='vertical' defaultSize='60%' style={{ height: '80vh' }}
+    <SplitPane split='vertical'
+               defaultSize={enableVCPanel ? (enableTitle ? '60%' : '50%') : '100%'}
+               style={{ height: height === undefined ? '80vh' : (height + 4) + 'rem' }}
                className={large ? 'container grid-xl' : 'container grid-lg'}>
       <div>
         <div className='p-2'>
@@ -90,7 +94,9 @@ export default function IDVE ({ enableExampleSelect, enableVerification, enableS
                 className='btn btn-primary'
                 onClick={() => dispatch({ type: 'RUN_CODE' })}>run</button> : ''}
           </div>
-          <h4 className='my-2'>IDVE: Interactive Development and Verification Environment</h4>
+          { enableTitle
+            ? <h4 className='my-2'>IDVE: Interactive Development and Verification Environment</h4>
+            : ''}
         </div>
         <Editor
           annotations={annotations}
@@ -98,6 +104,7 @@ export default function IDVE ({ enableExampleSelect, enableVerification, enableS
           pc={pc}
           sourceAnnotations={sourceAnnotations}
           sourceCode={state.sourceCode}
+          height={height}
           dispatch={dispatch} />
         { enableSourceAnnotations ?
           <div className='form-group float-right'>

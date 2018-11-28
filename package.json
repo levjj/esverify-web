@@ -8,6 +8,8 @@
     "lint": "tsc --noEmit && tslint --project .",
     "dev": "webpack -d --devtool source-map",
     "prod": "webpack -p",
+    "tsembed": "webpack -p --config webpack.tsembed.config.js",
+    "vembed": "webpack -p --config webpack.vembed.config.js",
     "serve": "node serve.js"
   },
   "repository": {
@@ -15,11 +17,11 @@
     "url": "git+https://github.com/levjj/esverify-web.git"
   },
   "dependencies": {
-    "express": "^4.16.3"
+    "express": "^4.16.4"
   },
   "devDependencies": {
-    "@types/react": "^16.4.13",
-    "@types/react-dom": "^16.0.7",
+    "@types/react": "^16.7.6",
+    "@types/react-dom": "^16.0.9",
     "brace": "^0.11.1",
     "dir-loader": "^0.3.0",
     "esverify": "^0.25.6",
@@ -27,18 +29,18 @@
     "less": "^2.7.3",
     "mathjax": "^2.7.5",
     "raw-loader": "^0.5.1",
-    "react": "^16.5.0",
-    "react-ace": "^6.1.4",
-    "react-dom": "^16.5.0",
-    "react-split-pane": "^0.1.82",
+    "react": "^16.6.3",
+    "react-ace": "^6.2.0",
+    "react-dom": "^16.6.3",
+    "react-split-pane": "^0.1.84",
     "source-map-loader": "^0.2.4",
     "spectre.css": "^0.2.15",
     "tocbot": "^4.4.2",
     "ts-loader": "^4.5.0",
     "tslint": "^5.11.0",
     "tslint-config-standard": "^7.1.0",
-    "typescript": "^2.9.2",
-    "webpack": "^4.17.2",
-    "webpack-cli": "^3.1.0"
+    "typescript": "^3.1.6",
+    "webpack": "^4.26.0",
+    "webpack-cli": "^3.1.2"
   }
 }

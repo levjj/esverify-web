@@ -25,11 +25,24 @@ function dispatch (action: Action) {
 }
 
 function render () {
-  if (window.location.pathname.endsWith('/idve')) {
+  if (window.location.pathname.endsWith('/idembed')) {
+    const searchParams = new URLSearchParams(window.location.search);
+    const heightParam = searchParams.get('height');
+    const height = heightParam === null ? 10 : +heightParam;
+    const debug = searchParams.has('debugger');
+    const popups = searchParams.has('popups');
+    const vcpanel = searchParams.has('panel');
+    ReactDOM.render(
+      <IDVE state={state} dispatch={dispatch} enableDebugger={debug} enableExampleSelect={false}
+           enableSourceAnnotations={popups} enableVCPanel={vcpanel} enableVerification={true}
+           enableTitle={false} large={false} enableRunning={false} height={height} />,
+      document.getElementById('root')
+    );
+  } else if (window.location.pathname.endsWith('/idve')) {
     ReactDOM.render(
       <IDVE state={state} dispatch={dispatch} enableDebugger={true} enableExampleSelect={true}
            enableSourceAnnotations={true} enableVCPanel={true} enableVerification={true}
-           large={true} enableRunning={true} />,
+           enableTitle={true} height={undefined} large={true} enableRunning={true} />,
       document.getElementById('root')
     );
   } else if (window.location.pathname.endsWith('/userstudy-experiments')) {
@@ -42,8 +55,12 @@ function render () {
       document.getElementById('root')
     );
   } else if (window.location.pathname.endsWith('/embed')) {
+    const searchParams = new URLSearchParams(window.location.search);
+    const heightParam = searchParams.get('height');
+    const height = heightParam === null ? 10 : +heightParam;
     ReactDOM.render(
-      <Embed state={state} dispatch={dispatch} />,
+      <Embed state={state} dispatch={dispatch} height={height}
+             enableRunning={searchParams.has('run')} enableVerification={searchParams.has('verify')} />,
       document.getElementById('root')
     );
   } else {

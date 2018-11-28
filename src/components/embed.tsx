@@ -4,9 +4,12 @@ import 'brace';
 import 'brace/mode/javascript';
 import 'brace/theme/chrome';
 import { Message, formatMessage } from 'esverify';
-import { AppState, Action, verify, verificationInProgress, InteractiveVC } from '../app';
+import { AppState, Action, verify, verificationInProgress, InteractiveVC, runCode } from '../app';
 
 export interface Props {
+  enableRunning: boolean;
+  enableVerification: boolean;
+  height: number;
   state: AppState;
   dispatch: (action: Action) => void;
 }
@@ -45,23 +48,14 @@ function vcAsAnnotation (vc: InteractiveVC): Annotation {
   }
 }
 
-export default function Embed ({ state, dispatch }: Props) {
+export default function Embed ({ state, dispatch, enableRunning, enableVerification, height }: Props) {
   const annotations: Array<Annotation> = state.message !== undefined
     ? [messageAsAnnotation(state.message)]
     : state.vcs.map(vcAsAnnotation);
   return (
-    <div>
-      <div className='float-right'>
-        <button
-          className='btn btn-lg btn-primary'
-          onClick={() => dispatch({ type: 'RUN_CODE' })}>run</button>
-        {' '}
-        <button
-          className={(verificationInProgress(state) ? 'loading ' : '') + 'btn btn-lg btn-primary'}
-          onClick={() => dispatch(verify(state.sourceCode))}>verify</button>
-      </div>
+    <div className='clearfix'>
       <AceEditor
-        style={{ width: '100%', height: '65vh' }}
+        style={{ width: '100%', height: height + 'rem' }}
         mode='javascript'
         theme='chrome'
         showPrintMargin={false}
@@ -73,6 +67,26 @@ export default function Embed ({ state, dispatch }: Props) {
         onChange={newSource => dispatch({ type: 'CHANGE_SOURCE', newSource })}
         value={state.sourceCode}
       />
+      <div className='float-right'>
+        { state.runMessage !== undefined
+          ? <span className={'label ' +
+                            (state.runMessage === 'code ran successfully' ? 'label-success' : 'label-error')}>
+                            {state.runMessage}
+            </span>
+          : ''}
+        {' '}
+        {enableRunning ?
+          <button
+            className={(state.running ? 'loading ' : '') + 'btn btn-lg btn-primary'}
+            onClick={() => dispatch(runCode())}>run</button>
+          : ''}
+        {' '}
+        {enableVerification ?
+          <button
+            className={(verificationInProgress(state) ? 'loading ' : '') + 'btn btn-lg btn-primary'}
+            onClick={() => dispatch(verify(state.sourceCode))}>verify</button>
+            : ''}
+      </div>
     </div>
   );
 }

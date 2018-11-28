@@ -46,8 +46,16 @@ build/style.css: node_modules
 build/app.js: node_modules esverify
 	npm run prod
 
+build/tsembed.js: node_modules esverify
+	npm run tsembed
+
+build/vembed.js: node_modules esverify
+	npm run vembed
+
 dev: build/index.html node_modules esverify $(pages) build/style.css
+	npm run tsembed
+	npm run vembed
 	npm run dev
 	npm run serve
 
-prod: build/index.html $(pages) build/style.css build/app.js
+prod: build/index.html $(pages) build/style.css build/app.js build/tsembed.js build/vembed.js

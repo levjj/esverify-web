@@ -8,6 +8,7 @@ import { Action } from '../app';
 
 export interface Props {
   sourceCode: string;
+  height: number | undefined;
   annotations: Array<Annotation>;
   selectedVC: SourceLocation | undefined;
   pc: SourceLocation | undefined;
@@ -20,7 +21,8 @@ function valueToLabel (val: JSVal): string {
   return s.length > 32 ? s.substr(0, 29) + '..' : s;
 }
 
-export default function Editor ({ sourceCode, annotations, selectedVC, pc, sourceAnnotations, dispatch }: Props) {
+export default function Editor ({ sourceCode, annotations, selectedVC, pc, sourceAnnotations,
+                                  height, dispatch }: Props) {
   const markers: Array<Marker> = pc === undefined ? [] : [{
     startRow: pc.start.line - 1,
     startCol: pc.start.column,
@@ -47,6 +49,7 @@ export default function Editor ({ sourceCode, annotations, selectedVC, pc, sourc
     className: 'sourceAnnotation',
     // @ts-ignore front marker
     inFront: true,
+    // @ts-ignore type overlay hack
     type: function (this: { editor: BraceEditor }, stringBuilder: Array<string>, range: Range,
                     left: number, top: number, config: any) {
       const height = config.lineHeight;
@@ -70,7 +73,7 @@ export default function Editor ({ sourceCode, annotations, selectedVC, pc, sourc
   markers.reverse();
   return (
     <AceEditor
-      style={{ width: '100%', height: '80vh' }}
+      style={{ width: '100%', height: height === undefined ? '80vh' : height + 'rem' }}
       mode='javascript'
       theme='chrome'
       showPrintMargin={false}

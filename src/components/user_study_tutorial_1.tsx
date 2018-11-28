@@ -12,7 +12,7 @@ export default function UserStudyTutorial1 ({ state, dispatch }: Props) {
     <div>
       <IDVE state={state} dispatch={dispatch} enableDebugger={false} enableExampleSelect={false}
            enableSourceAnnotations={false} enableVCPanel={false} enableVerification={false}
-           large={false} enableRunning={true} />
+           large={false} enableRunning={true} enableTitle={true} height={undefined} />
       <div className={state.userStudy.showModal ? 'modal active' : 'modal'}>
         <a onClick={e => { e.preventDefault(); dispatch({ type: 'USER_STUDY_CLOSE_MODAL' }); }}
            href='#'className='modal-overlay' aria-label='Close'>

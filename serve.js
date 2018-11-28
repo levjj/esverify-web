@@ -3,14 +3,25 @@ const express = require('express');
 
 const app = express();
 
-const pages = ['try', 'idve', 'userstudy-archived', 'userstudy-experiments', 'userstudy-done', 'embed', 'thesis'];
+const pages = [
+  'try',
+  'embed',
+  'idembed',
+  'idve',
+  'thesis',
+  'tsembed',
+  'userstudy-archived',
+  'userstudy-done',
+  'userstudy-experiments',
+  'vembed'
+];
 
 app.get(`/userstudy`, (req, res) => {
   res.redirect(301, '/userstudy-archived');
 });
 pages.forEach(page => {
   app.use(`/${page}`, (req, res, next) => {
-    req.url = req.url + '.html';
+    req.url = `/.html${req.url.substr(1)}`;
     next('route')
   });
 });
