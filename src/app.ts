@@ -80,7 +80,7 @@ export function availableVerificationConditions (state: AppState): Array<Interac
 }
 
 export function initialState (): AppState {
-  let initialExample = getExampleNames()[8];
+  let initialExample = getExampleNames()[9];
   if (window.location.hash && window.location.hash !== '#' && window.location.hash !== '#max') {
     initialExample = getExampleNames().find(name => name === window.location.hash.substr(1)) || initialExample;
   }
