@@ -39,7 +39,7 @@ interface Result {
 let result: Result | undefined = undefined;
 let loading: boolean = false;
 let source: string = '';
-let verifyTimeout: NodeJS.Timeout = setTimeout(() => {/*nothing*/}, 0);
+let verifyTimeout: number = setTimeout(() => {/*nothing*/}, 0);
 
 const searchParams = new URLSearchParams(window.location.search);
 if (searchParams.has('source')) {

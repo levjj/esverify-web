@@ -1,3 +1,4 @@
+declare function require(name: string): any;
 const exampleDir: any = require('dir-loader!../examples.config.js');
 
 // work-around for an opaque type tag (not every string is a valid example name)
