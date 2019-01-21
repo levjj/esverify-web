@@ -1,20 +1,14 @@
 @import '../node_modules/spectre.css/spectre.less';
 
 body {
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.85;
   font-weight: 400;
-  font-family: 'Noto Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   color: #333;
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5 {
   font-weight: bold;
-}
-
-section.thesis {
-  h2, h3 {
-    margin-top: 2em;
-  }
 }
 
 header {
@@ -32,41 +26,7 @@ section.container {
   margin-top: 2rem;
 }
 
-nav.toc {
-  position: fixed;
-  max-width: 224px;
-  top: 4rem;
-  right: 2rem;
-  ul.nav {
-    position: relative;
-    .is-active-link {
-      color: black;
-    }
-    .nav-item a {
-      padding-left: 0;
-    }
-    .is-collapsible {
-      max-height: 1000px;
-      overflow: hidden;
-      transition: all 300ms ease-in-out;
-    }
-    .is-collapsed {
-      max-height: 0;
-    }
-  }
-}
-
 #examples { width: 13rem; max-height: 60vh; }
-
-section.thesis {
-  margin-top: 2rem;
-  font-size: 0.8rem;
-  p { line-height: 1.9 }
-  .card {
-    border-width: 0.2rem;
-    border-radius: 0.3rem;
-  }
-}
 
 code, pre {
   font-family: 'Fira Code', Inconsolata, monospace;
@@ -338,47 +298,6 @@ header .step {
   margin-top: 0;
 }
 
-blockquote {
-  font-family: 'EB Garamond', serif;
-  font-size: 1.1rem;
-  padding: 1rem 2rem .5rem 2rem;
-  color: #000;
-  position: relative;
-}
-.boxshadow blockquote > :first-child:before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  background: #fff;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-.boxshadow blockquote:after {
-  content: "";
-  position: absolute;
-  z-index: -2;
-  top: 10px;
-  bottom: 10px;
-  left: 0;
-  right: 50%;
-  border-radius: 0.5rem;
-}
-blockquote p {
-  margin: 0;
-}
-blockquote:before {
-  content: "“";
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 5rem;
-  line-height: 1;
-  color: #ccf0f0;
-  z-index: 1;
-}
-
 /*
 
 github.com style (c) Vasily Polovnyov <vast@whiteants.net>
@@ -516,7 +435,3 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
   margin-bottom: 0;
 }
 
-.label.label-dark {
-  background: rgba(69, 77, 93, 0.9);
-  color: #fff;
-}

@@ -17,8 +17,6 @@ node_modules:
 build: node_modules
 	mkdir build
 	cp -r static/* build
-	cp node_modules/tocbot/dist/tocbot.min.js build
-	cp node_modules/jquery/dist/jquery.min.js build
 	cp node_modules/mathjax/MathJax.js build
 	mkdir -p build/jax/input
 	cp -av node_modules/mathjax/jax/input/TeX build/jax/input

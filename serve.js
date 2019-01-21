@@ -8,7 +8,6 @@ const pages = [
   'embed',
   'idembed',
   'idve',
-  'thesis',
   'tsembed',
   'userstudy-archived',
   'userstudy-done',
