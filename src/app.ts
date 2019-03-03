@@ -1,4 +1,5 @@
-import { Message, setOptions, verificationConditions, VerificationCondition, testPreamble } from 'esverify';
+import { Message, setOptions, verificationConditions, VerificationCondition, transformSourceCode,
+  formatMessage } from 'esverify';
 
 import { ExampleName, getExample, getExampleNames } from './examples';
 import { arraySplice } from './util';
@@ -595,12 +596,17 @@ export function reduce (state: AppState, action: BaseAction): AppState {
     case 'RUN_CODE_DONE': {
       const source = state.sourceCode;
       let runMessage: string;
-      try {
-        /* tslint:disable:no-eval */
-        eval(testPreamble() + source);
-        runMessage = 'code ran successfully';
-      } catch (e) {
-        runMessage = String(e);
+      const transformed = transformSourceCode(source);
+      if (typeof transformed !== 'string') {
+        runMessage = formatMessage(transformed, false);
+      } else {
+        try {
+          /* tslint:disable:no-eval */
+          eval(transformed);
+          runMessage = 'code ran successfully';
+        } catch (e) {
+          runMessage = String(e);
+        }
       }
       return { ...state, running: false, runMessage };
     }

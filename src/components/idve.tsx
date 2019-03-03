@@ -3,7 +3,7 @@ import { Message, formatMessage, SourceLocation } from 'esverify';
 import { Annotation } from 'react-ace';
 import SplitPane from 'react-split-pane';
 import { AppState, Action, verify, verificationInProgress, availableVerificationConditions,
-         InteractiveVC, currentVC, currentIVC} from '../app';
+         InteractiveVC, currentVC, currentIVC, runCode } from '../app';
 import ExampleDropDown from './example_dropdown';
 import VCPanel from './vc_panel';
 import Editor from './editor';
@@ -84,15 +84,22 @@ export default function IDVE ({ enableExampleSelect, enableVerification, enableS
               : ''
             }
             {' '}
+            { state.runMessage !== undefined
+              ? <span className={'label ' +
+                                (state.runMessage === 'code ran successfully' ? 'label-success' : 'label-error')}>
+                                {state.runMessage}
+                </span>
+              : ''}
+            {' '}
+            { enableRunning ?
+              <button
+                className={(state.running ? 'loading ' : '') + 'btn btn-primary'}
+                onClick={() => dispatch(runCode())}>run</button> : ''}
+            {' '}
             { enableVerification ?
               <button
                 className={(verificationInProgress(state) ? 'loading ' : '') + 'btn btn-primary'}
                 onClick={() => dispatch(verify(state.sourceCode))}>verify</button> : ''}
-            {' '}
-            { enableRunning ?
-              <button
-                className='btn btn-primary'
-                onClick={() => dispatch({ type: 'RUN_CODE' })}>run</button> : ''}
           </div>
           { enableTitle
             ? <h4 className='my-2'>IDVE: Interactive Development and Verification Environment</h4>

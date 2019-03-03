@@ -32,10 +32,11 @@ function render () {
     const debug = searchParams.has('debugger');
     const popups = searchParams.has('popups');
     const vcpanel = searchParams.has('panel');
+    const run = searchParams.has('run');
     ReactDOM.render(
       <IDVE state={state} dispatch={dispatch} enableDebugger={debug} enableExampleSelect={false}
            enableSourceAnnotations={popups} enableVCPanel={vcpanel} enableVerification={true}
-           enableTitle={false} large={false} enableRunning={false} height={height} />,
+           enableTitle={false} large={false} enableRunning={run} height={height} />,
       document.getElementById('root')
     );
   } else if (window.location.pathname.endsWith('/idve')) {
