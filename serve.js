@@ -42,6 +42,6 @@ app.use((err, req, res, next) => {
   console.error(err);
   res.status(500).sendFile("500.html", {root: __dirname + '/build'});
 });
-app.listen(3003, 'localhost', () => {
+app.listen(3003, '::', () => {
   console.log('esverify-web listening on http://localhost:3003/');
 });
